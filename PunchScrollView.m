@@ -483,7 +483,7 @@
     {
         pageFrame.origin.x = 0;
         pageFrame.origin.y = (pageFrame.size.height * index) + self.pagePadding;
-        pageFrame.size.height -= ( self.pagePadding);
+        pageFrame.size.height -= (2 * self.pagePadding);
     }
     
     
