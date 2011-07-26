@@ -117,7 +117,7 @@ typedef enum {
 
 @required
 
-- (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfRowsInSection:(NSInteger)section;
+- (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section;
 
 - (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath;
 

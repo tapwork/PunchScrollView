@@ -62,7 +62,7 @@
 	return 3;
 }
 
-- (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfRowsInSection:(NSInteger)section
+- (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section
 {
 	return 3;
 }

@@ -538,9 +538,9 @@
     for (int section = 0; section < [self sectionCount]; section++)
 	{
 		NSUInteger rowsInSection = 1;
-		if ([self.punchDataSource respondsToSelector:@selector(punchscrollView:numberOfRowsInSection:)])
+		if ([self.punchDataSource respondsToSelector:@selector(punchscrollView:numberOfPagesInSection:)])
 		{
-			rowsInSection = [self.punchDataSource punchscrollView:self numberOfRowsInSection:section];
+			rowsInSection = [self.punchDataSource punchscrollView:self numberOfPagesInSection:section];
 		}
 		
 		for (int row = 0; row < rowsInSection; row++)
