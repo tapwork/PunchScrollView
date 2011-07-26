@@ -1413,7 +1413,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>333397007.70283198</real>
+		<real>333397338.68903297</real>
 		<string>{986, 1722}</string>
 		<string>{1691, 644}</string>
 		<dict>
@@ -2181,7 +2181,7 @@
 			</dict>
 		</dict>
 		<string>file://localhost/Users/cmenschel/Dropbox/Tapwork/_Frameworks&amp;Categories/UI/PunchScrollView/ExampleProject/.DS_Store</string>
-		<real>333397005.09667999</real>
+		<real>333397335.51634699</real>
 		<integer>0</integer>
 		<dict>
 			<key>$classes</key>
@@ -2473,8 +2473,8 @@
 				</dict>
 			</array>
 		</dict>
-		<string>{0, 504}</string>
-		<real>333397007.70291197</real>
+		<string>{0, 457}</string>
+		<real>333397338.689116</real>
 		<dict>
 			<key>$class</key>
 			<dict>
@@ -4672,7 +4672,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>333397007.70522702</real>
+		<real>333397338.691351</real>
 		<string>{2368, 590}</string>
 		<string>{1865, 0}</string>
 		<string>-punchscrollView:numberOfPagesInSection:</string>
@@ -7978,7 +7978,7 @@
 				</dict>
 			</array>
 		</dict>
-		<real>333397007.70482999</real>
+		<real>333397338.69093698</real>
 		<string>{986, 1722}</string>
 		<string>{1691, 644}</string>
 		<string>-numberOfSectionsInPunchScrollView:</string>
