@@ -1,1 +1,19 @@
-PunchScrollView is a iOS ScrollView Suite which works like the UITableView - use the benefits of row and sections, retrieve pages easily and save lots of memory.
+PunchScrollView hosted on github is a ScrollView framework for iOS (iPhone, iPad and iPod Touch) which works like the Apple UITableView Framework 
+
+Easy and fast implemantation, almost like the UITableView 
+
+Use the benefits of the NSIndexPath like you may know it from the UITableView
+ 
+Easy Setup in combination with Core Data
+
+Helpful methods, i.e. jump or scroll to a desired page
+
+Avoid boilerplate code
+
+Save lots of memory with the use of dequeuing
+
+
+See more at http://www.cmenschel.de/?p=984
+
+
+
