@@ -93,25 +93,21 @@
 #pragma mark PunchScrollView Public Methods
 - (UIView*)pageForIndexPath:(NSIndexPath*)indexPath
 {
-	
-    for (UIView *thePage in visiblePages_)
+    NSArray *storedPages = [NSArray arrayWithArray:[recycledPages_ allObjects]];
+    storedPages = [storedPages arrayByAddingObjectsFromArray:[visiblePages_ allObjects]];
+
+    for (UIView *thePage in storedPages)
 	{
-		if ((NSNull*)thePage == [NSNull null]) return nil;
+		if ((NSNull*)thePage == [NSNull null]) break;
+		NSIndexPath *storedIndexPath = (thePage.tag < [indexPaths_ count])?[indexPaths_ objectAtIndex:thePage.tag]:nil;
 		
-		if ([indexPaths_ objectAtIndex:thePage.tag] == indexPath)
+        if (storedIndexPath.row == indexPath.row &&
+            storedIndexPath.section == indexPath.section)
 		{
             return thePage;
         }
     }
 	
-	for (UIView *thePage in recycledPages_)
-	{
-		
-		if ([indexPaths_ objectAtIndex:thePage.tag] == indexPath)
-		{
-            return thePage;
-        }
-    }
 	
     return nil;
 }
@@ -121,15 +117,25 @@
 - (void)scrollToIndexPath:(NSIndexPath*)indexPath animated:(BOOL)animated
 {
 	NSInteger pageNum = 0;
+    BOOL indexPathFound = NO;
 	for (NSIndexPath *storedPath in indexPaths_)
 	{
 		if (storedPath.section == indexPath.section && storedPath.row == indexPath.row)
 		{
-			break;
+			indexPathFound = YES;
+            break;
 		}
+        
 		pageNum++;
 	}
 	
+    if (indexPathFound == NO)
+    {
+        // The indexPath is not avaiable. go out, but do not crash and burn
+        return;
+    }
+    
+    
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         [self scrollRectToVisible:CGRectMake(self.frame.size.width*pageNum,
@@ -227,6 +233,7 @@
 - (void)reloadData
 {
     [self setIndexPaths];
+    currentPage_ = 0;
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
