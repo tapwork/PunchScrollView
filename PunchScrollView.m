@@ -395,12 +395,12 @@
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         CGFloat pageWidth = self.frame.size.width;
-        currentPage_ = floor(self.contentOffset.x / pageWidth);
+        currentPage_ = floor(self.contentOffset.x) / floor(pageWidth);
 	}
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
         CGFloat pageHeight = self.frame.size.height;
-        currentPage_ = floor(self.contentOffset.y / pageHeight);
+        currentPage_ = floor(self.contentOffset.y) / floor(pageHeight);
     }
 }
 
