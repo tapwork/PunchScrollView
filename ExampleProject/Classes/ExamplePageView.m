@@ -22,6 +22,7 @@
 		
 		titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (frame.size.height/2)-25, frame.size.width, 50)];
 		titleLabel.backgroundColor = [UIColor clearColor];
+        titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
 		titleLabel.textAlignment = UITextAlignmentCenter;
 		[self addSubview:titleLabel];
     }

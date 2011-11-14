@@ -73,7 +73,12 @@
 	ExamplePageView *page = (ExamplePageView*)[scrollView dequeueRecycledPage];
 	if (page == nil)
 	{
-		page = [[[ExamplePageView alloc] initWithFrame:self.view.frame] autorelease];
+      //
+      // You could also use Punchscrollview as galery scrollview - just change the size of the desired view
+      //
+      //  page = [[[ExamplePageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)] autorelease];
+        
+		page = [[[ExamplePageView alloc] initWithFrame:self.view.bounds] autorelease];
 	}
 	
 	

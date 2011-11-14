@@ -13,17 +13,19 @@
 
 @interface PunchScrollView (Private)
 
+@property (nonatomic, readonly) CGSize originalPageSizeWithPadding;
 
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index;
-- (CGRect)frameForPageAtIndex:(NSUInteger)index;
+- (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size;
 - (void)updateFrameForVisiblePages;
+- (void)updateContentSize;
 - (BOOL)didOrientationChange;
 - (void)renderPages;
 - (void)pageIndexChanged;
-- (void)setCurrentPage;
 - (void)setIndexPaths;
 - (NSUInteger)sectionCount;
 - (NSUInteger)pagesCount;
+- (NSIndexPath*)indexPathForIndex:(NSInteger)index;
 
 @end
 
@@ -49,7 +51,7 @@
 {
     if ((self = [super initWithFrame:aFrame]))
 	{
-		originalFrame_ = aFrame;
+		originalSelfFrame_ = aFrame;
         self.pagePadding = 10;
         
         
@@ -99,7 +101,7 @@
     for (UIView *thePage in storedPages)
 	{
 		if ((NSNull*)thePage == [NSNull null]) break;
-		NSIndexPath *storedIndexPath = (thePage.tag < [indexPaths_ count])?[indexPaths_ objectAtIndex:thePage.tag]:nil;
+		NSIndexPath *storedIndexPath = [self indexPathForIndex:thePage.tag];
 		
         if (storedIndexPath.row == indexPath.row &&
             storedIndexPath.section == indexPath.section)
@@ -117,6 +119,7 @@
 - (void)scrollToIndexPath:(NSIndexPath*)indexPath animated:(BOOL)animated
 {
 	NSInteger pageNum = 0;
+    
     BOOL indexPathFound = NO;
 	for (NSIndexPath *storedPath in indexPaths_)
 	{
@@ -138,19 +141,16 @@
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
-        [self scrollRectToVisible:CGRectMake(self.frame.size.width*pageNum,
-                                             0,
-                                             self.frame.size.width,
-                                             self.frame.size.height)
-                         animated:animated];
+        
+        [self setContentOffset:CGPointMake(self.originalPageSizeWithPadding.width*pageNum,
+                                           0)
+                      animated:animated];
 	}
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        [self scrollRectToVisible:CGRectMake(0,
-                                             self.frame.size.height*pageNum,
-                                             self.frame.size.width,
-                                             self.frame.size.height)
-                         animated:animated];
+        [self setContentOffset:CGPointMake(0,
+                                           self.originalPageSizeWithPadding.height*pageNum)
+                      animated:animated];
     }
 	if (animated == NO)
 	{
@@ -160,54 +160,39 @@
 
 - (void)scrollToNextPage:(BOOL)animated
 {
-	NSIndexPath *indexPath = nil;
-	if (currentPage_ >= [indexPaths_ count]-1)
-	{
-		// do nothing because we reached the end
-		return;
-	}
-	else
-	{
-		indexPath = [indexPaths_ objectAtIndex:currentPage_+1];
-		[self scrollToIndexPath:indexPath animated:animated];
-		
-		if (animated == NO)
-		{
-			[self pageIndexChanged];
-		}
-	}
-	
-	
+	NSIndexPath *indexPath = [self indexPathForIndex:currentPageIndex_+1];
+    
+    if (indexPath != nil)
+    {
+        [self scrollToIndexPath:indexPath animated:animated];
+        if (animated == NO)
+        {
+            [self pageIndexChanged];
+        }
+    }
 }
 
 - (void)scrollToPreviousPage:(BOOL)animated
 {
-	NSIndexPath *indexPath = nil;
-	if (currentPage_ < 1)
-	{
-		// do nothing because we reached the beginning
-		return;
-	}
-	else
-	{
-		indexPath = [indexPaths_ objectAtIndex:currentPage_-1];
-		[self scrollToIndexPath:indexPath animated:animated];
-		
-		if (animated == NO)
-		{
-			[self pageIndexChanged];
-		}
-	}
-	
+	NSIndexPath *indexPath = [self indexPathForIndex:currentPageIndex_-1];
+    
+    if (indexPath != nil)
+    {
+        [self scrollToIndexPath:indexPath animated:animated];
+        if (animated == NO)
+        {
+            [self pageIndexChanged];
+        }	
+    }
 }
 
 - (NSIndexPath*)getCurrentIndexPath
 {
-	if (currentPage_ >= [indexPaths_ count])
+	if (currentPageIndex_ >= [indexPaths_ count])
     {
         return nil;
     }
-    return [indexPaths_ objectAtIndex:currentPage_];
+    return [self indexPathForIndex:currentPageIndex_];
 }
 
 - (NSIndexPath*)getLastIndexPath
@@ -233,26 +218,23 @@
 - (void)reloadData
 {
     [self setIndexPaths];
-    currentPage_ = 0;
+    currentPageIndex_ = 0;
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
+    [self updateContentSize];
+    
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
-        self.contentSize = CGSizeMake(self.frame.size.width * [self pagesCount],
-                                  self.frame.size.height);
-
-        [self setContentOffset:CGPointMake(self.frame.size.width*currentPage_, 0) animated:NO];
+        [self setContentOffset:CGPointMake(self.originalPageSizeWithPadding.width*currentPageIndex_, 0) animated:NO];
     }
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        self.contentSize = CGSizeMake(self.frame.size.width,
-                                     self.frame.size.height* [self pagesCount]);
-        
-        [self setContentOffset:CGPointMake(0, self.frame.size.height*currentPage_) animated:NO];
+        [self setContentOffset:CGPointMake(0, self.originalPageSizeWithPadding.height*currentPageIndex_) animated:NO];
     }
-   // [self renderPages];
-    [self performSelector:@selector(renderPages) withObject:nil afterDelay:0.01];
+    
+    [self renderPages];
+   // [self performSelector:@selector(renderPages) withObject:nil afterDelay:0.01];
 }
 
 
@@ -263,26 +245,17 @@
 {
 	[super layoutSubviews];
 	
-    if (direction_ == PunchScrollViewDirectionHorizontal)
-    {
-        self.contentSize = CGSizeMake(self.frame.size.width * [self pagesCount],
-								  self.frame.size.height);
-	}
-    else if (direction_ == PunchScrollViewDirectionVertical)
-    {
-        self.contentSize = CGSizeMake(self.frame.size.width,
-                                      self.frame.size.height* [self pagesCount]);
-    }
+    [self updateContentSize];
    
 	if ([self didOrientationChange])
 	{
 		if (direction_ == PunchScrollViewDirectionHorizontal)
         {
-            self.contentOffset = CGPointMake(self.frame.size.width*currentPage_, 0);
+            self.contentOffset = CGPointMake(self.originalPageSizeWithPadding.width*currentPageIndex_, 0);
         }
         else if (direction_ == PunchScrollViewDirectionVertical)
         {
-            self.contentOffset = CGPointMake(0, self.frame.size.height*currentPage_);
+            self.contentOffset = CGPointMake(0, self.originalPageSizeWithPadding.height*currentPageIndex_);
         }
         
 		[self updateFrameForVisiblePages];
@@ -302,12 +275,12 @@
     // Calculate which pages are visible
     CGRect visibleBounds = self.bounds;
     int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
-    int lastNeededPageIndex  = floorf((CGRectGetMaxX(visibleBounds)-1) / CGRectGetWidth(visibleBounds));
-    
+    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width);
+      
     if (direction_ == PunchScrollViewDirectionVertical)
     {
         firstNeededPageIndex = floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds));
-        lastNeededPageIndex  = floorf((CGRectGetMaxY(visibleBounds)-1) / CGRectGetHeight(visibleBounds));
+        lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height);
         
     }
     
@@ -334,12 +307,12 @@
 			UIView *page = nil;
 			if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
 			{
-				page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[indexPaths_ objectAtIndex:index]];
+				page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[self indexPathForIndex:index]];
 			}
 			if (nil != page)
 			{
 				page.tag = index;
-				page.frame = [self frameForPageAtIndex:index]; 
+				page.frame = [self frameForPageAtIndex:index withSize:page.frame.size]; 
 				[page layoutIfNeeded];
 				[self addSubview:page];
 				[visiblePages_ addObject:page];
@@ -390,19 +363,7 @@
 	}
 }
 
-- (void)setCurrentPage
-{
-    if (direction_ == PunchScrollViewDirectionHorizontal)
-    {
-        CGFloat pageWidth = self.frame.size.width;
-        currentPage_ = floor(self.contentOffset.x) / floor(pageWidth);
-	}
-    else if (direction_ == PunchScrollViewDirectionVertical)
-    {
-        CGFloat pageHeight = self.frame.size.height;
-        currentPage_ = floor(self.contentOffset.y) / floor(pageHeight);
-    }
-}
+
 
 #pragma mark -
 #pragma mark ScrollView delegate methods
@@ -411,6 +372,7 @@
 - (void)scrollViewDidScroll:(PunchScrollView *)scrollView
 {
 	[self renderPages];
+    [self pageIndexChanged];
 }
 
 - (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView 
@@ -427,14 +389,29 @@
 
 - (void)pageIndexChanged
 {
-    [self setCurrentPage];
+    NSInteger newPageIndex = NSNotFound;
     
-    
-	if ([self.punchDelegate respondsToSelector:@selector(punchScrollView:pageChanged:)] && [indexPaths_ count] > 0)
-	{
-		[self.punchDelegate punchScrollView:self pageChanged:[indexPaths_ objectAtIndex:currentPage_]];
+    if (direction_ == PunchScrollViewDirectionHorizontal)
+    {
+        CGFloat pageWidth = self.originalPageSizeWithPadding.width;
+        newPageIndex = floor(self.contentOffset.x) / floor(pageWidth);
 	}
-	
+    else if (direction_ == PunchScrollViewDirectionVertical)
+    {
+        CGFloat pageHeight = self.originalPageSizeWithPadding.height;
+        newPageIndex = floor(self.contentOffset.y) / floor(pageHeight);
+    }
+    
+    if (newPageIndex != currentPageIndex_)
+    {
+        currentPageIndex_ = newPageIndex;
+        if ([self.punchDelegate respondsToSelector:@selector(punchScrollView:pageChanged:)] &&
+            [indexPaths_ count] > 0)
+        {
+            [self.punchDelegate punchScrollView:self
+                                    pageChanged:[self indexPathForIndex:currentPageIndex_]];
+        }
+	}
 }
 
 
@@ -445,12 +422,11 @@
 {
     pagePadding_ = pagePadding;
     
-    [self adjustFrame:originalFrame_];
+    [self adjustSelfFrame:originalSelfFrame_];
 }
 
-- (void)adjustFrame:(CGRect)aFrame
+- (void)adjustSelfFrame:(CGRect)aFrame
 {
-    
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         aFrame.origin.x -= self.pagePadding;
@@ -468,33 +444,58 @@
     [self updateFrameForVisiblePages];
 }
 
+- (void)updateContentSize
+{
+    if (direction_ == PunchScrollViewDirectionHorizontal)
+    {
+        self.contentSize = CGSizeMake(self.originalPageSizeWithPadding.width * [self pagesCount],
+                                      self.originalPageSizeWithPadding.height);
+	}
+    else if (direction_ == PunchScrollViewDirectionVertical)
+    {
+        self.contentSize = CGSizeMake(self.originalPageSizeWithPadding.width,
+                                      self.originalPageSizeWithPadding.height* [self pagesCount]);
+    }
+}
+
 
 - (void)updateFrameForVisiblePages
 {
 	for (UIView *page in visiblePages_)
 	{
-		if ((NSNull*)page != [NSNull null]) page.frame = [self frameForPageAtIndex:page.tag];
+		if ((NSNull*)page != [NSNull null])
+        {
+            page.frame = [self frameForPageAtIndex:page.tag
+                                          withSize:page.frame.size];
+        }
 	}
 }
 
-- (CGRect)frameForPageAtIndex:(NSUInteger)index {
-	CGRect pageFrame = self.bounds;
-	
+- (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size
+{
+    
+    CGRect pageFrame = CGRectMake(self.bounds.origin.x,
+                                  self.bounds.origin.y,
+                                  size.width,
+                                  size.height);
+
+           
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
+        pageFrame.size.width += (2 * self.pagePadding);
         pageFrame.origin.x = (pageFrame.size.width * index) + self.pagePadding;
         pageFrame.origin.y = 0;
         pageFrame.size.width -= (2 * self.pagePadding);
     }
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
+        pageFrame.size.height += (2 * self.pagePadding);
         pageFrame.origin.x = 0;
         pageFrame.origin.y = (pageFrame.size.height * index) + self.pagePadding;
         pageFrame.size.height -= (2 * self.pagePadding);
     }
     
     
-	
     return pageFrame;
 }
 
@@ -515,12 +516,47 @@
 - (void)setDirection:(PunchScrollViewDirection)direction
 {
     direction_ = direction;
-    [self adjustFrame:originalFrame_];
+    [self adjustSelfFrame:originalSelfFrame_];
+}
+
+- (CGSize)originalPageSizeWithPadding
+{
+    UIView *page = nil;
+    CGSize size;
+    if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
+    {
+        page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[indexPaths_ objectAtIndex:0]];
+    }
+    
+    size = page.frame.size;
+    
+    if (direction_ == PunchScrollViewDirectionHorizontal)
+    {
+        size = CGSizeMake(size.width+(2*self.pagePadding),size.height);
+        
+        if (size.width != self.bounds.size.width)
+        {
+            self.pagingEnabled = NO;
+        }
+    }
+    else if (direction_ == PunchScrollViewDirectionVertical)
+    {
+        size = CGSizeMake(size.width,size.height+(2*self.pagePadding));
+        
+        if (size.height != self.bounds.size.height)
+        {
+            self.pagingEnabled = NO;
+        }
+    }
+    
+    return size;
 }
 
 
 #pragma mark -
 #pragma mark Count & hold the data Source
+
+
 
 - (NSUInteger)sectionCount
 {
@@ -558,6 +594,14 @@
 	}
 }
 
-
-
+- (NSIndexPath*)indexPathForIndex:(NSInteger)index
+{
+    if (index < [indexPaths_ count] &&
+        index >= 0)
+    {
+        return [indexPaths_ objectAtIndex:index];
+    }
+    
+    return nil;
+}
 @end

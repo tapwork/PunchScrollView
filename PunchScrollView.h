@@ -24,15 +24,17 @@ typedef enum {
 	id <PunchScrollViewDataSource> punchDataSource_;
 	id <PunchScrollViewDelegate> punchDelegate_;
 	
-	NSMutableSet		*recycledPages_;
-    NSMutableSet		*visiblePages_;
-	NSInteger			currentPage_;
-	NSMutableArray		*indexPaths_;
-	CGFloat				oldWidth_;
-    CGFloat             pagePadding_;
-    CGRect              originalFrame_;
+	NSMutableSet                    *recycledPages_;
+    NSMutableSet                    *visiblePages_;
+	NSInteger                       currentPageIndex_;
+	NSMutableArray                  *indexPaths_;
+	CGFloat                         oldWidth_;
+    CGFloat                         pagePadding_;
+    CGRect                          originalSelfFrame_;
+    CGSize                          originalPageSizeWithPadding_;
+
     
-    PunchScrollViewDirection direction_;
+    PunchScrollViewDirection        direction_;
 }
 
 
@@ -85,10 +87,10 @@ typedef enum {
 - (void)scrollToPreviousPage:(BOOL)animated;
 
 /*
- * Change the frame of the view
+ * Change the frame of the scrollview
  *
  */
-- (void)adjustFrame:(CGRect)aFrame;
+- (void)adjustSelfFrame:(CGRect)aFrame;
 
 @end
 
@@ -125,5 +127,6 @@ typedef enum {
 @optional
 
 - (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView; // Default is 1 if not implemented
+
 
 @end
