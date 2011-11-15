@@ -10,7 +10,6 @@
 #import "PunchScrollView.h"
 
 
-
 @interface PunchScrollView (Private)
 
 @property (nonatomic, readonly) CGSize originalPageSizeWithPadding;
@@ -52,6 +51,7 @@
     if ((self = [super initWithFrame:aFrame]))
 	{
 		originalSelfFrame_ = aFrame;
+        originalPageSizeWithPadding_ = CGSizeZero;
         self.pagePadding = 10;
         
         
@@ -233,8 +233,8 @@
         [self setContentOffset:CGPointMake(0, self.originalPageSizeWithPadding.height*currentPageIndex_) animated:NO];
     }
     
-    [self renderPages];
-   // [self performSelector:@selector(renderPages) withObject:nil afterDelay:0.01];
+  //  [self renderPages];
+    [self performSelector:@selector(renderPages) withObject:nil afterDelay:0.01];
 }
 
 
@@ -521,14 +521,19 @@
 
 - (CGSize)originalPageSizeWithPadding
 {
+    if (!CGSizeEqualToSize(originalPageSizeWithPadding_,
+                          CGSizeZero))
+    {
+        return originalPageSizeWithPadding_;
+    }
+    
     UIView *page = nil;
-    CGSize size;
+    CGSize size = CGSizeZero;
     if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
     {
         page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[indexPaths_ objectAtIndex:0]];
+        size = page.bounds.size;
     }
-    
-    size = page.frame.size;
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
@@ -548,6 +553,8 @@
             self.pagingEnabled = NO;
         }
     }
+    
+    originalPageSizeWithPadding_ = size;
     
     return size;
 }

@@ -32,8 +32,6 @@ typedef enum {
     CGFloat                         pagePadding_;
     CGRect                          originalSelfFrame_;
     CGSize                          originalPageSizeWithPadding_;
-
-    
     PunchScrollViewDirection        direction_;
 }
 
