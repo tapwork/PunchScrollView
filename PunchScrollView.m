@@ -186,6 +186,7 @@
     }
 }
 
+
 - (NSIndexPath*)getCurrentIndexPath
 {
 	if (currentPageIndex_ >= [indexPaths_ count])
@@ -217,11 +218,14 @@
 
 - (void)reloadData
 {
+    
     [self setIndexPaths];
     currentPageIndex_ = 0;
+    originalPageSizeWithPadding_ = CGSizeZero;
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
+    [self adjustSelfFrame:originalSelfFrame_];
     [self updateContentSize];
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
@@ -347,8 +351,7 @@
     {
         if (page.tag == index)
         {
-            foundPage = YES;
-            break;
+            return YES;
         }
     }
     return foundPage;
@@ -420,10 +423,14 @@
 
 - (void)setPagePadding:(CGFloat)pagePadding
 {
-    pagePadding_ = pagePadding;
-    
-    [self adjustSelfFrame:originalSelfFrame_];
+    if (pagePadding_ != pagePadding)
+    {
+        pagePadding_ = pagePadding;
+        
+        [self reloadData];
+    }
 }
+
 
 - (void)adjustSelfFrame:(CGRect)aFrame
 {
@@ -515,8 +522,11 @@
 
 - (void)setDirection:(PunchScrollViewDirection)direction
 {
-    direction_ = direction;
-    [self adjustSelfFrame:originalSelfFrame_];
+    if (direction_ != direction)
+    {
+        direction_ = direction;
+        [self reloadData];
+    }
 }
 
 - (CGSize)originalPageSizeWithPadding
@@ -538,20 +548,10 @@
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         size = CGSizeMake(size.width+(2*self.pagePadding),size.height);
-        
-        if (size.width != self.bounds.size.width)
-        {
-            self.pagingEnabled = NO;
-        }
     }
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
         size = CGSizeMake(size.width,size.height+(2*self.pagePadding));
-        
-        if (size.height != self.bounds.size.height)
-        {
-            self.pagingEnabled = NO;
-        }
     }
     
     originalPageSizeWithPadding_ = size;
