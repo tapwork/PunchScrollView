@@ -13,7 +13,7 @@
 @interface PunchScrollView (Private)
 
 @property (nonatomic, readonly) CGSize originalPageSizeWithPadding;
-
+- (UIView*)askDataSourceForPageAtIndex:(NSInteger)index;
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index;
 - (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size;
 - (void)updateFrameForVisiblePages;
@@ -35,11 +35,12 @@
 @synthesize pagePadding = pagePadding_;
 @synthesize direction = direction_;
 
-@synthesize currentIndexPath;
-@synthesize lastIndexPath;
-@synthesize currentPage;
-@synthesize firstPage;
-@synthesize lastPage;
+@dynamic currentIndexPath;
+@dynamic lastIndexPath;
+@dynamic currentPage;
+@dynamic firstPage;
+@dynamic lastPage;
+@dynamic pageController;
 
 - (id)init
 {
@@ -52,23 +53,22 @@
 	{
 		originalSelfFrame_ = aFrame;
         originalPageSizeWithPadding_ = CGSizeZero;
-        self.pagePadding = 10;
         
+        self.pagePadding = 10;
         
         self.bouncesZoom = YES;
         self.decelerationRate = UIScrollViewDecelerationRateFast;
 		self.delegate = self;  
-		
 		
 		self.pagingEnabled = YES;
 		self.showsVerticalScrollIndicator = NO;
 		self.showsHorizontalScrollIndicator = NO;
 		self.directionalLockEnabled = YES;
 		
-		indexPaths_	   = [[NSMutableArray alloc] init];
-		recycledPages_ = [[NSMutableSet alloc] init];
-		visiblePages_  = [[NSMutableSet alloc] init];
-		
+		indexPaths_     = [[NSMutableArray alloc] init];
+		recycledPages_  = [[NSMutableSet alloc] init];
+		visiblePages_   = [[NSMutableSet alloc] init];
+		pageController_ = [[NSMutableArray alloc] init];
 		
 		
     }
@@ -88,11 +88,26 @@
 	recycledPages_ = nil;
 	[visiblePages_ release];
 	visiblePages_ = nil;
+    [pageController_ release];
+    pageController_ = nil;
+    
     [super dealloc];
 }
 
 #pragma mark -
 #pragma mark PunchScrollView Public Methods
+
+- (UIView *)dequeueRecycledPage
+{
+    UIView *page = [recycledPages_ anyObject];
+    if (page)
+    {
+        [[page retain] autorelease];
+        [recycledPages_ removeObject:page];
+    }
+    return page;
+}
+
 - (UIView*)pageForIndexPath:(NSIndexPath*)indexPath
 {
     NSArray *storedPages = [NSArray arrayWithArray:[recycledPages_ allObjects]];
@@ -187,7 +202,7 @@
 }
 
 
-- (NSIndexPath*)getCurrentIndexPath
+- (NSIndexPath*)currentIndexPath
 {
 	if (currentPageIndex_ >= [indexPaths_ count])
     {
@@ -196,24 +211,29 @@
     return [self indexPathForIndex:currentPageIndex_];
 }
 
-- (NSIndexPath*)getLastIndexPath
+- (NSIndexPath*)lastIndexPath
 {
 	return [indexPaths_ lastObject];
 }
 
-- (UIView*)getCurrentPage
+- (UIView*)currentPage
 {
     return [self pageForIndexPath:self.currentIndexPath];
 }
 
-- (UIView*)getFirstPage
+- (UIView*)firstPage
 {
     return [self pageForIndexPath:[NSIndexPath indexPathForRow:0 inSection:0]];
 }
 
-- (UIView*)getLastPage
+- (UIView*)lastPage
 {
     return [self pageForIndexPath:self.lastIndexPath];
+}
+
+- (NSArray*)pageController
+{
+    return pageController_;
 }
 
 - (void)reloadData
@@ -294,8 +314,17 @@
     // Recycle no-longer-visible pages 
     for (UIView *page in visiblePages_)
     {
-        if (page.tag < firstNeededPageIndex || page.tag > lastNeededPageIndex)
+        int indexToDelete = page.tag;
+        if (indexToDelete < firstNeededPageIndex ||
+            indexToDelete > lastNeededPageIndex)
         {
+            if (indexToDelete >= 0 &&
+                indexToDelete < [pageController_ count])
+            {
+                UIViewController *vc = [pageController_ objectAtIndex:indexToDelete];
+                [vc viewDidUnload];
+                vc.view = nil;
+            }
             [recycledPages_ addObject:page];
             [page removeFromSuperview];
         }
@@ -308,11 +337,8 @@
         if (![self isDisplayingPageForIndex:index])
 		{
 			
-			UIView *page = nil;
-			if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
-			{
-				page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[self indexPathForIndex:index]];
-			}
+			UIView *page = [self askDataSourceForPageAtIndex:index];            
+            
 			if (nil != page)
 			{
 				page.tag = index;
@@ -333,16 +359,32 @@
     }    
 }
 
-- (UIView *)dequeueRecycledPage
+- (UIView*)askDataSourceForPageAtIndex:(NSInteger)index
 {
-    UIView *page = [recycledPages_ anyObject];
-    if (page)
+    UIView *page = nil;
+    
+    if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:controllerForPageAtIndexPath:)])
     {
-        [[page retain] autorelease];
-        [recycledPages_ removeObject:page];
+        UIViewController *controller = [self.punchDataSource
+                                        punchScrollView:self
+                                        controllerForPageAtIndexPath:[self indexPathForIndex:index]];
+        if (![pageController_ containsObject:controller] &&
+            controller != nil)
+        {
+            [pageController_ addObject:controller];
+        }
+        
+        page = controller.view;
+        
     }
+    else if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
+    {
+        page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[self indexPathForIndex:index]];
+    }
+    
     return page;
 }
+
 
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index
 {
@@ -359,11 +401,26 @@
 
 - (void)setPunchDataSource:(id <PunchScrollViewDataSource>)thePunchDataSource
 {
-	punchDataSource_ = thePunchDataSource;
-	if (punchDataSource_ != nil)
-	{
-		[self reloadData];
-	}
+	if (punchDataSource_ != thePunchDataSource)
+    {
+        punchDataSource_ = thePunchDataSource;
+        if (punchDataSource_ != nil)
+        {
+            [self reloadData];
+        }
+    }
+}
+
+- (void)setPunchDelegate:(id<PunchScrollViewDelegate>)punchDelegate
+{
+    if (punchDelegate_ != punchDelegate)
+    {
+        punchDelegate_ = punchDelegate;
+        if (punchDelegate_ != nil)
+        {
+            [self reloadData];
+        }
+    }
 }
 
 
@@ -537,11 +594,11 @@
         return originalPageSizeWithPadding_;
     }
     
-    UIView *page = nil;
+    
     CGSize size = CGSizeZero;
-    if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
+    UIView *page = [self askDataSourceForPageAtIndex:0];
+    if (page != nil)
     {
-        page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[indexPaths_ objectAtIndex:0]];
         size = page.bounds.size;
     }
     

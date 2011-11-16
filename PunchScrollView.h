@@ -23,9 +23,11 @@ typedef enum {
 	
 	id <PunchScrollViewDataSource> punchDataSource_;
 	id <PunchScrollViewDelegate> punchDelegate_;
-	
+
 	NSMutableSet                    *recycledPages_;
     NSMutableSet                    *visiblePages_;
+    NSMutableArray                  *pageController_;
+    
 	NSInteger                       currentPageIndex_;
 	NSMutableArray                  *indexPaths_;
 	CGFloat                         oldWidth_;
@@ -39,14 +41,15 @@ typedef enum {
 
 @property (nonatomic, assign) id <PunchScrollViewDataSource> punchDataSource;                  // Set the DataSource for the Scroll Suite
 @property (nonatomic, assign) id <PunchScrollViewDelegate> punchDelegate;                      // set the Delegate for the Scroll Suite
-@property (nonatomic, assign) CGFloat             pagePadding;                                 // Set the padding between pages  . Default is 10pt
+@property (nonatomic, assign) CGFloat             pagePadding;                                 // Set the padding between pages. Default is 10pt
 @property (nonatomic, assign) PunchScrollViewDirection direction;                              // Set a Vertical or Horizontal Direction of the scrolling
 
-@property (nonatomic, retain, getter=getCurrentPage) UIView *currentPage;                      //  Get the current visible Page
-@property (nonatomic, retain, getter=getFirstPage) UIView *firstPage;                          //  Get the first Page
-@property (nonatomic, retain, getter=getLastPage) UIView *lastPage;                            //  Get the last Page
-@property (nonatomic, retain, getter=getCurrentIndexPath) NSIndexPath *currentIndexPath;       //  Get the current visible indexPath
-@property (nonatomic, retain, getter=getLastIndexPath) NSIndexPath *lastIndexPath;             //  Get the last indexPath of the Scroll Suite
+@property (nonatomic, readonly) UIView *currentPage;                                            //  Get the current visible Page
+@property (nonatomic, readonly) UIView *firstPage;                                              //  Get the first Page
+@property (nonatomic, readonly) UIView *lastPage;                                               //  Get the last Page
+@property (nonatomic, readonly) NSIndexPath *currentIndexPath;                                  //  Get the current visible indexPath
+@property (nonatomic, readonly) NSIndexPath *lastIndexPath;                                     //  Get the last indexPath of the Scroll Suite
+@property (nonatomic, readonly) NSArray *pageController;                                        //  Get all Page Controller if given  
 
 
 
@@ -119,12 +122,12 @@ typedef enum {
 
 - (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section;
 
-- (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath;
-
-
 @optional
 
-- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView; // Default is 1 if not implemented
+- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView;        // Default is 1 if not implemented
 
+- (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath;
+
+- (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
 
 @end
