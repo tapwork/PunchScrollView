@@ -594,6 +594,13 @@
         return originalPageSizeWithPadding_;
     }
     
+    if ([indexPaths_ count] == 0)
+    {
+        originalPageSizeWithPadding_ = CGSizeZero;      
+        
+        
+        return originalPageSizeWithPadding_;
+    }
     
     CGSize size = CGSizeZero;
     UIView *page = [self askDataSourceForPageAtIndex:0];
