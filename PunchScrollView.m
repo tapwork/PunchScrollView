@@ -19,7 +19,7 @@
 - (void)updateFrameForVisiblePages;
 - (void)updateContentSize;
 - (BOOL)didOrientationChange;
-- (void)renderPages;
+- (void)loadPages;
 - (void)pageIndexChanged;
 - (void)setIndexPaths;
 - (NSUInteger)sectionCount;
@@ -257,8 +257,10 @@
         [self setContentOffset:CGPointMake(0, self.originalPageSizeWithPadding.height*currentPageIndex_) animated:NO];
     }
     
-  //  [self renderPages];
-    [self performSelector:@selector(renderPages) withObject:nil afterDelay:0.01];
+    
+    // load the views in the next runloop
+    [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.0];
+
 }
 
 
@@ -286,9 +288,10 @@
 	}
 }
 
-- (void)renderPages 
+- (void)loadPages 
 {
-    if ([self pagesCount]  == 0)
+    if ([self pagesCount]  == 0 ||
+        (self.punchDataSource == nil))
     {
         
         // do not render the pages if there is not at least one page
@@ -354,8 +357,6 @@
 			}
 			
         }
-		
-		
     }    
 }
 
@@ -411,18 +412,6 @@
     }
 }
 
-- (void)setPunchDelegate:(id<PunchScrollViewDelegate>)punchDelegate
-{
-    if (punchDelegate_ != punchDelegate)
-    {
-        punchDelegate_ = punchDelegate;
-        if (punchDelegate_ != nil)
-        {
-            [self reloadData];
-        }
-    }
-}
-
 
 
 #pragma mark -
@@ -431,7 +420,7 @@
 
 - (void)scrollViewDidScroll:(PunchScrollView *)scrollView
 {
-	[self renderPages];
+	[self loadPages];
     [self pageIndexChanged];
 }
 
