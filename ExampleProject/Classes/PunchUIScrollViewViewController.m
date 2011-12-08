@@ -22,8 +22,8 @@
     [super viewDidLoad];
 	
 	scrollView_ = [[PunchScrollView alloc] init];
+    scrollView_.punchDelegate	= self;
 	scrollView_.punchDataSource	= self;
-	scrollView_.punchDelegate	= self;
 	[self.view addSubview:scrollView_];
 	
 	UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
