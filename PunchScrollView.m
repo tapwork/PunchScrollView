@@ -301,19 +301,19 @@
     
     // Calculate which pages are visible
     CGRect visibleBounds = self.bounds;
-    int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds))-1;
+    int firstNeededPageIndex = (floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds)))-1;
     int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width);
       
     if (direction_ == PunchScrollViewDirectionVertical)
     {
-        firstNeededPageIndex = floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds))-1;
+        firstNeededPageIndex = (floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds)))-1;
         lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height);
         
     }
     
     firstNeededPageIndex = MAX(firstNeededPageIndex, 0);
     lastNeededPageIndex  = MIN(lastNeededPageIndex, [self pagesCount] - 1);
-	NSLog(@"firstNeededPageIndex %d",firstNeededPageIndex);
+	
     // Recycle no-longer-visible pages 
     for (UIView *page in visiblePages_)
     {
