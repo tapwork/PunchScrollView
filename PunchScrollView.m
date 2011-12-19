@@ -300,7 +300,7 @@
     }
     
     int lazyOfLoadingPages = 1;
-    if ([self.delegate respondsToSelector:@selector(numberOfLazyLoadingPages)])
+    if ([self.punchDataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
     {
         lazyOfLoadingPages = [self.punchDataSource numberOfLazyLoadingPages];
     }
