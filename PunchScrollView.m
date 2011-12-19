@@ -299,15 +299,21 @@
         return;
     }
     
+    int lazyOfLoadingPages = 1;
+    if ([self.delegate respondsToSelector:@selector(numberOfLazyLoadingPages)])
+    {
+        lazyOfLoadingPages = [self.punchDataSource numberOfLazyLoadingPages];
+    }
+    
     // Calculate which pages are visible
     CGRect visibleBounds = self.bounds;
-    int firstNeededPageIndex = (floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds)))-1;
-    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width);
+    int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds)) - lazyOfLoadingPages;
+    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width)+(lazyOfLoadingPages-1);
       
     if (direction_ == PunchScrollViewDirectionVertical)
     {
-        firstNeededPageIndex = (floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds)))-1;
-        lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height);
+        firstNeededPageIndex = floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds)) - lazyOfLoadingPages;
+        lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height)+(lazyOfLoadingPages-1);
         
     }
     
