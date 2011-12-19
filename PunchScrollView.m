@@ -299,7 +299,7 @@
         return;
     }
     
-    int lazyOfLoadingPages = 1;
+    int lazyOfLoadingPages = 0;
     if ([self.punchDataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
     {
         lazyOfLoadingPages = [self.punchDataSource numberOfLazyLoadingPages];
@@ -307,18 +307,17 @@
     
     // Calculate which pages are visible
     CGRect visibleBounds = self.bounds;
-    int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds)) - lazyOfLoadingPages;
-    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width)+(lazyOfLoadingPages-1);
+    int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
+    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width);
       
     if (direction_ == PunchScrollViewDirectionVertical)
     {
-        firstNeededPageIndex = floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds)) - lazyOfLoadingPages;
-        lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height)+(lazyOfLoadingPages-1);
-        
+        firstNeededPageIndex = floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds));
+        lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height);
     }
     
-    firstNeededPageIndex = MAX(firstNeededPageIndex, 0);
-    lastNeededPageIndex  = MIN(lastNeededPageIndex, [self pagesCount] - 1);
+    firstNeededPageIndex = MAX(firstNeededPageIndex-lazyOfLoadingPages, 0);
+    lastNeededPageIndex  = MIN(lastNeededPageIndex+lazyOfLoadingPages, [self pagesCount] - 1);
 	
     // Recycle no-longer-visible pages 
     for (UIView *page in visiblePages_)
