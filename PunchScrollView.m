@@ -301,13 +301,13 @@
     
     // Calculate which pages are visible
     CGRect visibleBounds = self.bounds;
-    int firstNeededPageIndex = (floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds)))-1;
-    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width);
+    int firstNeededPageIndex = (floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds)))-5;
+    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.originalPageSizeWithPadding.width)+5;
       
     if (direction_ == PunchScrollViewDirectionVertical)
     {
-        firstNeededPageIndex = (floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds)))-1;
-        lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height);
+        firstNeededPageIndex = (floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds)))-5;
+        lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.originalPageSizeWithPadding.height)+5;
         
     }
     
