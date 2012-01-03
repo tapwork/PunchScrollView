@@ -59,7 +59,7 @@
         self.bouncesZoom = YES;
         self.decelerationRate = UIScrollViewDecelerationRateFast;
 		self.delegate = self;  
-		
+		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		self.pagingEnabled = YES;
 		self.showsVerticalScrollIndicator = NO;
 		self.showsHorizontalScrollIndicator = NO;
@@ -271,10 +271,13 @@
 {
 	[super layoutSubviews];
 	
+    originalPageSizeWithPadding_ = CGSizeZero;
+    
     [self updateContentSize];
    
 	if ([self didOrientationChange])
 	{
+        
 		if (direction_ == PunchScrollViewDirectionHorizontal)
         {
             self.contentOffset = CGPointMake(self.originalPageSizeWithPadding.width*currentPageIndex_, 0);
@@ -583,27 +586,26 @@
 
 - (CGSize)originalPageSizeWithPadding
 {
-    if (!CGSizeEqualToSize(originalPageSizeWithPadding_,
-                          CGSizeZero))
-    {
-        return originalPageSizeWithPadding_;
-    }
-    
+   
     if ([indexPaths_ count] == 0)
     {
-        originalPageSizeWithPadding_ = CGSizeZero;      
-        
+             
+        originalPageSizeWithPadding_ = CGSizeZero; 
         
         return originalPageSizeWithPadding_;
     }
     
-    CGSize size = CGSizeZero;
-    UIView *page = [self askDataSourceForPageAtIndex:0];
-    if (page != nil)
+    CGSize size = originalPageSizeWithPadding_;
+    if (CGSizeEqualToSize(size,CGSizeZero))
     {
-        size = page.bounds.size;
+        UIView *page = [self askDataSourceForPageAtIndex:0];
+        if (page != nil)
+        {
+            size = page.bounds.size;
+        }
     }
     
+
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         size = CGSizeMake(size.width+(2*self.pagePadding),size.height);
@@ -612,7 +614,7 @@
     {
         size = CGSizeMake(size.width,size.height+(2*self.pagePadding));
     }
-    
+        
     originalPageSizeWithPadding_ = size;
     
     return size;
