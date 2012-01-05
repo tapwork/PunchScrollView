@@ -51,8 +51,8 @@
 {
     if ((self = [super initWithFrame:aFrame]))
 	{
-		originalFrame_ = aFrame;
-        originalPageSizeWithPadding_ = CGSizeZero;
+		initialFrame_ = aFrame;
+        pageSizeWithPadding_ = CGSizeZero;
         
         self.pagePadding = 10;
         
@@ -242,11 +242,11 @@
     [self setIndexPaths];
     
     currentPageIndex_ = 0;
-    originalPageSizeWithPadding_ = CGSizeZero;
+    pageSizeWithPadding_ = CGSizeZero;
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
-    [self adjustSelfFrame:originalFrame_];
+ 
     [self updateFrameForVisiblePages];
     [self updateContentSize];
     
@@ -277,10 +277,10 @@
     BOOL orientationHasChanged = NO;
 	if (oldWidth_ != self.frame.size.width)
 	{
-        originalFrame_.size.width = originalFrame_.size.height;
-        originalFrame_.size.height = originalFrame_.size.width;
+        initialFrame_.size.width = initialFrame_.size.height;
+        initialFrame_.size.height = initialFrame_.size.width;
         
-        originalPageSizeWithPadding_ = CGSizeZero;
+        pageSizeWithPadding_ = CGSizeZero;
         
 		orientationHasChanged = YES;
 	}
@@ -516,29 +516,26 @@
     {
         pagePadding_ = pagePadding;
         
+        CGRect aFrame = initialFrame_;
+        
+        if (direction_ == PunchScrollViewDirectionHorizontal)
+        {
+            aFrame.origin.x -= self.pagePadding;
+            aFrame.size.width += (2 * self.pagePadding);
+        }
+        else if (direction_ == PunchScrollViewDirectionVertical)
+        {
+            aFrame.origin.y -= self.pagePadding;
+            aFrame.size.height += (2 * self.pagePadding);
+        }
+        
+        self.frame = aFrame;
+        
         [self reloadData];
     }
 }
 
 
-- (void)adjustSelfFrame:(CGRect)aFrame
-{
-    if (direction_ == PunchScrollViewDirectionHorizontal)
-    {
-        aFrame.origin.x -= self.pagePadding;
-        aFrame.size.width += (2 * self.pagePadding);
-    }
-    else if (direction_ == PunchScrollViewDirectionVertical)
-    {
-        aFrame.origin.y -= self.pagePadding;
-        aFrame.size.height += (2 * self.pagePadding);
-    }
-
-    
-    self.frame = aFrame;
-    
- 
-}
 
 - (void)updateContentSize
 {
@@ -612,12 +609,12 @@
     if ([indexPaths_ count] == 0)
     {
              
-        originalPageSizeWithPadding_ = CGSizeZero; 
+        pageSizeWithPadding_ = CGSizeZero; 
         
-        return originalPageSizeWithPadding_;
+        return pageSizeWithPadding_;
     }
     
-    CGSize size = originalPageSizeWithPadding_;
+    CGSize size = pageSizeWithPadding_;
     if (CGSizeEqualToSize(size,CGSizeZero))
     {
         UIView *page = [self askDataSourceForPageAtIndex:0];
@@ -637,7 +634,7 @@
         size = CGSizeMake(size.width,size.height+(2*self.pagePadding));
     }
         
-    originalPageSizeWithPadding_ = size;
+    pageSizeWithPadding_ = size;
     
     return size;
 }

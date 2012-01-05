@@ -32,8 +32,8 @@ typedef enum {
 	NSMutableArray                  *indexPaths_;
 	CGFloat                         oldWidth_;
     CGFloat                         pagePadding_;
-    CGRect                          originalFrame_;
-    CGSize                          originalPageSizeWithPadding_;
+    CGRect                          initialFrame_;
+    CGSize                          pageSizeWithPadding_;
     PunchScrollViewDirection        direction_;
 }
 
@@ -87,11 +87,6 @@ typedef enum {
 - (void)scrollToNextPage:(BOOL)animated;
 - (void)scrollToPreviousPage:(BOOL)animated;
 
-/*
- * Change the frame of the scrollview
- *
- */
-- (void)adjustSelfFrame:(CGRect)aFrame;
 
 @end
 
