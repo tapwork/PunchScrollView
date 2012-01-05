@@ -59,8 +59,7 @@
         self.bouncesZoom = YES;
         self.decelerationRate = UIScrollViewDecelerationRateFast;
 		self.delegate = self;  
-        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
-		self.pagingEnabled = YES;
+ 		self.pagingEnabled = YES;
 		self.showsVerticalScrollIndicator = NO;
 		self.showsHorizontalScrollIndicator = NO;
 		self.directionalLockEnabled = YES;
