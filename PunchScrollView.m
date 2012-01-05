@@ -18,13 +18,13 @@
 - (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size;
 - (void)updateFrameForVisiblePages;
 - (void)updateContentSize;
-- (BOOL)didOrientationChange;
 - (void)loadPages;
 - (void)pageIndexChanged;
 - (void)setIndexPaths;
 - (NSUInteger)sectionCount;
 - (NSUInteger)pagesCount;
 - (NSIndexPath*)indexPathForIndex:(NSInteger)index;
+
 
 @end
 
@@ -51,7 +51,7 @@
 {
     if ((self = [super initWithFrame:aFrame]))
 	{
-		originalSelfFrame_ = aFrame;
+		originalFrame_ = aFrame;
         originalPageSizeWithPadding_ = CGSizeZero;
         
         self.pagePadding = 10;
@@ -59,7 +59,7 @@
         self.bouncesZoom = YES;
         self.decelerationRate = UIScrollViewDecelerationRateFast;
 		self.delegate = self;  
-		self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+        self.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 		self.pagingEnabled = YES;
 		self.showsVerticalScrollIndicator = NO;
 		self.showsHorizontalScrollIndicator = NO;
@@ -240,12 +240,14 @@
 {
     
     [self setIndexPaths];
+    
     currentPageIndex_ = 0;
     originalPageSizeWithPadding_ = CGSizeZero;
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
-    [self adjustSelfFrame:originalSelfFrame_];
+    [self adjustSelfFrame:originalFrame_];
+    [self updateFrameForVisiblePages];
     [self updateContentSize];
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
@@ -264,20 +266,31 @@
 }
 
 
+
 #pragma mark -
 #pragma mark -
 #pragma mark Tiling and page configuration
 - (void)layoutSubviews
 {
 	[super layoutSubviews];
-	
-    originalPageSizeWithPadding_ = CGSizeZero;
     
+    BOOL orientationHasChanged = NO;
+	if (oldWidth_ != self.frame.size.width)
+	{
+        originalFrame_.size.width = originalFrame_.size.height;
+        originalFrame_.size.height = originalFrame_.size.width;
+        
+        originalPageSizeWithPadding_ = CGSizeZero;
+        
+		orientationHasChanged = YES;
+	}
+	
+	oldWidth_ = self.frame.size.width;
+	
     [self updateContentSize];
    
-	if ([self didOrientationChange])
+	if (orientationHasChanged == YES)
 	{
-        
 		if (direction_ == PunchScrollViewDirectionHorizontal)
         {
             self.contentOffset = CGPointMake(self.originalPageSizeWithPadding.width*currentPageIndex_, 0);
@@ -426,21 +439,42 @@
 #pragma mark ScrollView delegate methods
 
 
+
 - (void)scrollViewDidScroll:(PunchScrollView *)scrollView
 {
-	[self loadPages];
-    [self pageIndexChanged];
+    //
+    // Check if the page really has changed
+    //
+    BOOL pageChanged = NO;
+    if (direction_ == PunchScrollViewDirectionHorizontal)
+    {
+        if ( (int)(self.contentOffset.x) % (int)(self.contentSize.width) == 0)
+        {
+            pageChanged = YES;
+        }
+	}
+    else if (direction_ == PunchScrollViewDirectionVertical)
+    {
+        if ( (int)(self.contentOffset.y) % (int)(self.contentSize.height) == 0)
+        {
+            pageChanged = YES;
+        }
+    }
+    
+    if (pageChanged == YES)
+    {
+        [self loadPages];
+        [self pageIndexChanged];
+    }
 }
 
 - (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView 
 {
-	
     [self pageIndexChanged];
 }
 
 - (void)scrollViewDidEndScrollingAnimation:(PunchScrollView *)scrollView
 {
-	
 	[self pageIndexChanged];
 }
 
@@ -503,7 +537,7 @@
     
     self.frame = aFrame;
     
-    [self updateFrameForVisiblePages];
+ 
 }
 
 - (void)updateContentSize
@@ -561,19 +595,7 @@
     return pageFrame;
 }
 
-- (BOOL)didOrientationChange
-{
-	BOOL hasChanged = NO;
-	if (oldWidth_ != self.frame.size.width)
-	{
-		
-		hasChanged = YES;
-	}
-	
-	oldWidth_ = self.frame.size.width;
-	
-	return hasChanged;
-}
+
 
 - (void)setDirection:(PunchScrollViewDirection)direction
 {
