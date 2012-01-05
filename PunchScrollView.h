@@ -32,7 +32,6 @@ typedef enum {
 	NSMutableArray                  *indexPaths_;
 	CGFloat                         oldWidth_;
     CGFloat                         pagePadding_;
-    CGRect                          initialFrame_;
     CGSize                          pageSizeWithPadding_;
     PunchScrollViewDirection        direction_;
 }
