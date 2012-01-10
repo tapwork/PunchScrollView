@@ -110,7 +110,7 @@
 {
     NSArray *storedPages = [NSArray arrayWithArray:[recycledPages_ allObjects]];
     storedPages = [storedPages arrayByAddingObjectsFromArray:[visiblePages_ allObjects]];
-
+    
     for (UIView *thePage in storedPages)
 	{
 		if ((NSNull*)thePage == [NSNull null]) break;
@@ -244,7 +244,7 @@
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
- 
+    
     [self updateFrameForVisiblePages];
     [self updateContentSize];
     
@@ -260,7 +260,7 @@
     
     // load the views in the next runloop
     [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.0];
-
+    
 }
 
 
@@ -283,7 +283,7 @@
 	oldWidth_ = self.frame.size.width;
 	
     [self updateContentSize];
-   
+    
 	if (orientationHasChanged == YES)
 	{
 		if (direction_ == PunchScrollViewDirectionHorizontal)
@@ -320,7 +320,7 @@
     CGRect visibleBounds = self.bounds;
     int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
     int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.pageSizeWithPadding.width);
-      
+    
     if (direction_ == PunchScrollViewDirectionVertical)
     {
         firstNeededPageIndex = floorf(CGRectGetMinY(visibleBounds) / CGRectGetHeight(visibleBounds));
@@ -443,6 +443,7 @@
     BOOL pageChanged = NO;
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
+        NSLog(@"offset %d page width %d",(int)(self.contentOffset.x),(int)(self.pageSizeWithPadding.width) );
         if ( (int)(self.contentOffset.x) % (int)(self.pageSizeWithPadding.width) == 0)
         {
             pageChanged = YES;
@@ -456,11 +457,13 @@
         }
     }
     
+    [self loadPages];
+    
     if (pageChanged == YES)
     {
-        [self loadPages];
         [self pageIndexChanged];
     }
+    
 }
 
 - (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView 
@@ -510,7 +513,7 @@
     if (pagePadding_ != pagePadding)
     {
         pagePadding_ = pagePadding;
-                
+        
         // looks strange...but it changes the current frame fitting to the padding
         [self setFrame:self.frame]; 
         
@@ -554,8 +557,8 @@
                                   self.bounds.origin.y,
                                   size.width,
                                   size.height);
-
-           
+    
+    
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         pageFrame.size.width += (2 * self.pagePadding);
@@ -588,10 +591,10 @@
 
 - (CGSize)pageSizeWithPadding
 {
-   
+    
     if ([indexPaths_ count] == 0)
     {
-             
+        
         pageSizeWithPadding_ = CGSizeZero; 
         
         return pageSizeWithPadding_;
@@ -604,22 +607,22 @@
         if (page != nil)
         {
             size = page.bounds.size;
+            
+            if (direction_ == PunchScrollViewDirectionHorizontal)
+            {
+                size = CGSizeMake(size.width+(2*self.pagePadding),size.height);
+            }
+            else if (direction_ == PunchScrollViewDirectionVertical)
+            {
+                size = CGSizeMake(size.width,size.height+(2*self.pagePadding));
+            }
+            
+            pageSizeWithPadding_ = size;
         }
     }
     
-
-    if (direction_ == PunchScrollViewDirectionHorizontal)
-    {
-        size = CGSizeMake(size.width+(2*self.pagePadding),size.height);
-    }
-    else if (direction_ == PunchScrollViewDirectionVertical)
-    {
-        size = CGSizeMake(size.width,size.height+(2*self.pagePadding));
-    }
-        
-    pageSizeWithPadding_ = size;
     
-    return size;
+    return pageSizeWithPadding_;
 }
 
 - (void)setFrame:(CGRect)frame
