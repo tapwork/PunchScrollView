@@ -443,14 +443,14 @@
     BOOL pageChanged = NO;
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
-        if ( (int)(self.contentOffset.x) % (int)(self.contentSize.width) == 0)
+        if ( (int)(self.contentOffset.x) % (int)(self.pageSizeWithPadding.width) == 0)
         {
             pageChanged = YES;
         }
 	}
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        if ( (int)(self.contentOffset.y) % (int)(self.contentSize.height) == 0)
+        if ( (int)(self.contentOffset.y) % (int)(self.pageSizeWithPadding.height) == 0)
         {
             pageChanged = YES;
         }
