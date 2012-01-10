@@ -13,6 +13,7 @@
 @interface PunchScrollView (Private)
 
 @property (nonatomic, readonly) CGSize pageSizeWithPadding;
+@property (nonatomic, readonly) NSArray *storedPages;
 
 - (UIView*)askDataSourceForPageAtIndex:(NSInteger)index;
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index;
@@ -106,12 +107,17 @@
     return page;
 }
 
-- (UIView*)pageForIndexPath:(NSIndexPath*)indexPath
+- (NSArray*)storedPages
 {
     NSArray *storedPages = [NSArray arrayWithArray:[recycledPages_ allObjects]];
-    storedPages = [storedPages arrayByAddingObjectsFromArray:[visiblePages_ allObjects]];
     
-    for (UIView *thePage in storedPages)
+    return [storedPages arrayByAddingObjectsFromArray:[visiblePages_ allObjects]];
+}
+
+- (UIView*)pageForIndexPath:(NSIndexPath*)indexPath
+{
+    
+    for (UIView *thePage in self.storedPages)
 	{
 		if ((NSNull*)thePage == [NSNull null]) break;
 		NSIndexPath *storedIndexPath = [self indexPathForIndex:thePage.tag];
@@ -244,7 +250,6 @@
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
-    
     [self updateFrameForVisiblePages];
     [self updateContentSize];
     
@@ -286,6 +291,7 @@
     
 	if (orientationHasChanged == YES)
 	{
+        
 		if (direction_ == PunchScrollViewDirectionHorizontal)
         {
             self.contentOffset = CGPointMake(self.pageSizeWithPadding.width*currentPageIndex_, 0);
@@ -293,6 +299,13 @@
         else if (direction_ == PunchScrollViewDirectionVertical)
         {
             self.contentOffset = CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_);
+        }
+        //
+        // call layoutsubviews for available pages
+        //
+        for (UIView *page in self.storedPages)
+        {
+            [page layoutSubviews];
         }
         
 		[self updateFrameForVisiblePages];
@@ -443,7 +456,6 @@
     BOOL pageChanged = NO;
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
-        NSLog(@"offset %d page width %d",(int)(self.contentOffset.x),(int)(self.pageSizeWithPadding.width) );
         if ( (int)(self.contentOffset.x) % (int)(self.pageSizeWithPadding.width) == 0)
         {
             pageChanged = YES;
@@ -514,8 +526,19 @@
     {
         pagePadding_ = pagePadding;
         
-        // looks strange...but it changes the current frame fitting to the padding
-        [self setFrame:self.frame]; 
+        CGRect frame = self.frame;
+        if (direction_ == PunchScrollViewDirectionHorizontal)
+        {
+            frame.origin.x -= self.pagePadding;
+            frame.size.width += (2 * self.pagePadding);
+        }
+        else if (direction_ == PunchScrollViewDirectionVertical)
+        {
+            frame.origin.y -= self.pagePadding;
+            frame.size.height += (2 * self.pagePadding);
+        }
+        
+        [super setFrame:frame];
         
         [self reloadData];
     }
@@ -561,17 +584,15 @@
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
-        pageFrame.size.width += (2 * self.pagePadding);
+        pageFrame.size.width = self.pageSizeWithPadding.width;
         pageFrame.origin.x = (pageFrame.size.width * index) + self.pagePadding;
         pageFrame.origin.y = 0;
-        pageFrame.size.width -= (2 * self.pagePadding);
     }
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        pageFrame.size.height += (2 * self.pagePadding);
+        pageFrame.size.height = self.pageSizeWithPadding.height;
         pageFrame.origin.x = 0;
         pageFrame.origin.y = (pageFrame.size.height * index) + self.pagePadding;
-        pageFrame.size.height -= (2 * self.pagePadding);
     }
     
     
@@ -625,21 +646,7 @@
     return pageSizeWithPadding_;
 }
 
-- (void)setFrame:(CGRect)frame
-{
-    if (direction_ == PunchScrollViewDirectionHorizontal)
-    {
-        frame.origin.x -= self.pagePadding;
-        frame.size.width += (2 * self.pagePadding);
-    }
-    else if (direction_ == PunchScrollViewDirectionVertical)
-    {
-        frame.origin.y -= self.pagePadding;
-        frame.size.height += (2 * self.pagePadding);
-    }
-    
-    [super setFrame:frame];
-}
+
 
 
 #pragma mark -
