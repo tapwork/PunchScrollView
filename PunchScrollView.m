@@ -247,6 +247,13 @@
     
     currentPageIndex_ = 0;
     pageSizeWithPadding_ = CGSizeZero;
+    
+    for (UIView *view in self.storedPages)
+    {
+        [view removeFromSuperview];
+        view = nil;
+    }
+    
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
@@ -456,14 +463,14 @@
     BOOL pageChanged = NO;
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
-        if ( (int)(self.contentOffset.x) % (int)(self.pageSizeWithPadding.width) == 0)
+        if ( (int)(self.contentOffset.x) % MAX((int)(self.pageSizeWithPadding.width),1) == 0)
         {
             pageChanged = YES;
         }
 	}
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        if ( (int)(self.contentOffset.y) % (int)(self.pageSizeWithPadding.height) == 0)
+        if ( (int)(self.contentOffset.y) % MAX((int)(self.pageSizeWithPadding.height),1) == 0)
         {
             pageChanged = YES;
         }
