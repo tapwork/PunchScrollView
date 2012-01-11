@@ -242,6 +242,7 @@
 
 - (void)reloadData
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     [self setIndexPaths];
     
@@ -316,9 +317,12 @@
         }
         
 		//[self updateFrameForAvailablePages];
+        [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                                 selector:@selector(updateFrameForAvailablePages)
+                                                   object:nil];
         [self performSelector:@selector(updateFrameForAvailablePages)
                    withObject:nil
-                   afterDelay:0.1];
+                   afterDelay:0.3];
 	}
 }
 
