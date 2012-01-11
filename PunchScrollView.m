@@ -315,7 +315,10 @@
             [page layoutSubviews];
         }
         
-		[self updateFrameForAvailablePages];
+		//[self updateFrameForAvailablePages];
+        [self performSelector:@selector(updateFrameForAvailablePages)
+                   withObject:nil
+                   afterDelay:0.1];
 	}
 }
 
