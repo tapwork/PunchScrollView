@@ -24,6 +24,7 @@
 	scrollView_ = [[PunchScrollView alloc] init];
     scrollView_.punchDelegate	= self;
 	scrollView_.punchDataSource	= self;
+    scrollView_.pagePadding = 5;
 	[self.view addSubview:scrollView_];
 	
 	UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
