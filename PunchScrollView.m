@@ -242,6 +242,7 @@
 
 - (void)reloadData
 {
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     [self setIndexPaths];
     
