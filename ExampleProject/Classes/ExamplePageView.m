@@ -20,14 +20,22 @@
         // Initialization code.
 		self.backgroundColor = [UIColor whiteColor];
 		
-		titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0, (frame.size.height/2)-25, frame.size.width, 50)];
-		titleLabel.backgroundColor = [UIColor clearColor];
+		titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
+                                                               (frame.size.height/2)-25,
+                                                               frame.size.width,
+                                                               50)];
+		titleLabel.backgroundColor = [UIColor redColor];
+        titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+                                        UIViewAutoresizingFlexibleTopMargin |
+                                        UIViewAutoresizingFlexibleBottomMargin;
         titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
 		titleLabel.textAlignment = UITextAlignmentCenter;
 		[self addSubview:titleLabel];
     }
     return self;
 }
+
+
 
 /*
 // Only override drawRect: if you perform custom drawing.

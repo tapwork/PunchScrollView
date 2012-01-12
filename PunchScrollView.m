@@ -103,6 +103,7 @@
     {
         [[page retain] autorelease];
         [recycledPages_ removeObject:page];
+        [page removeFromSuperview];
     }
     return page;
 }
@@ -242,7 +243,9 @@
 
 - (void)reloadData
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                             selector:@selector(loadPages)
+                                               object:nil];
     
     [self setIndexPaths];
     
@@ -263,11 +266,13 @@
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
-        [self setContentOffset:CGPointMake(self.pageSizeWithPadding.width*currentPageIndex_, 0) animated:NO];
+        [self setContentOffset:CGPointMake(self.pageSizeWithPadding.width*currentPageIndex_, 0)
+                      animated:NO];
     }
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        [self setContentOffset:CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_) animated:NO];
+        [self setContentOffset:CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_)
+                      animated:NO];
     }
     
     
@@ -291,6 +296,7 @@
         pageSizeWithPadding_ = CGSizeZero;
         
 		orientationHasChanged = YES;
+        
 	}
 	
 	oldWidth_ = self.frame.size.width;
@@ -302,25 +308,17 @@
         
 		if (direction_ == PunchScrollViewDirectionHorizontal)
         {
-            self.contentOffset = CGPointMake(self.pageSizeWithPadding.width*currentPageIndex_, 0);
+            [self setContentOffset:CGPointMake(self.pageSizeWithPadding.width*currentPageIndex_, 0)
+                          animated:NO];
         }
         else if (direction_ == PunchScrollViewDirectionVertical)
         {
-            self.contentOffset = CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_);
-        }
-        //
-        // call layoutsubviews for available pages
-        //
-        for (UIView *page in self.storedPages)
-        {
-            [page layoutSubviews];
+            [self setContentOffset:CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_)
+                          animated:NO];
         }
         
-		//[self updateFrameForAvailablePages];
-        [self performSelector:@selector(updateFrameForAvailablePages)
-                   withObject:nil
-                   afterDelay:0.1];
-	}
+        [self updateFrameForAvailablePages];
+    }
 }
 
 - (void)loadPages 
@@ -351,7 +349,7 @@
         lastNeededPageIndex  = ceil(CGRectGetMaxY(visibleBounds) / self.pageSizeWithPadding.height);
     }
     
-    firstNeededPageIndex = MAX(firstNeededPageIndex-lazyOfLoadingPages, 0);
+    firstNeededPageIndex = MAX(firstNeededPageIndex-lazyOfLoadingPages-1, 0);
     lastNeededPageIndex  = MIN(lastNeededPageIndex+lazyOfLoadingPages, [self pagesCount] - 1);
 	
     // Recycle no-longer-visible pages 
@@ -369,7 +367,6 @@
                 vc.view = nil;
             }
             [recycledPages_ addObject:page];
-            [page removeFromSuperview];
         }
     }
     [visiblePages_ minusSet:recycledPages_];
@@ -480,13 +477,17 @@
         }
     }
     
-    [self loadPages];
     
     if (pageChanged == YES)
     {
         [self pageIndexChanged];
     }
     
+}
+
+- (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
+{
+    [self loadPages];
 }
 
 - (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView 
@@ -502,6 +503,8 @@
 - (void)pageIndexChanged
 {
     NSInteger newPageIndex = NSNotFound;
+    
+    [self loadPages];
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
@@ -592,7 +595,7 @@
                                   size.width,
                                   size.height);
     
-    
+       
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         pageFrame.origin.x = (self.pageSizeWithPadding.width * index) + self.pagePadding;
@@ -633,7 +636,11 @@
     CGSize size = pageSizeWithPadding_;
     if (CGSizeEqualToSize(size,CGSizeZero))
     {
-        UIView *page = [self askDataSourceForPageAtIndex:0];
+        UIView *page = [self.storedPages lastObject];
+        if (page == nil)
+        {
+            page = [self askDataSourceForPageAtIndex:0];
+        }
         if (page != nil)
         {
             size = page.bounds.size;
