@@ -243,9 +243,7 @@
 
 - (void)reloadData
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                             selector:@selector(loadPages)
-                                               object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     [self setIndexPaths];
     
