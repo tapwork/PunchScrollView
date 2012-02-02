@@ -363,6 +363,7 @@
                 indexToDelete < [pageController_ count])
             {
                 UIViewController *vc = [pageController_ objectAtIndex:indexToDelete];
+                [vc.view removeFromSuperview];
                 [vc viewDidUnload];
                 vc.view = nil;
             }
