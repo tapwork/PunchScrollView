@@ -243,9 +243,9 @@
 
 - (void)reloadData
 {
-//    [NSObject cancelPreviousPerformRequestsWithTarget:self
-//                                             selector:@selector(loadPages)
-//                                               object:nil];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self
+                                             selector:@selector(loadPages)
+                                               object:nil];
     
     [self setIndexPaths];
     
@@ -274,7 +274,6 @@
         [self setContentOffset:CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_)
                       animated:NO];
     }
-    
     
     // load the views in the next runloop
     [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.0];
@@ -371,7 +370,7 @@
         }
     }
     [visiblePages_ minusSet:recycledPages_];
-    
+   
     // add missing pages
     for (int index = firstNeededPageIndex; index <= lastNeededPageIndex; index++) 
     {
@@ -608,6 +607,7 @@
         pageFrame.origin.y = (self.pageSizeWithPadding.height * index) + self.pagePadding;
     }
     
+    XLog(@"frame %@ for view with tag %d",NSStringFromCGRect(pageFrame),index);
     
     return pageFrame;
 }
