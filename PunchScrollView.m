@@ -8,7 +8,6 @@
 //  tapwork.de
 
 #import "PunchScrollView.h"
-#import "TWIssueController.h"
 
 @interface PunchScrollView (Private)
 
@@ -243,13 +242,8 @@
 
 - (void)reloadData
 {
-//    [NSObject cancelPreviousPerformRequestsWithTarget:self
-//                                             selector:@selector(loadPages)
-//                                               object:nil];
-    
     [self setIndexPaths];
     
-    currentPageIndex_ = 0;
     pageSizeWithPadding_ = CGSizeZero;
     
     for (UIView *view in self.storedPages)
@@ -261,7 +255,6 @@
     [visiblePages_ removeAllObjects];
     [recycledPages_ removeAllObjects];
     
-    [self updateFrameForAvailablePages];
     [self updateContentSize];
     
     if (direction_ == PunchScrollViewDirectionHorizontal)
@@ -274,10 +267,8 @@
         [self setContentOffset:CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_)
                       animated:NO];
     }
-    
-    // load the views in the next runloop
-  //  [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.0];
-    [self loadPages];
+    //[self loadPages];
+    [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.1];
 }
 
 
@@ -384,8 +375,8 @@
 			if (nil != page)
 			{
 				page.tag = index;
-				page.frame = [self frameForPageAtIndex:index withSize:page.frame.size]; 
 				[page layoutIfNeeded];
+                page.frame = [self frameForPageAtIndex:index withSize:page.frame.size]; 
 				[self addSubview:page];
 				[visiblePages_ addObject:page];
 				
@@ -610,10 +601,7 @@
         pageFrame.origin.y = (self.pageSizeWithPadding.height * index) + self.pagePadding;
     }
     
-    if ([self.punchDataSource isKindOfClass:[TWIssueController class]])
-    {
-        XLog(@"page frame %@ index %d", NSStringFromCGRect(pageFrame), index);
-    }
+   
     return pageFrame;
 }
 
