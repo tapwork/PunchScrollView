@@ -243,9 +243,9 @@
 
 - (void)reloadData
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                             selector:@selector(loadPages)
-                                               object:nil];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self
+//                                             selector:@selector(loadPages)
+//                                               object:nil];
     
     [self setIndexPaths];
     
@@ -278,7 +278,7 @@
     
     // load the views in the next runloop
     [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.0];
-    
+
 }
 
 
