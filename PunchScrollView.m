@@ -8,7 +8,7 @@
 //  tapwork.de
 
 #import "PunchScrollView.h"
-
+#import "TWIssueController.h"
 
 @interface PunchScrollView (Private)
 
@@ -243,9 +243,9 @@
 
 - (void)reloadData
 {
-    [NSObject cancelPreviousPerformRequestsWithTarget:self
-                                             selector:@selector(loadPages)
-                                               object:nil];
+//    [NSObject cancelPreviousPerformRequestsWithTarget:self
+//                                             selector:@selector(loadPages)
+//                                               object:nil];
     
     [self setIndexPaths];
     
@@ -276,8 +276,8 @@
     }
     
     // load the views in the next runloop
-    [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.0];
-
+  //  [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.0];
+    [self loadPages];
 }
 
 
@@ -318,6 +318,8 @@
         
         [self updateFrameForAvailablePages];
     }
+    
+     
 }
 
 - (void)loadPages 
@@ -350,7 +352,7 @@
     
     firstNeededPageIndex = MAX(firstNeededPageIndex-lazyOfLoadingPages-1, 0);
     lastNeededPageIndex  = MIN(lastNeededPageIndex+lazyOfLoadingPages, [self pagesCount] - 1);
-	
+
     // Recycle no-longer-visible pages 
     for (UIView *page in visiblePages_)
     {
@@ -419,6 +421,7 @@
     {
         page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[self indexPathForIndex:index]];
     }
+    
     
     return page;
 }
@@ -607,8 +610,10 @@
         pageFrame.origin.y = (self.pageSizeWithPadding.height * index) + self.pagePadding;
     }
     
-    XLog(@"frame %@ for view with tag %d",NSStringFromCGRect(pageFrame),index);
-    
+    if ([self.punchDataSource isKindOfClass:[TWIssueController class]])
+    {
+        XLog(@"page frame %@ index %d", NSStringFromCGRect(pageFrame), index);
+    }
     return pageFrame;
 }
 
@@ -690,7 +695,7 @@
 - (void)setIndexPaths
 {
 	[indexPaths_ removeAllObjects];
-    
+   
     for (int section = 0; section < [self sectionCount]; section++)
 	{
 		NSUInteger rowsInSection = 1;
