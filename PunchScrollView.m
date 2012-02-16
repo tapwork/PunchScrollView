@@ -267,8 +267,7 @@
         [self setContentOffset:CGPointMake(0, self.pageSizeWithPadding.height*currentPageIndex_)
                       animated:NO];
     }
-    //[self loadPages];
-    [self performSelector:@selector(loadPages) withObject:nil afterDelay:0.1];
+    [self loadPages];
 }
 
 
