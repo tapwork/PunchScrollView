@@ -30,26 +30,42 @@ typedef enum {
     
 	NSInteger                       currentPageIndex_;
 	NSMutableArray                  *indexPaths_;
-	CGFloat                         oldWidth_;
+	CGFloat                         currentWidth_;
     CGFloat                         pagePadding_;
     CGSize                          pageSizeWithPadding_;
     PunchScrollViewDirection        direction_;
 }
 
 
+// Set the DataSource for the Scroll Suite
+@property (nonatomic, assign) id <PunchScrollViewDataSource> punchDataSource;  
 
-@property (nonatomic, assign) id <PunchScrollViewDataSource> punchDataSource;                  // Set the DataSource for the Scroll Suite
-@property (nonatomic, assign) id <PunchScrollViewDelegate> punchDelegate;                      // set the Delegate for the Scroll Suite
-@property (nonatomic, assign) CGFloat             pagePadding;                                 // Set the padding between pages. Default is 10pt
-@property (nonatomic, assign) PunchScrollViewDirection direction;                              // Set a Vertical or Horizontal Direction of the scrolling
+// set the Delegate for the Scroll Suite
+@property (nonatomic, assign) id <PunchScrollViewDelegate> punchDelegate;
 
-@property (nonatomic, readonly) UIView *currentPage;                                            //  Get the current visible Page
-@property (nonatomic, readonly) UIView *firstPage;                                              //  Get the first Page
-@property (nonatomic, readonly) UIView *lastPage;                                               //  Get the last Page
-@property (nonatomic, readonly) NSIndexPath *currentIndexPath;                                  //  Get the current visible indexPath
-@property (nonatomic, readonly) NSIndexPath *lastIndexPath;                                     //  Get the last indexPath of the Scroll Suite
-@property (nonatomic, readonly) NSArray *pageController;                                        //  Get all Page Controller if given  
+// Set the padding between pages. Default is 10pt
+@property (nonatomic, assign) CGFloat             pagePadding;       
 
+// Set a Vertical or Horizontal Direction of the scrolling
+@property (nonatomic, assign) PunchScrollViewDirection direction;                              
+
+//  Get the current visible Page
+@property (nonatomic, readonly) UIView *currentPage;  
+
+//  Get the first Page
+@property (nonatomic, readonly) UIView *firstPage;    
+
+//  Get the last Page
+@property (nonatomic, readonly) UIView *lastPage;         
+
+//  Get the current visible indexPath
+@property (nonatomic, readonly) NSIndexPath *currentIndexPath;       
+
+//  Get the last indexPath of the Scroll Suite
+@property (nonatomic, readonly) NSIndexPath *lastIndexPath; 
+
+//  Get all Page Controller if given
+@property (nonatomic, readonly) NSArray *pageController;                                          
 
 
 

@@ -9,7 +9,10 @@
 
 #import "PunchScrollView.h"
 
-@interface PunchScrollView (Private)
+@interface PunchScrollView ()
+{
+    BOOL orientationChangeInProcess_;
+}
 
 @property (nonatomic, readonly) CGSize pageSizeWithPadding;
 @property (nonatomic, readonly) NSArray *storedPages;
@@ -65,9 +68,7 @@
 		
 		indexPaths_     = [[NSMutableArray alloc] init];
 		recycledPages_  = [[NSMutableSet alloc] init];
-		visiblePages_   = [[NSMutableSet alloc] init];
-		pageController_ = [[NSMutableArray alloc] init];
-		
+		visiblePages_   = [[NSMutableSet alloc] init];		
 		
     }
     return self;
@@ -279,22 +280,19 @@
 {
 	[super layoutSubviews];
     
-    BOOL orientationHasChanged = NO;
-	if (oldWidth_ != self.frame.size.width)
+    orientationChangeInProcess_ = NO;
+	if (currentWidth_ != self.frame.size.width)
 	{        
         pageSizeWithPadding_ = CGSizeZero;
-        
-		orientationHasChanged = YES;
-        
+		orientationChangeInProcess_ = YES;
 	}
 	
-	oldWidth_ = self.frame.size.width;
+	currentWidth_ = self.frame.size.width;
 	
     [self updateContentSize];
     
-	if (orientationHasChanged == YES)
+	if (orientationChangeInProcess_ == YES)
 	{
-        
 		if (direction_ == PunchScrollViewDirectionHorizontal)
         {
             [self setContentOffset:CGPointMake(self.pageSizeWithPadding.width*currentPageIndex_, 0)
@@ -309,7 +307,7 @@
         [self updateFrameForAvailablePages];
     }
     
-     
+    orientationChangeInProcess_ = NO; 
 }
 
 - (void)loadPages 
@@ -324,6 +322,8 @@
     }
     
     int lazyOfLoadingPages = 0;
+    NSMutableArray *controllerViewsToDelete = [[NSMutableArray alloc] init];
+    
     if ([self.punchDataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
     {
         lazyOfLoadingPages = [self.punchDataSource numberOfLazyLoadingPages];
@@ -350,19 +350,40 @@
         if (indexToDelete < firstNeededPageIndex ||
             indexToDelete > lastNeededPageIndex)
         {
-            if (indexToDelete >= 0 &&
+            //
+            // If we work in controller mode
+            if (pageController_ != nil &&
+                indexToDelete >= 0 &&
                 indexToDelete < [pageController_ count])
             {
                 UIViewController *vc = [pageController_ objectAtIndex:indexToDelete];
-                [vc.view removeFromSuperview];
-                [vc viewDidUnload];
-                vc.view = nil;
+                [controllerViewsToDelete addObject:vc];
             }
-            [recycledPages_ addObject:page];
+            //
+            // if we work in view mode
+            else if (pageController_ == nil)
+            {
+                [recycledPages_ addObject:page];
+            }
+            
         }
     }
+    
     [visiblePages_ minusSet:recycledPages_];
-   
+    
+    //
+    // Force Deletion
+    for (UIViewController *vc in controllerViewsToDelete)
+    {
+        [visiblePages_ removeObject:vc.view];
+        [vc.view removeFromSuperview];
+        [vc viewDidUnload];
+        vc.view = nil;
+    }
+    [controllerViewsToDelete release];
+    
+    
+    //
     // add missing pages
     for (int index = firstNeededPageIndex; index <= lastNeededPageIndex; index++) 
     {
@@ -395,6 +416,11 @@
     
     if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:controllerForPageAtIndexPath:)])
     {
+        if (pageController_ == nil)
+        {
+            pageController_ = [[NSMutableArray alloc] init];
+        }
+        
         UIViewController *controller = [self.punchDataSource
                                         punchScrollView:self
                                         controllerForPageAtIndexPath:[self indexPathForIndex:index]];
@@ -448,7 +474,6 @@
 #pragma mark ScrollView delegate methods
 
 
-
 - (void)scrollViewDidScroll:(PunchScrollView *)scrollView
 {
     //
@@ -471,11 +496,12 @@
     }
     
     
-    if (pageChanged == YES)
+    if (pageChanged == YES && 
+        orientationChangeInProcess_ == NO)
     {
         [self pageIndexChanged];
     }
-    
+
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
