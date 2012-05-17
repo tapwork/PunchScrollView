@@ -1,0 +1,14 @@
+.DS_Store
+build
+*.mode1v3
+*.mode2v3
+*.pbxuser
+*.orig
+.DS_Store
+.metadata
+.project
+.settings
+*.perspective
+*.perspectivev3
+project.xcworkspace
+xcuserdata

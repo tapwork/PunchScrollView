@@ -22,8 +22,9 @@
     [super viewDidLoad];
 	
 	scrollView_ = [[PunchScrollView alloc] init];
+    scrollView_.punchDelegate	= self;
 	scrollView_.punchDataSource	= self;
-	scrollView_.punchDelegate	= self;
+    scrollView_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:scrollView_];
 	
 	UIButton *prevButton = [UIButton buttonWithType:UIButtonTypeRoundedRect];
@@ -37,6 +38,7 @@
 	[nextButton setTitle:@"Next Page" forState:UIControlStateNormal];
 	nextButton.titleLabel.font = prevButton.titleLabel.font;
 	nextButton.frame = CGRectMake(self.view.frame.size.width-85, 0, 80, 40);
+    nextButton.autoresizingMask = UIViewAutoresizingFlexibleRightMargin | UIViewAutoresizingFlexibleLeftMargin;
 	[nextButton addTarget:self action:@selector(toNextPage:) forControlEvents:UIControlEventTouchUpInside];
 	[self.view addSubview:nextButton];
 }
@@ -79,6 +81,7 @@
       //  page = [[[ExamplePageView alloc] initWithFrame:CGRectMake(0, 0, 200, 200)] autorelease];
         
 		page = [[[ExamplePageView alloc] initWithFrame:self.view.bounds] autorelease];
+        page.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 	
 	
@@ -93,6 +96,10 @@
 	
 }
 
+- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
+{
+    return YES;
+}
 
 #pragma mark -
 #pragma mark Memory Management
