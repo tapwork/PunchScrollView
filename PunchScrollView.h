@@ -23,7 +23,7 @@ typedef enum {
 	
 	id <PunchScrollViewDataSource> punchDataSource_;
 	id <PunchScrollViewDelegate> punchDelegate_;
-
+    
 	NSMutableSet                    *recycledPages_;
     NSMutableSet                    *visiblePages_;
     NSMutableArray                  *pageController_;
@@ -118,6 +118,21 @@ typedef enum {
 
 - (void)punchScrollView:(PunchScrollView*)scrollView pageChanged:(NSIndexPath*)indexPath;
 
+
+//
+// The standard UIScrollView Delegates
+//
+- (void)scrollViewDidScroll:(PunchScrollView *)scrollView;
+
+- (void)scrollViewWillBeginDragging:(PunchScrollView *)scrollView;
+- (void)scrollViewDidEndDragging:(PunchScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+
+- (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView;
+- (void)scrollViewWillBeginDecelerating:(PunchScrollView *)scrollView;
+
+- (void)scrollViewDidScrollToTop:(PunchScrollView *)scrollView;
+- (void)scrollViewDidEndScrollingAnimation:(PunchScrollView *)scrollView;
+
 @end
 
 
@@ -143,3 +158,4 @@ typedef enum {
 - (NSInteger)numberOfLazyLoadingPages;
 
 @end
+

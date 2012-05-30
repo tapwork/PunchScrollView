@@ -19,7 +19,7 @@
 
 - (UIView*)askDataSourceForPageAtIndex:(NSInteger)index;
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index;
-- (CGRect)frameForPage:(UIView*)page atIndex:(NSUInteger)index;
+- (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size;
 - (void)updateFrameForAvailablePages;
 - (void)updateContentSize;
 - (void)loadPages;
@@ -92,8 +92,6 @@
     
     [super dealloc];
 }
-
-
 
 #pragma mark -
 #pragma mark PunchScrollView Public Methods
@@ -211,7 +209,7 @@
 
 - (NSIndexPath*)currentIndexPath
 {
-	if (currentPageIndex_ >= self.pagesCount)
+	if (currentPageIndex_ >= [indexPaths_ count])
     {
         return nil;
     }
@@ -344,7 +342,7 @@
     
     firstNeededPageIndex = MAX(firstNeededPageIndex-lazyOfLoadingPages-1, 0);
     lastNeededPageIndex  = MIN(lastNeededPageIndex+lazyOfLoadingPages, [self pagesCount] - 1);
-
+    
     // Recycle no-longer-visible pages 
     for (UIView *page in visiblePages_)
     {
@@ -398,7 +396,7 @@
 			{
 				page.tag = index;
 				[page layoutIfNeeded];
-                page.frame = [self frameForPage:page atIndex:index]; 
+                page.frame = [self frameForPageAtIndex:index withSize:page.frame.size]; 
 				[self addSubview:page];
 				[visiblePages_ addObject:page];
 				
@@ -476,11 +474,12 @@
 #pragma mark ScrollView delegate methods
 
 
-- (void)scrollViewDidScroll:(PunchScrollView *)scrollView
+- (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    //
-    // Check if the page really has changed
-    //
+    
+        //
+        // Check if the page really has changed
+        //
     BOOL pageChanged = NO;
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
@@ -503,23 +502,64 @@
     {
         [self pageIndexChanged];
     }
-
+    
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
+    if ([self.punchDelegate respondsToSelector:@selector(scrollViewWillBeginDragging:)])
+    {
+        [self.punchDelegate performSelector:@selector(scrollViewWillBeginDragging:) withObject:self];
+    }
+    
     [self loadPages];
 }
 
-- (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView 
+- (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    [self pageIndexChanged];
+    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
+    {
+        [self.punchDelegate scrollViewDidEndDragging:self willDecelerate:decelerate];
+    }
 }
 
-- (void)scrollViewDidEndScrollingAnimation:(PunchScrollView *)scrollView
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView 
+{
+    [self pageIndexChanged];
+    
+    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
+    {
+        [self.punchDelegate performSelector:@selector(scrollViewDidEndDecelerating:) withObject:self];
+    }
+}
+
+- (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
 	[self pageIndexChanged];
+    
+    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)])
+    {
+        [self.punchDelegate performSelector:@selector(scrollViewDidEndScrollingAnimation:) withObject:self];
+    }
 }
+
+
+- (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView   // called on finger up as we are moving
+{
+    if ([self.punchDelegate respondsToSelector:@selector(scrollViewWillBeginDecelerating:)])
+    {
+        [self.punchDelegate performSelector:@selector(scrollViewWillBeginDecelerating:) withObject:self];
+    }
+}
+
+- (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
+{
+    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidScrollToTop:)])
+    {
+        [self.punchDelegate performSelector:@selector(scrollViewDidScrollToTop:) withObject:self];
+    }
+}
+
 
 - (void)pageIndexChanged
 {
@@ -542,7 +582,7 @@
     {
         currentPageIndex_ = newPageIndex;
         if ([self.punchDelegate respondsToSelector:@selector(punchScrollView:pageChanged:)] &&
-            self.pagesCount > 0)
+            [indexPaths_ count] > 0)
         {
             [self.punchDelegate punchScrollView:self
                                     pageChanged:[self indexPathForIndex:currentPageIndex_]];
@@ -586,11 +626,11 @@
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         self.contentSize = CGSizeMake(self.pageSizeWithPadding.width * [self pagesCount],
-                                      self.contentSize.height);
+                                      self.pageSizeWithPadding.height);
 	}
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        self.contentSize = CGSizeMake(self.contentSize.width,
+        self.contentSize = CGSizeMake(self.pageSizeWithPadding.width,
                                       self.pageSizeWithPadding.height* [self pagesCount]);
     }
 }
@@ -602,33 +642,33 @@
 	{
 		if ((NSNull*)page != [NSNull null])
         {
-            page.frame = [self frameForPage:page
-                                    atIndex:page.tag];
+            page.frame = [self frameForPageAtIndex:page.tag
+                                          withSize:page.frame.size];
         }
 	}
 }
 
-- (CGRect)frameForPage:(UIView*)page atIndex:(NSUInteger)index
+- (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size
 {
     
     CGRect pageFrame = CGRectMake(self.bounds.origin.x,
                                   self.bounds.origin.y,
-                                  page.frame.size.width,
-                                  page.frame.size.height);
+                                  size.width,
+                                  size.height);
     
-       
+    
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         pageFrame.origin.x = (self.pageSizeWithPadding.width * index) + self.pagePadding;
-        pageFrame.origin.y = page.frame.origin.y;
+        pageFrame.origin.y = 0;
     }
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
-        pageFrame.origin.x = page.frame.origin.x;
+        pageFrame.origin.x = 0;
         pageFrame.origin.y = (self.pageSizeWithPadding.height * index) + self.pagePadding;
     }
     
-   
+    
     return pageFrame;
 }
 
@@ -646,7 +686,7 @@
 - (CGSize)pageSizeWithPadding
 {
     
-    if (self.pagesCount == 0)
+    if ([indexPaths_ count] == 0)
     {
         
         pageSizeWithPadding_ = CGSizeZero; 
@@ -710,7 +750,7 @@
 - (void)setIndexPaths
 {
 	[indexPaths_ removeAllObjects];
-   
+    
     for (int section = 0; section < [self sectionCount]; section++)
 	{
 		NSUInteger rowsInSection = 1;
@@ -729,7 +769,7 @@
 
 - (NSIndexPath*)indexPathForIndex:(NSInteger)index
 {
-    if (index < self.pagesCount &&
+    if (index < [indexPaths_ count] &&
         index >= 0)
     {
         return [indexPaths_ objectAtIndex:index];
