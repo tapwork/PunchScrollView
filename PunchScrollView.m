@@ -32,8 +32,8 @@
 @end
 
 @implementation PunchScrollView
-@synthesize punchDataSource = punchDataSource_;
-@synthesize punchDelegate = punchDelegate_;
+@synthesize dataSource = dataSource_;
+@synthesize delegate = delegate_;
 
 @synthesize pagePadding = pagePadding_;
 @synthesize direction = direction_;
@@ -60,7 +60,7 @@
         
         self.bouncesZoom = YES;
         self.decelerationRate = UIScrollViewDecelerationRateFast;
-		self.delegate = self;  
+        [super setDelegate:self];
  		self.pagingEnabled = YES;
 		self.showsVerticalScrollIndicator = NO;
 		self.showsHorizontalScrollIndicator = NO;
@@ -79,8 +79,8 @@
 - (void)dealloc
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
-    self.punchDataSource = nil;
-	self.punchDelegate = nil;
+    self.dataSource = nil;
+	self.delegate = nil;
 	[indexPaths_ release];
 	indexPaths_ = nil;
 	[recycledPages_ release];
@@ -313,7 +313,7 @@
 - (void)loadPages 
 {
     if ([self pagesCount]  == 0 ||
-        (self.punchDataSource == nil))
+        (self.dataSource == nil))
     {
         
         // do not render the pages if there is not at least one page
@@ -324,9 +324,9 @@
     int lazyOfLoadingPages = 0;
     NSMutableArray *controllerViewsToDelete = [[NSMutableArray alloc] init];
     
-    if ([self.punchDataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
+    if ([self.dataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
     {
-        lazyOfLoadingPages = [self.punchDataSource numberOfLazyLoadingPages];
+        lazyOfLoadingPages = [self.dataSource numberOfLazyLoadingPages];
     }
     
     // Calculate which pages are visible
@@ -414,14 +414,14 @@
 {
     UIView *page = nil;
     
-    if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:controllerForPageAtIndexPath:)])
+    if ([self.dataSource respondsToSelector:@selector(punchScrollView:controllerForPageAtIndexPath:)])
     {
         if (pageController_ == nil)
         {
             pageController_ = [[NSMutableArray alloc] init];
         }
         
-        UIViewController *controller = [self.punchDataSource
+        UIViewController *controller = [self.dataSource
                                         punchScrollView:self
                                         controllerForPageAtIndexPath:[self indexPathForIndex:index]];
         if (![pageController_ containsObject:controller] &&
@@ -433,9 +433,9 @@
         page = controller.view;
         
     }
-    else if ([self.punchDataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
+    else if ([self.dataSource respondsToSelector:@selector(punchScrollView:viewForPageAtIndexPath:)])
     {
-        page = [self.punchDataSource punchScrollView:self viewForPageAtIndexPath:[self indexPathForIndex:index]];
+        page = [self.dataSource punchScrollView:self viewForPageAtIndexPath:[self indexPathForIndex:index]];
     }
     
     
@@ -456,18 +456,31 @@
     return foundPage;
 }
 
-- (void)setPunchDataSource:(id <PunchScrollViewDataSource>)thePunchDataSource
+- (void)setDataSource:(id <PunchScrollViewDataSource>)thedataSource
 {
-	if (punchDataSource_ != thePunchDataSource)
+	if (dataSource_ != thedataSource)
     {
-        punchDataSource_ = thePunchDataSource;
-        if (punchDataSource_ != nil)
+        dataSource_ = thedataSource;
+        if (dataSource_ != nil)
         {
             [self reloadData];
         }
     }
 }
 
+- (void)setDelegate:(id<PunchScrollViewDelegate>)aDelegate
+{
+    [super setDelegate:self];
+    
+    if (aDelegate != self->delegate_)
+    {
+        self->delegate_ = aDelegate;
+        if (aDelegate != nil)
+        {
+            [self reloadData];
+        }
+    }
+}
 
 
 #pragma mark -
@@ -507,9 +520,9 @@
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
 {
-    if ([self.punchDelegate respondsToSelector:@selector(scrollViewWillBeginDragging:)])
+    if ([self.delegate respondsToSelector:@selector(scrollViewWillBeginDragging:)])
     {
-        [self.punchDelegate performSelector:@selector(scrollViewWillBeginDragging:) withObject:self];
+        [self.delegate performSelector:@selector(scrollViewWillBeginDragging:) withObject:self];
     }
     
     [self loadPages];
@@ -517,9 +530,9 @@
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
     {
-        [self.punchDelegate scrollViewDidEndDragging:self willDecelerate:decelerate];
+        [self.delegate scrollViewDidEndDragging:self willDecelerate:decelerate];
     }
 }
 
@@ -527,9 +540,9 @@
 {
     [self pageIndexChanged];
     
-    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
     {
-        [self.punchDelegate performSelector:@selector(scrollViewDidEndDecelerating:) withObject:self];
+        [self.delegate performSelector:@selector(scrollViewDidEndDecelerating:) withObject:self];
     }
 }
 
@@ -537,26 +550,26 @@
 {
 	[self pageIndexChanged];
     
-    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)])
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)])
     {
-        [self.punchDelegate performSelector:@selector(scrollViewDidEndScrollingAnimation:) withObject:self];
+        [self.delegate performSelector:@selector(scrollViewDidEndScrollingAnimation:) withObject:self];
     }
 }
 
 
 - (void)scrollViewWillBeginDecelerating:(UIScrollView *)scrollView   // called on finger up as we are moving
 {
-    if ([self.punchDelegate respondsToSelector:@selector(scrollViewWillBeginDecelerating:)])
+    if ([self.delegate respondsToSelector:@selector(scrollViewWillBeginDecelerating:)])
     {
-        [self.punchDelegate performSelector:@selector(scrollViewWillBeginDecelerating:) withObject:self];
+        [self.delegate performSelector:@selector(scrollViewWillBeginDecelerating:) withObject:self];
     }
 }
 
 - (void)scrollViewDidScrollToTop:(UIScrollView *)scrollView
 {
-    if ([self.punchDelegate respondsToSelector:@selector(scrollViewDidScrollToTop:)])
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScrollToTop:)])
     {
-        [self.punchDelegate performSelector:@selector(scrollViewDidScrollToTop:) withObject:self];
+        [self.delegate performSelector:@selector(scrollViewDidScrollToTop:) withObject:self];
     }
 }
 
@@ -581,10 +594,10 @@
     if (newPageIndex != currentPageIndex_)
     {
         currentPageIndex_ = newPageIndex;
-        if ([self.punchDelegate respondsToSelector:@selector(punchScrollView:pageChanged:)] &&
+        if ([self.delegate respondsToSelector:@selector(punchScrollView:pageChanged:)] &&
             [indexPaths_ count] > 0)
         {
-            [self.punchDelegate punchScrollView:self
+            [self.delegate punchScrollView:self
                                     pageChanged:[self indexPathForIndex:currentPageIndex_]];
         }
 	}
@@ -733,9 +746,9 @@
 
 - (NSUInteger)sectionCount
 {
-	if ([self.punchDataSource respondsToSelector:@selector(numberOfSectionsInPunchScrollView:)])
+	if ([self.dataSource respondsToSelector:@selector(numberOfSectionsInPunchScrollView:)])
     {
-        return [self.punchDataSource numberOfSectionsInPunchScrollView:self];
+        return [self.dataSource numberOfSectionsInPunchScrollView:self];
     }
     return 1;
 }
@@ -754,9 +767,9 @@
     for (int section = 0; section < [self sectionCount]; section++)
 	{
 		NSUInteger rowsInSection = 1;
-		if ([self.punchDataSource respondsToSelector:@selector(punchscrollView:numberOfPagesInSection:)])
+		if ([self.dataSource respondsToSelector:@selector(punchscrollView:numberOfPagesInSection:)])
 		{
-			rowsInSection = [self.punchDataSource punchscrollView:self numberOfPagesInSection:section];
+			rowsInSection = [self.dataSource punchscrollView:self numberOfPagesInSection:section];
 		}
 		
 		for (int row = 0; row < rowsInSection; row++)

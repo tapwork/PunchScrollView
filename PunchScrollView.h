@@ -1,6 +1,9 @@
 //
 //  PunchScrollView.h
-//  
+//
+//  If you are using iOS 6
+//  I suggest using UICollectionViewController
+//  Therefore we will stop developing on PunchScrollView
 //
 //  Created by tapwork. on 20.10.10. 
 //
@@ -10,19 +13,73 @@
 
 #import <UIKit/UIKit.h>
 
+@class PunchScrollView;
 
-@protocol PunchScrollViewDataSource;
-@protocol PunchScrollViewDelegate;
+/* 
+ *  PunchScrollView Delegate Methods
+ *
+ */
+
+@protocol PunchScrollViewDelegate <UIScrollViewDelegate>
+
+@optional
+
+- (void)punchScrollView:(PunchScrollView*)scrollView pageChanged:(NSIndexPath*)indexPath;
+
+
+//
+// The standard UIScrollView Delegates
+//
+- (void)scrollViewDidScroll:(PunchScrollView *)scrollView;
+
+- (void)scrollViewWillBeginDragging:(PunchScrollView *)scrollView;
+- (void)scrollViewDidEndDragging:(PunchScrollView *)scrollView willDecelerate:(BOOL)decelerate;
+
+- (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView;
+- (void)scrollViewWillBeginDecelerating:(PunchScrollView *)scrollView;
+
+- (void)scrollViewDidScrollToTop:(PunchScrollView *)scrollView;
+- (void)scrollViewDidEndScrollingAnimation:(PunchScrollView *)scrollView;
+
+@end
+
+
+/*
+ * PunchScrollView DataSource Methods
+ *
+ */
+
+@protocol PunchScrollViewDataSource <UIScrollViewDelegate>
+
+@required
+
+- (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section;
+
+@optional
+
+- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView;        // Default is 1 if not implemented
+
+- (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath;
+
+- (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
+
+- (NSInteger)numberOfLazyLoadingPages;
+
+@end
+
+
 
 typedef enum {
     PunchScrollViewDirectionHorizontal = 0,
     PunchScrollViewDirectionVertical = 1,
 } PunchScrollViewDirection;
 
+
+
 @interface PunchScrollView : UIScrollView <UIScrollViewDelegate> {
 	
-	id <PunchScrollViewDataSource> punchDataSource_;
-	id <PunchScrollViewDelegate> punchDelegate_;
+	id <PunchScrollViewDataSource> dataSource_;
+	id <PunchScrollViewDelegate> delegate_;
     
 	NSMutableSet                    *recycledPages_;
     NSMutableSet                    *visiblePages_;
@@ -38,10 +95,10 @@ typedef enum {
 
 
 // Set the DataSource for the Scroll Suite
-@property (nonatomic, assign) id <PunchScrollViewDataSource> punchDataSource;  
+@property (nonatomic, assign) id <PunchScrollViewDataSource> dataSource;  
 
 // set the Delegate for the Scroll Suite
-@property (nonatomic, assign) id <PunchScrollViewDelegate> punchDelegate;
+@property (nonatomic, assign) id <PunchScrollViewDelegate> delegate;
 
 // Set the padding between pages. Default is 10pt
 @property (nonatomic, assign) CGFloat             pagePadding;       
@@ -106,56 +163,4 @@ typedef enum {
 @end
 
 
-
-/* 
- *  PunchScrollView Delegate Methods
- *
- */
-
-@protocol PunchScrollViewDelegate <NSObject>
-
-@optional
-
-- (void)punchScrollView:(PunchScrollView*)scrollView pageChanged:(NSIndexPath*)indexPath;
-
-
-//
-// The standard UIScrollView Delegates
-//
-- (void)scrollViewDidScroll:(PunchScrollView *)scrollView;
-
-- (void)scrollViewWillBeginDragging:(PunchScrollView *)scrollView;
-- (void)scrollViewDidEndDragging:(PunchScrollView *)scrollView willDecelerate:(BOOL)decelerate;
-
-- (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView;
-- (void)scrollViewWillBeginDecelerating:(PunchScrollView *)scrollView;
-
-- (void)scrollViewDidScrollToTop:(PunchScrollView *)scrollView;
-- (void)scrollViewDidEndScrollingAnimation:(PunchScrollView *)scrollView;
-
-@end
-
-
-/*
- * PunchScrollView DataSource Methods
- *
- */
-
-@protocol PunchScrollViewDataSource <NSObject>
-
-@required
-
-- (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section;
-
-@optional
-
-- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView;        // Default is 1 if not implemented
-
-- (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath;
-
-- (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
-
-- (NSInteger)numberOfLazyLoadingPages;
-
-@end
 

@@ -22,8 +22,8 @@
     [super viewDidLoad];
 	
 	scrollView_ = [[PunchScrollView alloc] init];
-    scrollView_.punchDelegate	= self;
-	scrollView_.punchDataSource	= self;
+    scrollView_.delegate	= self;
+	scrollView_.dataSource	= self;
     scrollView_.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	[self.view addSubview:scrollView_];
 	
