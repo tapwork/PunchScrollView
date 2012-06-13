@@ -16,7 +16,7 @@
 
 @property (nonatomic, readonly) CGSize pageSizeWithPadding;
 @property (nonatomic, readonly) NSArray *storedPages;
-
+- (void)setup;
 - (UIView*)askDataSourceForPageAtIndex:(NSInteger)index;
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index;
 - (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size;
@@ -45,6 +45,8 @@
 @dynamic lastPage;
 @dynamic pageController;
 
+
+
 - (id)init
 {
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -54,27 +56,34 @@
 {
     if ((self = [super initWithFrame:aFrame]))
 	{
-        pageSizeWithPadding_ = CGSizeZero;
-        
-        self.pagePadding = 0;
-        
-        self.bouncesZoom = YES;
-        self.decelerationRate = UIScrollViewDecelerationRateFast;
-        [super setDelegate:self];
- 		self.pagingEnabled = YES;
-		self.showsVerticalScrollIndicator = NO;
-		self.showsHorizontalScrollIndicator = NO;
-		self.directionalLockEnabled = YES;
-		
-		indexPaths_     = [[NSMutableArray alloc] init];
-		recycledPages_  = [[NSMutableSet alloc] init];
-		visiblePages_   = [[NSMutableSet alloc] init];		
-		
+        [self setup];
     }
     return self;
 }
 
+- (void)awakeFromNib
+{
+    [self setup];
+}
 
+- (void)setup
+{
+    pageSizeWithPadding_ = CGSizeZero;
+    
+    self.pagePadding = 0;
+    
+    self.bouncesZoom = YES;
+    self.decelerationRate = UIScrollViewDecelerationRateFast;
+    [super setDelegate:self];
+    self.pagingEnabled = YES;
+    self.showsVerticalScrollIndicator = NO;
+    self.showsHorizontalScrollIndicator = NO;
+    self.directionalLockEnabled = YES;
+    
+    indexPaths_     = [[NSMutableArray alloc] init];
+    recycledPages_  = [[NSMutableSet alloc] init];
+    visiblePages_   = [[NSMutableSet alloc] init];
+}
 
 - (void)dealloc
 {
