@@ -385,6 +385,7 @@
     for (UIViewController *vc in controllerViewsToDelete)
     {
         [visiblePages_ removeObject:vc.view];
+        [pageController_ removeObject:vc];
         [vc.view removeFromSuperview];
         [vc viewDidUnload];
         vc.view = nil;
