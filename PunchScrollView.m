@@ -16,7 +16,7 @@
 
 @property (nonatomic, readonly) CGSize pageSizeWithPadding;
 @property (nonatomic, readonly) NSArray *storedPages;
-- (void)setup;
+
 - (UIView*)askDataSourceForPageAtIndex:(NSInteger)index;
 - (BOOL)isDisplayingPageForIndex:(NSUInteger)index;
 - (CGRect)frameForPageAtIndex:(NSUInteger)index withSize:(CGSize)size;
@@ -45,8 +45,6 @@
 @dynamic lastPage;
 @dynamic pageController;
 
-
-
 - (id)init
 {
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -56,34 +54,27 @@
 {
     if ((self = [super initWithFrame:aFrame]))
 	{
-        [self setup];
+        pageSizeWithPadding_ = CGSizeZero;
+        
+        self.pagePadding = 0;
+        
+        self.bouncesZoom = YES;
+        self.decelerationRate = UIScrollViewDecelerationRateFast;
+        [super setDelegate:self];
+ 		self.pagingEnabled = YES;
+		self.showsVerticalScrollIndicator = NO;
+		self.showsHorizontalScrollIndicator = NO;
+		self.directionalLockEnabled = YES;
+		
+		indexPaths_     = [[NSMutableArray alloc] init];
+		recycledPages_  = [[NSMutableSet alloc] init];
+		visiblePages_   = [[NSMutableSet alloc] init];		
+		
     }
     return self;
 }
 
-- (void)awakeFromNib
-{
-    [self setup];
-}
 
-- (void)setup
-{
-    pageSizeWithPadding_ = CGSizeZero;
-    
-    self.pagePadding = 0;
-    
-    self.bouncesZoom = YES;
-    self.decelerationRate = UIScrollViewDecelerationRateFast;
-    [super setDelegate:self];
-    self.pagingEnabled = YES;
-    self.showsVerticalScrollIndicator = NO;
-    self.showsHorizontalScrollIndicator = NO;
-    self.directionalLockEnabled = YES;
-    
-    indexPaths_     = [[NSMutableArray alloc] init];
-    recycledPages_  = [[NSMutableSet alloc] init];
-    visiblePages_   = [[NSMutableSet alloc] init];
-}
 
 - (void)dealloc
 {
@@ -335,7 +326,7 @@
     
     if ([self.dataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
     {
-        lazyOfLoadingPages = [self.dataSource numberOfLazyLoadingPages];
+        lazyOfLoadingPages = [self.dataSource numberOfLazyLoadingPages]-1;
     }
     
     // Calculate which pages are visible
@@ -385,8 +376,12 @@
     for (UIViewController *vc in controllerViewsToDelete)
     {
         [visiblePages_ removeObject:vc.view];
-        [vc.view removeFromSuperview];
-        [vc viewDidUnload];
+        if ([self.delegate respondsToSelector:@selector(punchScrollView:unloadPage:forController:)])
+        {
+            [self.delegate punchScrollView:self unloadPage:vc.view forController:vc];
+        }
+        
+        //[vc viewDidUnload];  // deprecated in iOS 6
         vc.view = nil;
     }
     [controllerViewsToDelete release];
@@ -592,12 +587,14 @@
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
         CGFloat pageWidth = self.pageSizeWithPadding.width;
-        newPageIndex = floor(self.contentOffset.x) / floor(pageWidth);
+        newPageIndex =  newPageIndex = floor(self.contentOffset.x) /
+        ((floor(pageWidth)==0)?(1):(floor(pageWidth)));
 	}
     else if (direction_ == PunchScrollViewDirectionVertical)
     {
         CGFloat pageHeight = self.pageSizeWithPadding.height;
-        newPageIndex = floor(self.contentOffset.y) / floor(pageHeight);
+        newPageIndex = newPageIndex = floor(self.contentOffset.y) /
+        ((floor(pageHeight)==0)?(1):(floor(pageHeight)));
     }
     
     if (newPageIndex != currentPageIndex_)

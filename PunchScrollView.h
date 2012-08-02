@@ -21,10 +21,23 @@
  */
 
 @protocol PunchScrollViewDelegate <UIScrollViewDelegate>
-
 @optional
 
+//
+// Called when the page will be unloaded -   
+// we used to call "viewDidUnload" - but this method will be deprecated in iOS 6
+// Please destroy all your views in that delegate call
+// otherwise your app will leak!!
+- (void)punchScrollView:(PunchScrollView*)scrollView
+             unloadPage:(UIView*)view
+           forController:(UIViewController*)controller;
+
+
+//
+// Called when page has changed
+//
 - (void)punchScrollView:(PunchScrollView*)scrollView pageChanged:(NSIndexPath*)indexPath;
+
 
 
 //
