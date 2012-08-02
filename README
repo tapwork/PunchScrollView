@@ -7,7 +7,7 @@ Helpful methods, i.e. jump or scroll to a desired page
 Avoid boilerplate code
 Save lots of memory with the use of dequeuing
 
-I wrote a mini documentation http://www.cmenschel.de/984
+I wrote a mini documentation http://www.cmenschel.de/punchscrollview
 >[Update from WWDC 2012] Apple introduced the UICollectionViewController which has the same purpose as PunchScrollView. Because it does the same things I will stop developing PunchScrollView in the near future.[/Update]
 
 
