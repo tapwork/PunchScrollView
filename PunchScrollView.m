@@ -467,7 +467,9 @@
         dataSource_ = thedataSource;
         if (dataSource_ != nil)
         {
-            [self reloadData];
+            [self performSelector:@selector(reloadData)
+                       withObject:nil
+                       afterDelay:0.0];
         }
     }
 }
@@ -481,7 +483,9 @@
         self->delegate_ = aDelegate;
         if (aDelegate != nil)
         {
-            [self reloadData];
+            [self performSelector:@selector(reloadData)
+                       withObject:nil
+                       afterDelay:0.0];
         }
     }
 }
