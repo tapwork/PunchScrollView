@@ -524,6 +524,10 @@
         [self pageIndexChanged];
     }
     
+    if ([self.delegate respondsToSelector:@selector(scrollViewDidScroll:)])
+    {
+        [self.delegate performSelector:@selector(scrollViewDidScroll:) withObject:self];
+    }
 }
 
 - (void)scrollViewWillBeginDragging:(UIScrollView *)scrollView
