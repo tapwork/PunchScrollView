@@ -390,14 +390,15 @@
     // Force Deletion
     for (UIViewController *vc in controllerViewsToDelete)
     {
-        [visiblePages_ removeObject:vc.view];
-        if ([self.delegate respondsToSelector:@selector(punchScrollView:unloadPage:forController:)])
+        if ([vc isViewLoaded])
         {
-            [self.delegate punchScrollView:self unloadPage:vc.view forController:vc];
+            [visiblePages_ removeObject:vc.view];
+            if ([self.delegate respondsToSelector:@selector(punchScrollView:unloadPage:forController:)])
+            {
+                [self.delegate punchScrollView:self unloadPage:vc.view forController:vc];
+            }
+            vc.view = nil;
         }
-        
-        //[vc viewDidUnload];  // deprecated in iOS 6
-        vc.view = nil;
     }
     [controllerViewsToDelete release];
     
