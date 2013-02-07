@@ -72,13 +72,9 @@
         [self setup];
     }
     return self;
-
+    
 }
 
-- (void)awakeFromNib
-{
-    [self setup];
-}
 
 - (id)initWithFrame:(CGRect)aFrame
 {
@@ -237,7 +233,7 @@
         if (animated == NO)
         {
             [self pageIndexChanged];
-        }	
+        }
     }
 }
 
@@ -259,6 +255,11 @@
 - (UIView*)currentPage
 {
     return [self pageForIndexPath:self.currentIndexPath];
+}
+
+- (NSMutableSet*)visiblePages
+{
+    return visiblePages_;
 }
 
 - (UIView*)firstPage
@@ -317,7 +318,7 @@
     
     orientationChangeInProcess_ = NO;
 	if (currentWidth_ != self.frame.size.width)
-	{        
+	{
         pageSizeWithPadding_ = CGSizeZero;
 		orientationChangeInProcess_ = YES;
 	}
@@ -342,10 +343,10 @@
         [self updateFrameForAvailablePages];
     }
     
-    orientationChangeInProcess_ = NO; 
+    orientationChangeInProcess_ = NO;
 }
 
-- (void)loadPages 
+- (void)loadPages
 {
     if ([self pagesCount]  == 0 ||
         (self.dataSource == nil))
@@ -378,7 +379,7 @@
     firstNeededPageIndex = MAX(firstNeededPageIndex-lazyOfLoadingPages-1, 0);
     lastNeededPageIndex  = MIN(lastNeededPageIndex+lazyOfLoadingPages, [self pagesCount] - 1);
     
-    // Recycle no-longer-visible pages 
+    // Recycle no-longer-visible pages
     for (UIView *page in visiblePages_)
     {
         int indexToDelete = page.tag;
@@ -425,18 +426,18 @@
     
     //
     // add missing pages
-    for (int index = firstNeededPageIndex; index <= lastNeededPageIndex; index++) 
+    for (int index = firstNeededPageIndex; index <= lastNeededPageIndex; index++)
     {
         if (![self isDisplayingPageForIndex:index])
 		{
 			
-			UIView *page = [self askDataSourceForPageAtIndex:index];            
+			UIView *page = [self askDataSourceForPageAtIndex:index];
             
 			if (nil != page)
 			{
 				page.tag = index;
 				[page layoutIfNeeded];
-                page.frame = [self frameForPageAtIndex:index withSize:page.frame.size]; 
+                page.frame = [self frameForPageAtIndex:index withSize:page.frame.size];
 				[self addSubview:page];
 				[visiblePages_ addObject:page];
 				
@@ -447,7 +448,7 @@
 			}
 			
         }
-    }    
+    }
 }
 
 - (UIView*)askDataSourceForPageAtIndex:(NSInteger)index
@@ -534,9 +535,9 @@
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
     
-        //
-        // Check if the page really has changed
-        //
+    //
+    // Check if the page really has changed
+    //
     BOOL pageChanged = NO;
     if (direction_ == PunchScrollViewDirectionHorizontal)
     {
@@ -554,7 +555,7 @@
     }
     
     
-    if (pageChanged == YES && 
+    if (pageChanged == YES &&
         orientationChangeInProcess_ == NO)
     {
         [self pageIndexChanged];
@@ -584,7 +585,7 @@
     }
 }
 
-- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView 
+- (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
     [self pageIndexChanged];
     
@@ -648,7 +649,7 @@
             [indexPaths_ count] > 0)
         {
             [self.delegate punchScrollView:self
-                                    pageChanged:[self indexPathForIndex:currentPageIndex_]];
+                               pageChanged:[self indexPathForIndex:currentPageIndex_]];
         }
 	}
 }
@@ -752,7 +753,7 @@
     if ([indexPaths_ count] == 0)
     {
         
-        pageSizeWithPadding_ = CGSizeZero; 
+        pageSizeWithPadding_ = CGSizeZero;
         
         return pageSizeWithPadding_;
     }
