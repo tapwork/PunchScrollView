@@ -65,28 +65,48 @@
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
 }
 
+- (id)initWithCoder:(NSCoder *)aDecoder
+{
+    self = [super initWithCoder:aDecoder];
+    if (self) {
+        [self setup];
+    }
+    return self;
+
+}
+
+- (void)awakeFromNib
+{
+    [self setup];
+}
+
 - (id)initWithFrame:(CGRect)aFrame
 {
     if ((self = [super initWithFrame:aFrame]))
 	{
-        pageSizeWithPadding_ = CGSizeZero;
-        
-        self.pagePadding = 0;
-        
-        self.bouncesZoom = YES;
-        self.decelerationRate = UIScrollViewDecelerationRateFast;
-        [super setDelegate:self];
- 		self.pagingEnabled = YES;
-		self.showsVerticalScrollIndicator = NO;
-		self.showsHorizontalScrollIndicator = NO;
-		self.directionalLockEnabled = YES;
-		
-		indexPaths_     = [[NSMutableArray alloc] init];
-		recycledPages_  = [[NSMutableSet alloc] init];
-		visiblePages_   = [[NSMutableSet alloc] init];		
-		
+       	[self setup];
     }
     return self;
+}
+
+
+- (void)setup
+{
+    pageSizeWithPadding_ = CGSizeZero;
+    
+    self.pagePadding = 0;
+    
+    self.bouncesZoom = YES;
+    self.decelerationRate = UIScrollViewDecelerationRateFast;
+    [super setDelegate:self];
+    self.pagingEnabled = YES;
+    self.showsVerticalScrollIndicator = NO;
+    self.showsHorizontalScrollIndicator = NO;
+    self.directionalLockEnabled = YES;
+    
+    indexPaths_     = [[NSMutableArray alloc] init];
+    recycledPages_  = [[NSMutableSet alloc] init];
+    visiblePages_   = [[NSMutableSet alloc] init];
 }
 
 
