@@ -1,32 +1,32 @@
 /*
  *
  *
-  PunchScrollView.h
-
-  If you are using iOS 6:
-  I suggest using UICollectionViewController
-  Therefore we will stop developing on PunchScrollView
-
-  Created by tapwork. on 20.10.10. 
-  tapwork.net
+ PunchScrollView.h
  
-  Copyright (C) 2010,2011,2012 tapwork. mobile design & development. All rights reserved.
-  
-
-  Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
-
-  The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
-
-  THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
-
-*
-*/
+ If you are using iOS 6:
+ I suggest using UICollectionViewController
+ Therefore we will stop developing on PunchScrollView
+ 
+ Created by tapwork. on 20.10.10.
+ tapwork.net
+ 
+ Copyright (C) 2010,2011,2012 tapwork. mobile design & development. All rights reserved.
+ 
+ 
+ Permission is hereby granted, free of charge, to any person obtaining a copy of this software and associated documentation files (the "Software"), to deal in the Software without restriction, including without limitation the rights to use, copy, modify, merge, publish, distribute, sublicense, and/or sell copies of the Software, and to permit persons to whom the Software is furnished to do so, subject to the following conditions:
+ 
+ The above copyright notice and this permission notice shall be included in all copies or substantial portions of the Software.
+ 
+ THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.
+ 
+ *
+ */
 
 #import <UIKit/UIKit.h>
 
 @class PunchScrollView;
 
-/* 
+/*
  *  PunchScrollView Delegate Methods
  *
  */
@@ -40,7 +40,7 @@
  - (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
  we used to call "viewDidUnload" - but this method will be deprecated in iOS 6
  Please destroy all your views in that delegate call
-
+ 
  otherwise your app will leak!!
  */
 - (void)punchScrollView:(PunchScrollView*)scrollView
@@ -122,35 +122,38 @@ typedef enum {
 }
 
 
-// Set the DataSource for the Scroll Suite
-@property (nonatomic, assign) id <PunchScrollViewDataSource> dataSource;  
+// Set the dataSource
+@property (nonatomic, assign) id <PunchScrollViewDataSource> dataSource;
 
-// set the Delegate for the Scroll Suite
+// set the delegate
 @property (nonatomic, assign) id <PunchScrollViewDelegate> delegate;
 
 // Set the padding between pages. Default is 10pt
-@property (nonatomic, assign) CGFloat             pagePadding;       
+@property (nonatomic, assign) CGFloat             pagePadding;
 
-// Set a Vertical or Horizontal Direction of the scrolling
-@property (nonatomic, assign) PunchScrollViewDirection direction;                              
+// Set a Vertical or horizontal direction of the scrolling
+@property (nonatomic, assign) PunchScrollViewDirection direction;
 
-//  Get the current visible Page
-@property (nonatomic, readonly) UIView *currentPage;  
+//  Get the current visible page
+@property (nonatomic, readonly) UIView *currentPage;
 
-//  Get the first Page
-@property (nonatomic, readonly) UIView *firstPage;    
+//  Get the first page
+@property (nonatomic, readonly) UIView *firstPage;
 
-//  Get the last Page
-@property (nonatomic, readonly) UIView *lastPage;         
+//  Get the last page
+@property (nonatomic, readonly) UIView *lastPage;
+
+// get all visible pages
+@property (nonatomic, readonly) NSMutableSet *visiblePages;
 
 //  Get the current visible indexPath
-@property (nonatomic, readonly) NSIndexPath *currentIndexPath;       
+@property (nonatomic, readonly) NSIndexPath *currentIndexPath;
 
-//  Get the last indexPath of the Scroll Suite
-@property (nonatomic, readonly) NSIndexPath *lastIndexPath; 
+//  Get the last indexPath
+@property (nonatomic, readonly) NSIndexPath *lastIndexPath;
 
-//  Get all Page Controller if given
-@property (nonatomic, readonly) NSArray *pageController;                                          
+//  Get all page controller if given
+@property (nonatomic, readonly) NSArray *pageController;
 
 
 
@@ -158,7 +161,7 @@ typedef enum {
  * Init Method for PunchScrollView
  *
  */
-- (id)init; 
+- (id)init;
 - (id)initWithFrame:(CGRect)aFrame;
 
 /*
