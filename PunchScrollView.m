@@ -103,6 +103,10 @@
     indexPaths_     = [[NSMutableArray alloc] init];
     recycledPages_  = [[NSMutableSet alloc] init];
     visiblePages_   = [[NSMutableSet alloc] init];
+    
+    UITapGestureRecognizer *tapGesutre = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPage:)];
+    [self addGestureRecognizer:tapGesutre];
+    [tapGesutre release];
 }
 
 
@@ -122,6 +126,29 @@
     pageController_ = nil;
     
     [super dealloc];
+}
+
+- (void)tapOnPage:(UIGestureRecognizer*)gesture
+{
+    if ([self.delegate respondsToSelector:@selector(punchScrollView:didTapOnPage:atIndexPath:)])
+    {
+        if ([gesture state] == UIGestureRecognizerStateRecognized)
+        {
+            // if this gesture intercepts any of the views, then inform the delegate
+            CGPoint p = [gesture locationInView:self];
+            for (UIView *v in visiblePages_)
+            {
+                if (CGRectContainsPoint(v.frame, p))
+                {
+                    [self.delegate punchScrollView:self
+                                      didTapOnPage:v
+                                       atIndexPath:[self indexPathForIndex:v.tag]];
+                    return;
+                }
+            }
+        }
+        
+    }
 }
 
 #pragma mark -

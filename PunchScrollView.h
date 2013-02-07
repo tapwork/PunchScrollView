@@ -53,6 +53,11 @@
 //
 - (void)punchScrollView:(PunchScrollView*)scrollView pageChanged:(NSIndexPath*)indexPath;
 
+//
+// Called when page has been tapped
+//
+- (void)punchScrollView:(PunchScrollView*)scrollView didTapOnPage:(UIView*)view atIndexPath:(NSIndexPath*)indexPath;
+
 
 
 //
