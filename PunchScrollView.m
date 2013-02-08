@@ -157,18 +157,7 @@
     }
 }
 
-- (void)performBlockInProperSequence:(void (^)(void))block
-{
-    if (needsReload_)
-    {
-        dispatch_async(dispatch_get_main_queue(), block);
-    }
-    else
-    {
-        dispatch_sync(dispatch_get_main_queue(), block);
-    }
-    
-}
+
 
 #pragma mark -
 #pragma mark PunchScrollView Public Methods
@@ -257,7 +246,7 @@
         }
     };
     
-    [self performBlockInProperSequence:block];
+    dispatch_async(dispatch_get_main_queue(), block);
 }
 
 - (void)scrollToNextPage:(BOOL)animated
@@ -275,7 +264,7 @@
         }
     };
     
-    [self performBlockInProperSequence:block];
+    dispatch_async(dispatch_get_main_queue(), block);
 }
 
 - (void)scrollToPreviousPage:(BOOL)animated
@@ -294,7 +283,7 @@
     };
 	
     
-    [self performBlockInProperSequence:block];
+    dispatch_async(dispatch_get_main_queue(), block);
 }
 
 
