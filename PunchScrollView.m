@@ -869,3 +869,25 @@
     return nil;
 }
 @end
+
+
+@implementation NSIndexPath (PunchScrollView)
+
+
++ (NSIndexPath *)indexPathForPage:(NSInteger)page inSection:(NSInteger)section
+{
+    NSUInteger indexArr[] = {section,page};
+    return [NSIndexPath indexPathWithIndexes:indexArr length:2];
+}
+
+- (NSInteger)section
+{
+    return [self indexAtPosition:0];
+}
+
+- (NSInteger)page
+{
+    return [self indexAtPosition:1];
+}
+
+@end
