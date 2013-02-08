@@ -96,10 +96,6 @@
 	
 }
 
-- (BOOL)shouldAutorotateToInterfaceOrientation:(UIInterfaceOrientation)toInterfaceOrientation
-{
-    return YES;
-}
 
 #pragma mark -
 #pragma mark Memory Management

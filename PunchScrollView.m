@@ -181,7 +181,7 @@
 		if ((NSNull*)thePage == [NSNull null]) break;
 		NSIndexPath *storedIndexPath = [self indexPathForIndex:thePage.tag];
 		
-        if (storedIndexPath.row == indexPath.row &&
+        if (storedIndexPath.page == indexPath.page &&
             storedIndexPath.section == indexPath.section)
 		{
             return thePage;
@@ -201,7 +201,7 @@
     BOOL indexPathFound = NO;
 	for (NSIndexPath *storedPath in indexPaths_)
 	{
-		if (storedPath.section == indexPath.section && storedPath.row == indexPath.row)
+		if (storedPath.section == indexPath.section && storedPath.page == indexPath.page)
 		{
 			indexPathFound = YES;
             break;
