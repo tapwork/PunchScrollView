@@ -202,10 +202,9 @@ typedef enum {
 // This category provides convenience methods to make it easier to use an NSIndexPath to represent a section and page
 @interface NSIndexPath (PunchScrollView)
 
-+ (NSIndexPath *)indexPathForPage:(NSInteger)page inSection:(NSInteger)section;
++ (NSIndexPath *)indexPathForPage:(NSUInteger)page inSection:(NSUInteger)section;
 
-@property(nonatomic,readonly) NSInteger section;
-@property(nonatomic,readonly) NSInteger page;
+@property(nonatomic,readonly) NSUInteger section;
+@property(nonatomic,readonly) NSUInteger page;
 
 @end
-

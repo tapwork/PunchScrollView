@@ -27,6 +27,7 @@
 @interface PunchScrollView ()
 {
     BOOL orientationChangeInProcess_;
+    BOOL needsReload_;
 }
 
 @property (nonatomic, readonly) CGSize pageSizeWithPadding;
@@ -60,6 +61,8 @@
 @dynamic lastPage;
 @dynamic pageController;
 
+
+#pragma mark - private method
 - (id)init
 {
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
@@ -107,6 +110,8 @@
     UITapGestureRecognizer *tapGesutre = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPage:)];
     [self addGestureRecognizer:tapGesutre];
     [tapGesutre release];
+    
+    [self setNeedsReload];
 }
 
 
@@ -114,6 +119,7 @@
 - (void)dealloc
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+    
     self.dataSource = nil;
 	self.delegate = nil;
 	[indexPaths_ release];
@@ -151,6 +157,19 @@
     }
 }
 
+- (void)performBlockInProperSequence:(void (^)(void))block
+{
+    if (needsReload_)
+    {
+        dispatch_async(dispatch_get_main_queue(), block);
+    }
+    else
+    {
+        dispatch_sync(dispatch_get_main_queue(), block);
+    }
+    
+}
+
 #pragma mark -
 #pragma mark PunchScrollView Public Methods
 
@@ -181,7 +200,7 @@
 		if ((NSNull*)thePage == [NSNull null]) break;
 		NSIndexPath *storedIndexPath = [self indexPathForIndex:thePage.tag];
 		
-        if (storedIndexPath.page == indexPath.page &&
+        if (storedIndexPath.row == indexPath.row &&
             storedIndexPath.section == indexPath.section)
 		{
             return thePage;
@@ -196,72 +215,86 @@
 
 - (void)scrollToIndexPath:(NSIndexPath*)indexPath animated:(BOOL)animated
 {
-	NSInteger pageNum = 0;
-    
-    BOOL indexPathFound = NO;
-	for (NSIndexPath *storedPath in indexPaths_)
-	{
-		if (storedPath.section == indexPath.section && storedPath.page == indexPath.page)
-		{
-			indexPathFound = YES;
-            break;
-		}
+    void (^block)() = ^(){
         
-		pageNum++;
-	}
-	
-    if (indexPathFound == NO)
-    {
-        // The indexPath is not avaiable. go out, but do not crash and burn
-        return;
-    }
-    
-    
-    if (direction_ == PunchScrollViewDirectionHorizontal)
-    {
+        NSInteger pageNum = 0;
         
-        [self setContentOffset:CGPointMake(self.pageSizeWithPadding.width*pageNum,
-                                           0)
-                      animated:animated];
-	}
-    else if (direction_ == PunchScrollViewDirectionVertical)
-    {
-        [self setContentOffset:CGPointMake(0,
-                                           self.pageSizeWithPadding.height*pageNum)
-                      animated:animated];
-    }
-	if (animated == NO)
-	{
-		[self pageIndexChanged];
-	}
+        BOOL indexPathFound = NO;
+        for (NSIndexPath *storedPath in indexPaths_)
+        {
+            if (storedPath.section == indexPath.section && storedPath.row == indexPath.row)
+            {
+                indexPathFound = YES;
+                break;
+            }
+            
+            pageNum++;
+        }
+        
+        if (indexPathFound == NO)
+        {
+            // The indexPath is not avaiable. go out, but do not crash and burn
+            return;
+        }
+        
+        
+        if (direction_ == PunchScrollViewDirectionHorizontal)
+        {
+            
+            [self setContentOffset:CGPointMake(self.pageSizeWithPadding.width*pageNum,
+                                               0)
+                          animated:animated];
+        }
+        else if (direction_ == PunchScrollViewDirectionVertical)
+        {
+            [self setContentOffset:CGPointMake(0,
+                                               self.pageSizeWithPadding.height*pageNum)
+                          animated:animated];
+        }
+        if (animated == NO)
+        {
+            [self pageIndexChanged];
+        }
+    };
+    
+    [self performBlockInProperSequence:block];
 }
 
 - (void)scrollToNextPage:(BOOL)animated
 {
-	NSIndexPath *indexPath = [self indexPathForIndex:currentPageIndex_+1];
-    
-    if (indexPath != nil)
-    {
-        [self scrollToIndexPath:indexPath animated:animated];
-        if (animated == NO)
+    void (^block)() = ^(){
+        NSIndexPath *indexPath = [self indexPathForIndex:currentPageIndex_+1];
+        
+        if (indexPath != nil)
         {
-            [self pageIndexChanged];
+            [self scrollToIndexPath:indexPath animated:animated];
+            if (animated == NO)
+            {
+                [self pageIndexChanged];
+            }
         }
-    }
+    };
+    
+    [self performBlockInProperSequence:block];
 }
 
 - (void)scrollToPreviousPage:(BOOL)animated
 {
-	NSIndexPath *indexPath = [self indexPathForIndex:currentPageIndex_-1];
-    
-    if (indexPath != nil)
-    {
-        [self scrollToIndexPath:indexPath animated:animated];
-        if (animated == NO)
+    void(^block)() = ^(){
+        NSIndexPath *indexPath = [self indexPathForIndex:currentPageIndex_-1];
+        
+        if (indexPath != nil)
         {
-            [self pageIndexChanged];
+            [self scrollToIndexPath:indexPath animated:animated];
+            if (animated == NO)
+            {
+                [self pageIndexChanged];
+            }
         }
-    }
+    };
+	
+    
+    [self performBlockInProperSequence:block];
 }
 
 
@@ -304,6 +337,18 @@
     return pageController_;
 }
 
+- (void)setNeedsReload
+{
+    if (needsReload_ == NO)
+    {
+        needsReload_ = YES;
+        __block PunchScrollView *blockself = self;
+        dispatch_async(dispatch_get_main_queue(), ^{
+            [blockself reloadData];
+        });
+    }
+}
+
 - (void)reloadData
 {
     [self setIndexPaths];
@@ -332,6 +377,10 @@
                       animated:NO];
     }
     [self loadPages];
+    
+    needsReload_ = NO;
+    
+    
 }
 
 
@@ -531,9 +580,7 @@
         dataSource_ = thedataSource;
         if (dataSource_ != nil)
         {
-            [self performSelector:@selector(reloadData)
-                       withObject:nil
-                       afterDelay:0.0];
+            [self setNeedsReload];
         }
     }
 }
@@ -547,9 +594,7 @@
         self->delegate_ = aDelegate;
         if (aDelegate != nil)
         {
-            [self performSelector:@selector(reloadData)
-                       withObject:nil
-                       afterDelay:0.0];
+            [self setNeedsReload];
         }
     }
 }
@@ -705,8 +750,7 @@
         }
         
         [super setFrame:frame];
-        
-        [self reloadData];
+        [self setNeedsReload];
     }
 }
 
@@ -770,7 +814,7 @@
     if (direction_ != direction)
     {
         direction_ = direction;
-        [self reloadData];
+        [self setNeedsReload];
     }
 }
 
@@ -874,18 +918,19 @@
 @implementation NSIndexPath (PunchScrollView)
 
 
-+ (NSIndexPath *)indexPathForPage:(NSInteger)page inSection:(NSInteger)section
++ (NSIndexPath *)indexPathForPage:(NSUInteger)page inSection:(NSUInteger)section
 {
     NSUInteger indexArr[] = {section,page};
     return [NSIndexPath indexPathWithIndexes:indexArr length:2];
 }
 
-- (NSInteger)section
+- (NSUInteger)section
 {
     return [self indexAtPosition:0];
 }
 
-- (NSInteger)page
+
+- (NSUInteger)page
 {
     return [self indexAtPosition:1];
 }
