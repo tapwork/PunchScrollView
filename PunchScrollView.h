@@ -86,16 +86,26 @@
 
 @required
 
+// PunchScrollView asks you many pages you want for the specific section
 - (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section;
 
 @optional
 
-- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView;        // Default is 1 if not implemented
+// PunchScrollView asks you many sections you want - Default is 1 if not implemented
+- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView;
 
+
+// PunchScrollView asks you for the View which will be recycled with dequeueRecycledPage
 - (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath;
 
+
+// use the controller method instead of punchScrollView:viewForPageAtIndexPath:
+// there is no recycling for the controller, but the view will be recycled
+// just return a controller which should be a childViewController
 - (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
 
+
+// configure how many pages should be kept in offset - Default is 1 if not implemented
 - (NSInteger)numberOfLazyLoadingPages;
 
 @end
