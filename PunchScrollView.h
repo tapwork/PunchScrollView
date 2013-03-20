@@ -39,9 +39,8 @@
  the dataSource method
  - (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
  we used to call "viewDidUnload" - but this method will be deprecated in iOS 6
- Please destroy all your views in that delegate call
+ destroy all your views or memory consuming stuff in that delegate call
  
- otherwise your app will leak!!
  */
 - (void)punchScrollView:(PunchScrollView*)scrollView
              unloadPage:(UIView*)view
@@ -170,6 +169,8 @@ typedef enum {
 //  Get all page controller if given
 @property (nonatomic, readonly) NSArray *pageController;
 
+//  set to a inifinite scolling experience (=> carrousel)
+@property (nonatomic, assign) BOOL infiniteScrolling;
 
 
 /*
