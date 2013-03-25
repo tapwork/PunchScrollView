@@ -25,11 +25,11 @@
     // add a cache for our images
     _imageCache = [[NSCache alloc] init];
     
-    _imageURLS = @[@"http://1.2.3.10/bmi/farm9.staticflickr.com/8106/8456055846_37a609ccc1_b.jpg",
-                   @"http://1.2.3.13/bmi/farm9.staticflickr.com/8227/8347399220_4bce62dff2_b.jpg",
-                   @"http://1.2.3.10/bmi/farm9.staticflickr.com/8220/8334174410_31657fa66d_b.jpg",
-                   @"http://1.2.3.13/bmi/farm9.staticflickr.com/8492/8334173420_13f510237c_b.jpg",
-                   @"http://1.2.3.9/bmi/farm9.staticflickr.com/8208/8216204409_5e48ccc1f3_b.jpg"];
+    _imageURLS = @[@"http://www.blogcdn.com//media/2013/03/beautifulmocoappletv.jpg",
+                   @"http://www.blogcdn.com//media/2013/03/smokinhotmbpwrd.jpg",
+                   @"http://9to5mac.files.wordpress.com/2013/03/screen-shot-2013-03-24-at-9-38-35-am.png?w=704&h=362",
+                   @"http://9to5mac.files.wordpress.com/2013/03/apple_under_fire_2012_03_07.jpg?w=704",
+                   @"http://9to5mac.files.wordpress.com/2013/03/pinterest-update.jpg?w=422&h=281"];
     
     
     
@@ -38,7 +38,8 @@
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     _scrollView.delegate = self;
     _scrollView.dataSource = self;
-   
+    _scrollView.infiniteScrolling = NO;
+    
     [self.view addSubview:_scrollView];
     
    
