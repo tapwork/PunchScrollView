@@ -23,6 +23,13 @@
  */
 
 #import <UIKit/UIKit.h>
+// This notification is sent out after the page has been changed
+// it comes with an userInfo Dictionary including the 3 following keys 
+extern NSString *const PunchScrollViewPageChangedNotification;
+
+extern NSString *const PunchScrollViewUserInfoNewPageIndexPathKey;  // an NSIndexPath
+extern NSString *const PunchScrollViewUserInfoNewPageFlattenedIndexKey;  // an NSNumber
+extern NSString *const PunchScrollViewUserInfoTotalPagesNumberKey;  // an NSNumber
 
 @class PunchScrollView;
 
@@ -40,7 +47,7 @@
  - (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
  we used to call "viewDidUnload" - but this method will be deprecated in iOS 6
  destroy all your views or memory consuming stuff in that delegate call
- 
+
  */
 - (void)punchScrollView:(PunchScrollView*)scrollView
              unloadPage:(UIView*)view
@@ -85,26 +92,16 @@
 
 @required
 
-// PunchScrollView asks you many pages you want for the specific section
 - (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section;
 
 @optional
 
-// PunchScrollView asks you many sections you want - Default is 1 if not implemented
-- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView;
+- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView;        // Default is 1 if not implemented
 
-
-// PunchScrollView asks you for the View which will be recycled with dequeueRecycledPage
 - (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath;
 
-
-// use the controller method instead of punchScrollView:viewForPageAtIndexPath:
-// there is no recycling for the controller, but the view will be recycled
-// just return a controller which should be a childViewController
 - (UIViewController*)punchScrollView:(PunchScrollView*)scrollView controllerForPageAtIndexPath:(NSIndexPath *)indexPath;
 
-
-// configure how many pages should be kept in offset - Default is 1 if not implemented
 - (NSInteger)numberOfLazyLoadingPages;
 
 @end
@@ -119,20 +116,7 @@ typedef enum {
 
 
 @interface PunchScrollView : UIScrollView <UIScrollViewDelegate> {
-	
-	id <PunchScrollViewDataSource> dataSource_;
-	id <PunchScrollViewDelegate> delegate_;
-    
-	NSMutableSet                    *recycledPages_;
-    NSMutableSet                    *visiblePages_;
-    NSMutableArray                  *pageController_;
-    
-	NSInteger                       currentPageIndex_;
-	NSMutableArray                  *indexPaths_;
-	CGFloat                         currentWidth_;
-    CGFloat                         pagePadding_;
-    CGSize                          pageSizeWithPadding_;
-    PunchScrollViewDirection        direction_;
+
 }
 
 
@@ -142,7 +126,7 @@ typedef enum {
 // set the delegate
 @property (nonatomic, assign) id <PunchScrollViewDelegate> delegate;
 
-// Set the padding between pages. Default is 10pt
+// Set the padding (gap) between pages. Default is 10pt
 @property (nonatomic, assign) CGFloat             pagePadding;
 
 // Set a Vertical or horizontal direction of the scrolling
@@ -166,11 +150,16 @@ typedef enum {
 //  Get the last indexPath
 @property (nonatomic, readonly) NSIndexPath *lastIndexPath;
 
+// 0 if no dataSource, otherwise, whatever it got from him
+@property (nonatomic, readonly) NSUInteger numPagesInDataSource;  
+
 //  Get all page controller if given
 @property (nonatomic, readonly) NSArray *pageController;
 
-//  set to a inifinite scolling experience (=> carrousel)
+//  set to a inifinite scolling experience (=> carrousel)   Default is NO
 @property (nonatomic, assign) BOOL infiniteScrolling;
+
+@property (nonatomic, readonly) BOOL isScrollingForwardsOrBack;
 
 
 /*
@@ -193,10 +182,22 @@ typedef enum {
 
 
 /*
- * This Method returns an UIView for a given indexPath
+ * This Method returns an UIView (when visible, if not visible PunchScrollView will ask 
+ *   the dataSource for the view) for a given indexPath
  *
  */
 - (UIView*)pageForIndexPath:(NSIndexPath*)indexPath;
+
+
+/*
+ * This method returns an integer which represents the overall index over all sections
+ * i.e. PunchScrollView has 2 sections with 2 rows for each section ( [0,0];[0,1];[1,0];[1,1] )
+ * then the NSIndexPath [1,1] will have the index: 4
+ * 
+ *
+ */
+- (NSInteger)flattenedIndexForIndexPath:(NSIndexPath*)indexPath;
+
 
 /*
  * Some Scrolling to page methods
