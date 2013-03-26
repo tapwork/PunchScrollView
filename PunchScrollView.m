@@ -129,8 +129,9 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 {
 	[NSObject cancelPreviousPerformRequestsWithTarget:self];
     
+    self.delegate = nil;
     self.dataSource = nil;
-	self.delegate = nil;
+	
 	[_indexPaths release];
 	_indexPaths = nil;
 	[_recycledPages release];
