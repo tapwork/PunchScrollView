@@ -150,8 +150,9 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     _currentWidth               = 0.0;
     _currentInternalPageIndex   = NSNotFound;
     self.contentSize            = CGSizeZero;
-    
-    for (UIView *view in self.storedPages)
+   
+    NSArray *pages = self.storedPages;
+    for (UIView *view in pages)
     {
         [view removeFromSuperview];
         view = nil;
@@ -470,6 +471,13 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     {
         [self setContentOffset:CGPointMake(0,0)
                       animated:NO];
+        if (_scrollNextWorkaround)
+        {
+            _scrollNextWorkaround = NO;
+            dispatch_async(dispatch_get_main_queue(), ^{
+                [self scrollToIndex:_currentInternalPageIndex + 1 animated:YES];
+            });
+        }
     }
     else if (self.direction == PunchScrollViewDirectionHorizontal &&
              self.contentOffset.x <= 0.0)
@@ -617,7 +625,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     {
         page.tag = index;
         [page layoutIfNeeded];
-        page.frame = [self frameForPageAtIndex:index withSize:page.frame.size];
+        page.frame = [self frameForPage:page];
     }
     
     
@@ -899,18 +907,31 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)updateFrameForAvailablePages
 {
-	for (UIView *page in self.storedPages)
+	for (UIView *page in _visiblePages)
 	{
 		if ((NSNull*)page != [NSNull null])
         {
-            page.frame = [self frameForPageAtIndex:page.tag
-                                          withSize:page.frame.size];
+            page.frame = [self frameForPage:page];
         }
 	}
 }
 
-- (CGRect)frameForPageAtIndex:(NSInteger)index withSize:(CGSize)size
-{    
+- (CGRect)frameForPage:(UIView*)page
+{
+    NSInteger index = page.tag;
+    CGSize size = page.frame.size;
+    
+    // if the page has an autoresizing mask then we need to substract the padding from the new size
+    if (page.autoresizingMask & UIViewAutoresizingFlexibleWidth)
+    {
+        size.width -= self.pagePadding*2;
+    }
+    else if (page.autoresizingMask & UIViewAutoresizingFlexibleHeight)
+    {
+        size.height -= self.pagePadding*2;
+    }
+    
+    
     CGRect pageFrame = CGRectMake(self.bounds.origin.x,
                                   self.bounds.origin.y,
                                   size.width,
@@ -927,8 +948,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         pageFrame.origin.x = 0;
         pageFrame.origin.y = (self.pageSizeWithPadding.height * index) + self.pagePadding;
     }
-
-
     
     
     return pageFrame;
@@ -948,7 +967,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     CGSize size = _pageSizeWithPadding;
     if (CGSizeEqualToSize(size,CGSizeZero))
     {
-        UIView *page = [self.storedPages lastObject];
+        UIView *page = [[_visiblePages allObjects] lastObject];
         if (page == nil)
         {
             page = [self askDataSourceForPageAtIndex:0 addSubview:YES];
