@@ -34,7 +34,7 @@
     
     
     _scrollView = [[PunchScrollView alloc] initWithFrame:self.view.bounds];
-    _scrollView.pagePadding = 0.0;
+    _scrollView.pagePadding = 10.0;
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     _scrollView.delegate = self;
     _scrollView.dataSource = self;
