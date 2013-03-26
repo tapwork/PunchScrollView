@@ -464,12 +464,14 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     else if (self.direction == PunchScrollViewDirectionHorizontal &&
              self.contentOffset.x <= 0.0)
     {
+        // wrap around => go to end
         [self setContentOffset:CGPointMake(self.pageSizeWithPadding.width*([self pagesCount]-2), 0)
                       animated:NO];
     }
     else if (self.direction == PunchScrollViewDirectionVertical &&
              self.contentOffset.y <= 0.0)
     {
+        // wrap around => go to end
         [self setContentOffset:CGPointMake(0, self.pageSizeWithPadding.height*([self pagesCount]-2))
                       animated:NO];
     }
@@ -738,7 +740,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         int intHeight = (int)(self.pageSizeWithPadding.height);
         newPageIndex = (int)(self.contentOffset.y) / ( (intHeight == 0) ? 1 : intHeight);
     }
-        
+    
     if (newPageIndex != _currentInternalPageIndex &&
         newPageIndex < [self pagesCount] &&
         _needsUpdateContentOffset == NO)
@@ -826,9 +828,9 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         
         _currentInternalPageIndex = [self calculatedPageIndexOffset];
         
-        if ([_indexPaths count] > 0)
+        NSIndexPath *indexPath = [self currentIndexPath];
+        if ([_indexPaths count] > 0 && indexPath)
         {
-            NSIndexPath *indexPath = [self currentIndexPath];
             NSInteger index = [_indexPaths indexOfObject:indexPath];
             NSDictionary *userInfo = @{PunchScrollViewUserInfoNewPageIndexPathKey: indexPath,
                                        PunchScrollViewUserInfoNewPageFlattenedIndexKey: @(index),
@@ -841,7 +843,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
             if ([self.delegate respondsToSelector:@selector(punchScrollView:pageChanged:)]) {
                 
                 [self.delegate punchScrollView:self
-                                   pageChanged:[self currentIndexPath]];
+                                   pageChanged:indexPath];
             }
         }
 	}
