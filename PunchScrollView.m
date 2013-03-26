@@ -415,6 +415,8 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 	
 	if (_needsUpdateContentOffset == YES)
 	{
+        [self updateContentSize];
+        
         _needsUpdateContentOffset = NO;
         
         NSInteger index = _currentInternalPageIndex;
