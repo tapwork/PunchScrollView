@@ -922,11 +922,13 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     CGSize size = page.frame.size;
     
     // if the page has an autoresizing mask then we need to substract the padding from the new size
-    if (page.autoresizingMask & UIViewAutoresizingFlexibleWidth)
+    if (page.autoresizingMask & UIViewAutoresizingFlexibleWidth &&
+        page.frame.size.width == self.bounds.size.width)
     {
         size.width -= self.pagePadding*2;
     }
-    else if (page.autoresizingMask & UIViewAutoresizingFlexibleHeight)
+    else if (page.autoresizingMask & UIViewAutoresizingFlexibleHeight &&
+             page.frame.size.height == self.bounds.size.height)
     {
         size.height -= self.pagePadding*2;
     }
