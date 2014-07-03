@@ -19,7 +19,7 @@
 		DA85CEDD16C5346000DB28DE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA85CEDC16C5346000DB28DE /* ViewController.m */; };
 		DA85CEE016C5346000DB28DE /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA85CEDE16C5346000DB28DE /* ViewController_iPhone.xib */; };
 		DA85CEE316C5346000DB28DE /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA85CEE116C5346000DB28DE /* ViewController_iPad.xib */; };
-		DA85CEEC16C5347B00DB28DE /* PunchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA85CEEB16C5347B00DB28DE /* PunchScrollView.m */; settings = {COMPILER_FLAGS = "-fno-objc-arc"; }; };
+		DA85CEEC16C5347B00DB28DE /* PunchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA85CEEB16C5347B00DB28DE /* PunchScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -328,6 +328,7 @@
 				DA85CEE816C5346000DB28DE /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
