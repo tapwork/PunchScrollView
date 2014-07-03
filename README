@@ -6,6 +6,7 @@ PunchScrollView is a little UIScrollView subclass for iOS which works like UICol
 Easy and fast implementation: Delegate, DataSource methods and getter are similar to the UITableView's.
 Use the benefits of the NSIndexPath pattern like you already know from the UITableView.
 This allows an easy setup in combination with Core Data.
+
 - Helpful methods, i.e. jump or scroll to a desired page
 - Avoid boilerplate code
 - Save lots of memory with the dequeuing
@@ -13,7 +14,7 @@ This allows an easy setup in combination with Core Data.
 
 Simple setup like
 
-```
+``` objective-c
 self.scrollView = [[PunchScrollView alloc] init];
 self.scrollView.delegate = self;
 self.scrollView.dataSource = self;
