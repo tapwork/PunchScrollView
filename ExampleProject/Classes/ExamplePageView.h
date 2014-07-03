@@ -11,9 +11,9 @@
 
 
 @interface ExamplePageView : UIView {
-	UILabel *titleLabel;
+	
 }
 
-@property (nonatomic, retain) UILabel *titleLabel;
+@property (nonatomic, readonly) UILabel *titleLabel;
 
 @end

@@ -1,15 +1,56 @@
-PunchScrollView hosted on github is a ScrollView framework for iOS (iPhone, iPad and iPod Touch) which works like the Apple UITableView Framework 
+#PunchScrollView
 
-Easy and fast implementation, almost like the UITableView
-Use the benefits of the NSIndexPath like you might know it from the UITableView
-Easy setup in combination with Core Data
-Helpful methods, i.e. jump or scroll to a desired page
-Avoid boilerplate code
-Save lots of memory with the use of dequeuing
+PunchScrollView is a little UIScrollView subclass for iOS which works like UICollectionView or UITableView Frameworks.
+ 
 
-I wrote a mini documentation http://www.cmenschel.de/punchscrollview
->[Update from WWDC 2012] Apple introduced the UICollectionViewController which has the same purpose as PunchScrollView. Because it does the same things I will stop developing PunchScrollView in the near future.[/Update]
+Easy and fast implementation: Delegate, DataSource methods and getter are similar to the UITableView's.
+Use the benefits of the NSIndexPath pattern like you already know from the UITableView.
+This allows an easy setup in combination with Core Data.
+- Helpful methods, i.e. jump or scroll to a desired page
+- Avoid boilerplate code
+- Save lots of memory with the dequeuing
+- Comes with an Example project to demonstrate the usage
 
+Simple setup like
+
+```
+self.scrollView = [[PunchScrollView alloc] init];
+self.scrollView.delegate = self;
+self.scrollView.dataSource = self;
+self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+[self.view addSubview:self.scrollView];
+
+#pragma mark - PunchScrollViewDataSource
+
+- (NSInteger)numberOfSectionsInPunchScrollView:(PunchScrollView *)scrollView
+{
+	return 3;
+}
+
+- (NSInteger)punchscrollView:(PunchScrollView *)scrollView numberOfPagesInSection:(NSInteger)section
+{
+	return 3;
+}
+
+- (UIView*)punchScrollView:(PunchScrollView*)scrollView viewForPageAtIndexPath:(NSIndexPath *)indexPath
+{
+	ExamplePageView *page = (ExamplePageView*)[scrollView dequeueRecycledPage];
+	if (page == nil)
+	{
+      //
+      // You could also use PunchScrollview as gallery scrollview - just change the size of the desired view
+      //
+		page = [[ExamplePageView alloc] initWithFrame:self.view.bounds];
+        page.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
+	}
+	
+	page.titleLabel.text = [NSString stringWithFormat:@"Page %d in section %d", indexPath.row, indexPath.section];
+	
+	return page;
+}
+
+
+```
 
 
 

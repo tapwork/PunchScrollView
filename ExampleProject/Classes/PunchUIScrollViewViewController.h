@@ -13,7 +13,7 @@
 
 @interface PunchUIScrollViewViewController : UIViewController <UIScrollViewDelegate, PunchScrollViewDataSource, PunchScrollViewDelegate> {
 
-	PunchScrollView *scrollView_;
+	
 }
 
 @end

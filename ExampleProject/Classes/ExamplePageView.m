@@ -11,44 +11,34 @@
 
 
 @implementation ExamplePageView
-@synthesize titleLabel;
 
-- (id)initWithFrame:(CGRect)frame {
+- (instancetype)initWithFrame:(CGRect)frame {
     
     self = [super initWithFrame:frame];
     if (self) {
-        // Initialization code.
-		self.backgroundColor = [UIColor whiteColor];
+       
+        self.backgroundColor = [UIColor whiteColor];
 		
-		titleLabel = [[UILabel alloc] initWithFrame:CGRectMake(0,
-                                                               (frame.size.height/2)-25,
-                                                               frame.size.width,
-                                                               50)];
-		titleLabel.backgroundColor = [UIColor redColor];
-        titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth |
+		_titleLabel = [[UILabel alloc] initWithFrame:CGRectZero];
+		_titleLabel.backgroundColor = [UIColor redColor];
+        _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth |
                                         UIViewAutoresizingFlexibleTopMargin |
                                         UIViewAutoresizingFlexibleBottomMargin;
-        titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-		titleLabel.textAlignment = UITextAlignmentCenter;
-		[self addSubview:titleLabel];
+        _titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
+		_titleLabel.textAlignment = UITextAlignmentCenter;
+		[self addSubview:_titleLabel];
     }
     return self;
 }
 
-
-
-/*
-// Only override drawRect: if you perform custom drawing.
-// An empty implementation adversely affects performance during animation.
-- (void)drawRect:(CGRect)rect {
-    // Drawing code.
-}
-*/
-
-- (void)dealloc {
-	
-	[titleLabel release];
-    [super dealloc];
+- (void)layoutSubviews
+{
+    [super layoutSubviews];
+    
+    _titleLabel.frame = CGRectMake(0,
+                                   (self.frame.size.height/2)-25,
+                                   self.frame.size.width,
+                                   50);
 }
 
 

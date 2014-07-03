@@ -11,9 +11,8 @@
 
 @class PunchUIScrollViewViewController;
 
-@interface PunchUIScrollViewAppDelegate : NSObject <UIApplicationDelegate> {
-    UIWindow *window;
-    PunchUIScrollViewViewController *viewController;
+@interface PunchUIScrollViewAppDelegate : UIResponder <UIApplicationDelegate> {
+
 }
 
 @property (nonatomic, retain) IBOutlet UIWindow *window;
