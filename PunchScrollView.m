@@ -35,58 +35,44 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 {
     BOOL _needsUpdateContentOffset;
     BOOL _needsReload;
-    BOOL _isScrollingForwardsOrBack;
+    BOOL _infiniteScrolling;
     
-	id <PunchScrollViewDataSource> _dataSource;
-	id <PunchScrollViewDelegate> _delegate;
+    id _privateDelegate;
     
-	NSMutableSet                    *_recycledPages;
-    NSMutableSet                    *_visiblePages;
-    NSMutableArray                  *_pageController;
-    
-	NSInteger                       _currentInternalPageIndex;
-	NSMutableArray                  *_indexPaths;
-	CGFloat                         _currentWidth;
-    CGFloat                         _pagePadding;
-    CGSize                          _pageSizeWithPadding;
-    PunchScrollViewDirection        _direction;
+	NSMutableSet *_visiblePages;
+    NSMutableSet *_recycledPages;
+    NSMutableArray *_pageController;
+	NSInteger _currentInternalPageIndex;
+	NSMutableArray *_indexPaths;
+	CGFloat _currentWidth;
+    CGSize  _pageSizeWithPadding;
 }
 
 @property (nonatomic, readonly) CGSize pageSizeWithPadding;
-@property (nonatomic, readonly) NSArray *storedPages;
-@property (nonatomic, readwrite) BOOL isScrollingForwardsOrBack;
 
 
 @end
 
 @implementation PunchScrollView
-@synthesize infiniteScrolling = _infiniteScrolling;
-@dynamic currentIndexPath;
-@dynamic lastIndexPath;
-@dynamic currentPage;
-@dynamic firstPage;
-@dynamic lastPage;
-@dynamic pageController;
 
 
 #pragma mark - init, dealloc & setup
-- (id)init
+
+- (instancetype)init
 {
     return [self initWithFrame:[[UIScreen mainScreen] bounds]];
 }
 
-- (id)initWithCoder:(NSCoder *)aDecoder
+- (instancetype)initWithCoder:(NSCoder *)aDecoder
 {
     self = [super initWithCoder:aDecoder];
     if (self) {
         [self setup];
     }
     return self;
-    
 }
 
-
-- (id)initWithFrame:(CGRect)aFrame
+- (instancetype)initWithFrame:(CGRect)aFrame
 {
     if ((self = [super initWithFrame:aFrame]))
 	{
@@ -110,7 +96,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     self.showsHorizontalScrollIndicator = NO;
     self.directionalLockEnabled = YES;
     _currentInternalPageIndex = NSNotFound;
-    _isScrollingForwardsOrBack = NO;
     
     _indexPaths     = [[NSMutableArray alloc] init];
     _recycledPages  = [[NSMutableSet alloc] init];
@@ -118,12 +103,9 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     UITapGestureRecognizer *tapGesutre = [[UITapGestureRecognizer alloc] initWithTarget:self action:@selector(tapOnPage:)];
     [self addGestureRecognizer:tapGesutre];
-    [tapGesutre release];
     
     [self setNeedsReload];
 }
-
-
 
 - (void)dealloc
 {
@@ -131,17 +113,13 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     self.delegate = nil;
     self.dataSource = nil;
-	
-	[_indexPaths release];
-	_indexPaths = nil;
-	[_recycledPages release];
-	_recycledPages = nil;
-	[_visiblePages release];
-	_visiblePages = nil;
-    [_pageController release];
-    _pageController = nil;
     
-    [super dealloc];
+    [self removePages];
+    
+	_indexPaths = nil;
+	_recycledPages = nil;
+	_visiblePages = nil;
+    _pageController = nil;
 }
 
 - (void)removePages
@@ -151,66 +129,31 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     _currentInternalPageIndex   = NSNotFound;
     self.contentSize            = CGSizeZero;
     
-    NSArray *pages = self.storedPages;
-    for (UIView *view in pages)
+    for (UIView *view in _visiblePages)
     {
         [view removeFromSuperview];
-        view = nil;
+    }
+    for (UIView *view in _recycledPages)
+    {
+        [view removeFromSuperview];
     }
     
     [_visiblePages removeAllObjects];
     [_recycledPages removeAllObjects];
 }
 
-
-#pragma mark -
-#pragma mark Public Methods
-- (void)setDataSource:(id <PunchScrollViewDataSource>)thedataSource
-{
-	if (_dataSource != thedataSource)
-    {
-        _dataSource = thedataSource;
-        if (_dataSource != nil)
-        {
-            [self setNeedsReload];
-        }
-        else
-        {
-            [self removePages];
-        }
-    }
-}
-
-- (void)setDelegate:(id<PunchScrollViewDelegate>)aDelegate
-{
-    if (aDelegate != self->_delegate)
-    {
-        self->_delegate = aDelegate;
-        if (aDelegate != nil)
-        {
-            [self setNeedsReload];
-        }
-    }
-}
-
-- (id<PunchScrollViewDelegate>)delegate
-{
-    return self->_delegate;
-}
-
+#pragma mark - Public Methods
 
 - (UIView *)dequeueRecycledPage
 {
     UIView *page = [_recycledPages anyObject];
     if (page)
     {
-        [[page retain] autorelease];
         [_recycledPages removeObject:page];
         [page removeFromSuperview];
     }
     return page;
 }
-
 
 - (UIView*)pageForIndexPath:(NSIndexPath*)indexPath
 {
@@ -314,6 +257,39 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 {
     return [_indexPaths indexOfObject:indexPath];
 }
+
+- (void)setDelegate:(id<PunchScrollViewDelegate>)delegate
+{
+    [super setDelegate:self];
+    
+    if (![_privateDelegate isEqual:delegate])
+    {
+        _privateDelegate = delegate;
+        [self setNeedsLayout];
+    }
+}
+
+- (id<PunchScrollViewDelegate>)delegate
+{
+    return _privateDelegate;
+}
+
+- (void)setDataSource:(id <PunchScrollViewDataSource>)thedataSource
+{
+	if (_dataSource != thedataSource)
+    {
+        _dataSource = thedataSource;
+        if (_dataSource != nil)
+        {
+            [self setNeedsReload];
+        }
+        else
+        {
+            [self removePages];
+        }
+    }
+}
+
 
 - (void)reloadData
 {
@@ -555,8 +531,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
             vc.view = nil;
         }
     }
-    [controllerViewsToDelete release];
-    
     
     //
     // add missing pages
@@ -633,13 +607,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     }
 }
 
-- (NSArray*)storedPages
-{
-    NSArray *storedPages = [NSArray arrayWithArray:[_recycledPages allObjects]];
-    
-    return [storedPages arrayByAddingObjectsFromArray:[_visiblePages allObjects]];
-}
-
 - (BOOL)isDisplayingPageForIndex:(NSInteger)index
 {
     BOOL foundPage = NO;
@@ -658,10 +625,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 {
     if (_currentInternalPageIndex == index) {
         return; // already on that page!
-    }
-    
-    if (animated) {
-        self.isScrollingForwardsOrBack = YES;
     }
     
     if (_direction == PunchScrollViewDirectionHorizontal)
@@ -726,9 +689,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)scrollViewDidScroll:(UIScrollView *)scrollView
 {
-    if(!scrollView.isTracking)
-        self.isScrollingForwardsOrBack = YES;
-    
     //
     // Check if the page really has changed
     //
@@ -767,10 +727,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)scrollViewDidEndDragging:(UIScrollView *)scrollView willDecelerate:(BOOL)decelerate
 {
-    if (!decelerate) {
-        self.isScrollingForwardsOrBack = NO;
-    }  // else this gets set when decelerating has ended
-    
     if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDragging:willDecelerate:)])
     {
         [self.delegate scrollViewDidEndDragging:self willDecelerate:decelerate];
@@ -779,8 +735,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)scrollViewDidEndDecelerating:(UIScrollView *)scrollView
 {
-    self.isScrollingForwardsOrBack = NO;
-    
     if ([self.delegate respondsToSelector:@selector(scrollViewDidEndDecelerating:)])
     {
         [self.delegate performSelector:@selector(scrollViewDidEndDecelerating:) withObject:self];
@@ -789,8 +743,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)scrollViewDidEndScrollingAnimation:(UIScrollView *)scrollView
 {
-    self.isScrollingForwardsOrBack = NO;
-    
     if ([self.delegate respondsToSelector:@selector(scrollViewDidEndScrollingAnimation:)])
     {
         [self.delegate performSelector:@selector(scrollViewDidEndScrollingAnimation:) withObject:self];
@@ -1051,11 +1003,11 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     return nil;
 }
 
+
 @end
 
 
-#pragma mark
-#pragma mark IndexPath Category
+#pragma mark - IndexPath Category
 @implementation NSIndexPath (PunchScrollView)
 
 
@@ -1075,5 +1027,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 {
     return [self indexAtPosition:1];
 }
+
 
 @end

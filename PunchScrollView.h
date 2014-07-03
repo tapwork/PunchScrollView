@@ -64,22 +64,6 @@ extern NSString *const PunchScrollViewUserInfoTotalPagesNumberKey;  // an NSNumb
 //
 - (void)punchScrollView:(PunchScrollView*)scrollView didTapOnPage:(UIView*)view atIndexPath:(NSIndexPath*)indexPath;
 
-
-
-//
-// The standard UIScrollView Delegates
-//
-- (void)scrollViewDidScroll:(PunchScrollView *)scrollView;
-
-- (void)scrollViewWillBeginDragging:(PunchScrollView *)scrollView;
-- (void)scrollViewDidEndDragging:(PunchScrollView *)scrollView willDecelerate:(BOOL)decelerate;
-
-- (void)scrollViewDidEndDecelerating:(PunchScrollView *)scrollView;
-- (void)scrollViewWillBeginDecelerating:(PunchScrollView *)scrollView;
-
-- (void)scrollViewDidScrollToTop:(PunchScrollView *)scrollView;
-- (void)scrollViewDidEndScrollingAnimation:(PunchScrollView *)scrollView;
-
 @end
 
 
@@ -121,13 +105,13 @@ typedef enum {
 
 
 // Set the dataSource
-@property (nonatomic, assign) id <PunchScrollViewDataSource> dataSource;
+@property (nonatomic, weak) id <PunchScrollViewDataSource> dataSource;
 
 // set the delegate
-@property (nonatomic, assign) id <PunchScrollViewDelegate> delegate;
+@property (nonatomic, weak) id <PunchScrollViewDelegate> delegate;
 
 // Set the padding (gap) between pages. Default is 10pt
-@property (nonatomic, assign) CGFloat             pagePadding;
+@property (nonatomic, assign) CGFloat pagePadding;
 
 // Set a Vertical or horizontal direction of the scrolling
 @property (nonatomic, assign) PunchScrollViewDirection direction;
@@ -159,15 +143,13 @@ typedef enum {
 //  set to a inifinite scolling experience (=> carrousel)   Default is NO
 @property (nonatomic, assign) BOOL infiniteScrolling;
 
-@property (nonatomic, readonly) BOOL isScrollingForwardsOrBack;
-
 
 /*
  * Init Method for PunchScrollView
  *
  */
-- (id)init;
-- (id)initWithFrame:(CGRect)aFrame;
+- (instancetype)init;
+- (instancetype)initWithFrame:(CGRect)aFrame;
 
 /*
  * This Method returns a UIView which is in the Queue
