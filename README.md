@@ -1,4 +1,4 @@
-#PunchScrollView
+# PunchScrollView
 
 PunchScrollView is a little UIScrollView subclass for iOS which works like UICollectionView or UITableView Frameworks.
  
@@ -12,9 +12,9 @@ This allows an easy setup in combination with Core Data.
 - Save lots of memory with the dequeuing
 - Comes with an Example project to demonstrate the usage
 
-Simple setup like
+Example setup in the ViewController
 
-``` objective-c
+```  objective-c
 self.scrollView = [[PunchScrollView alloc] init];
 self.scrollView.delegate = self;
 self.scrollView.dataSource = self;
