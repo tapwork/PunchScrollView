@@ -467,7 +467,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         return;
     }
     
-    int lazyOfLoadingPages = 0;
+    NSInteger lazyOfLoadingPages = 0;
     NSMutableArray *controllerViewsToDelete = [[NSMutableArray alloc] init];
     
     if ([self.dataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
@@ -477,8 +477,8 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     // Calculate which pages are visible
     CGRect visibleBounds = self.bounds;
-    int firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
-    int lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.pageSizeWithPadding.width);
+    NSUInteger firstNeededPageIndex = floorf(CGRectGetMinX(visibleBounds) / CGRectGetWidth(visibleBounds));
+    NSUInteger lastNeededPageIndex  = ceil(CGRectGetMaxX(visibleBounds) / self.pageSizeWithPadding.width);
     
     if (_direction == PunchScrollViewDirectionVertical)
     {
@@ -492,7 +492,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     // Recycle no-longer-visible pages
     for (UIView *page in _visiblePages)
     {
-        int indexToDelete = page.tag;
+        NSInteger indexToDelete = page.tag;
         if (indexToDelete < firstNeededPageIndex ||
             indexToDelete > lastNeededPageIndex)
         {
@@ -534,7 +534,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     //
     // add missing pages
-    for (int index = firstNeededPageIndex; index <= lastNeededPageIndex; index++)
+    for (NSUInteger index = firstNeededPageIndex; index <= lastNeededPageIndex; index++)
     {
         if (![self isDisplayingPageForIndex:index])
 		{
