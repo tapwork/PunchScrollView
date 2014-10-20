@@ -385,7 +385,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 	
 	_currentWidth = self.frame.size.width;
 	
-	if (_needsUpdateContentOffset == YES)
+	if (_needsUpdateContentOffset)
 	{
         [self updateContentSize];
         
@@ -407,8 +407,8 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         [self updateFrameForAvailablePages];
     }
     
-    if (self.infiniteScrolling == YES &&
-        _needsUpdateContentOffset == NO)
+    if (self.infiniteScrolling &&
+        !_needsUpdateContentOffset)
     {
         [self recenterForInfiniteIfNecessary];
     }
@@ -569,8 +569,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         page = [self.dataSource punchScrollView:self viewForPageAtIndexPath:[self indexPathForIndex:index]];
     }
     
-    if (nil != page &&
-        shouldAddSubView == YES)
+    if (page && shouldAddSubView)
     {
         [self addSubview:page];
         [_visiblePages addObject:page];
@@ -589,7 +588,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)setNeedsReload
 {
-    if (_needsReload == NO)
+    if (!_needsReload)
     {
         _needsReload = YES;
         __block PunchScrollView *blockself = self;
@@ -694,7 +693,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     if (newPageIndex != _currentInternalPageIndex &&
         newPageIndex < [self pagesCount] &&
-        _needsUpdateContentOffset == NO)
+        !_needsUpdateContentOffset)
     {
         [self pageIndexChanged];
     }
@@ -960,7 +959,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         // If we are in infinite scrolling, we have to do some magic calculation
         // this is why we have public and internal indexes
         // we need to change the index for internal usage
-        if (self.infiniteScrolling == YES)
+        if (self.infiniteScrolling)
         {
             if (index == [self pagesCount]-1)
             {
