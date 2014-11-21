@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>IDESourceControlProjectFavoriteDictionaryKey</key>
+	<false/>
+	<key>IDESourceControlProjectIdentifier</key>
+	<string>EE14F0D7-B742-44D9-A34E-CA5EB3A1B72F</string>
+	<key>IDESourceControlProjectName</key>
+	<string>ImageExample</string>
+	<key>IDESourceControlProjectOriginsDictionary</key>
+	<dict>
+		<key>FDE3ADC1B94FD62B509F76DC8C0512E5FE8010F6</key>
+		<string>github.com:tapwork/PunchScrollView.git</string>
+	</dict>
+	<key>IDESourceControlProjectPath</key>
+	<string>ImageExample/ImageExample.xcworkspace</string>
+	<key>IDESourceControlProjectRelativeInstallPathDictionary</key>
+	<dict>
+		<key>FDE3ADC1B94FD62B509F76DC8C0512E5FE8010F6</key>
+		<string>../..</string>
+	</dict>
+	<key>IDESourceControlProjectURL</key>
+	<string>github.com:tapwork/PunchScrollView.git</string>
+	<key>IDESourceControlProjectVersion</key>
+	<integer>111</integer>
+	<key>IDESourceControlProjectWCCIdentifier</key>
+	<string>FDE3ADC1B94FD62B509F76DC8C0512E5FE8010F6</string>
+	<key>IDESourceControlProjectWCConfigurations</key>
+	<array>
+		<dict>
+			<key>IDESourceControlRepositoryExtensionIdentifierKey</key>
+			<string>public.vcs.git</string>
+			<key>IDESourceControlWCCIdentifierKey</key>
+			<string>FDE3ADC1B94FD62B509F76DC8C0512E5FE8010F6</string>
+			<key>IDESourceControlWCCName</key>
+			<string>PunchScrollView</string>
+		</dict>
+	</array>
+</dict>
+</plist>

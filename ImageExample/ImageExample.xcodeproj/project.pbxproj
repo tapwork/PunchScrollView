@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1D258411758C2D1A5AF334AD /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EC27A3D25F460E170C85D89E /* libPods.a */; };
 		DA85CEC416C5346000DB28DE /* UIKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA85CEC316C5346000DB28DE /* UIKit.framework */; };
 		DA85CEC616C5346000DB28DE /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA85CEC516C5346000DB28DE /* Foundation.framework */; };
 		DA85CEC816C5346000DB28DE /* CoreGraphics.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = DA85CEC716C5346000DB28DE /* CoreGraphics.framework */; };
@@ -19,10 +20,11 @@
 		DA85CEDD16C5346000DB28DE /* ViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = DA85CEDC16C5346000DB28DE /* ViewController.m */; };
 		DA85CEE016C5346000DB28DE /* ViewController_iPhone.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA85CEDE16C5346000DB28DE /* ViewController_iPhone.xib */; };
 		DA85CEE316C5346000DB28DE /* ViewController_iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DA85CEE116C5346000DB28DE /* ViewController_iPad.xib */; };
-		DA85CEEC16C5347B00DB28DE /* PunchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DA85CEEB16C5347B00DB28DE /* PunchScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		23F5361B166CEE135626BC9D /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
+		B8FD561611E5F7BBEA712F4D /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		DA85CEC016C5346000DB28DE /* ImageExample.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = ImageExample.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		DA85CEC316C5346000DB28DE /* UIKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = UIKit.framework; path = System/Library/Frameworks/UIKit.framework; sourceTree = SDKROOT; };
 		DA85CEC516C5346000DB28DE /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = System/Library/Frameworks/Foundation.framework; sourceTree = SDKROOT; };
@@ -40,8 +42,7 @@
 		DA85CEDC16C5346000DB28DE /* ViewController.m */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.c.objc; path = ViewController.m; sourceTree = "<group>"; };
 		DA85CEDF16C5346000DB28DE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPhone.xib; sourceTree = "<group>"; };
 		DA85CEE216C5346000DB28DE /* en */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = en; path = en.lproj/ViewController_iPad.xib; sourceTree = "<group>"; };
-		DA85CEEA16C5347B00DB28DE /* PunchScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PunchScrollView.h; path = ../../PunchScrollView.h; sourceTree = "<group>"; };
-		DA85CEEB16C5347B00DB28DE /* PunchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PunchScrollView.m; path = ../../PunchScrollView.m; sourceTree = "<group>"; };
+		EC27A3D25F460E170C85D89E /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -52,18 +53,29 @@
 				DA85CEC416C5346000DB28DE /* UIKit.framework in Frameworks */,
 				DA85CEC616C5346000DB28DE /* Foundation.framework in Frameworks */,
 				DA85CEC816C5346000DB28DE /* CoreGraphics.framework in Frameworks */,
+				1D258411758C2D1A5AF334AD /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		CF5AD47929B38213C3DB8451 /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				23F5361B166CEE135626BC9D /* Pods.debug.xcconfig */,
+				B8FD561611E5F7BBEA712F4D /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			sourceTree = "<group>";
+		};
 		DA85CEB716C5346000DB28DE = {
 			isa = PBXGroup;
 			children = (
 				DA85CEC916C5346000DB28DE /* ImageExample */,
 				DA85CEC216C5346000DB28DE /* Frameworks */,
 				DA85CEC116C5346000DB28DE /* Products */,
+				CF5AD47929B38213C3DB8451 /* Pods */,
 			);
 			sourceTree = "<group>";
 		};
@@ -81,6 +93,7 @@
 				DA85CEC316C5346000DB28DE /* UIKit.framework */,
 				DA85CEC516C5346000DB28DE /* Foundation.framework */,
 				DA85CEC716C5346000DB28DE /* CoreGraphics.framework */,
+				EC27A3D25F460E170C85D89E /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -88,7 +101,6 @@
 		DA85CEC916C5346000DB28DE /* ImageExample */ = {
 			isa = PBXGroup;
 			children = (
-				DA85CEE916C5346900DB28DE /* PunchScrollView */,
 				DA85CED216C5346000DB28DE /* AppDelegate.h */,
 				DA85CED316C5346000DB28DE /* AppDelegate.m */,
 				DA85CEDB16C5346000DB28DE /* ViewController.h */,
@@ -114,15 +126,6 @@
 			name = "Supporting Files";
 			sourceTree = "<group>";
 		};
-		DA85CEE916C5346900DB28DE /* PunchScrollView */ = {
-			isa = PBXGroup;
-			children = (
-				DA85CEEA16C5347B00DB28DE /* PunchScrollView.h */,
-				DA85CEEB16C5347B00DB28DE /* PunchScrollView.m */,
-			);
-			name = PunchScrollView;
-			sourceTree = "<group>";
-		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
@@ -130,9 +133,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = DA85CEE616C5346000DB28DE /* Build configuration list for PBXNativeTarget "ImageExample" */;
 			buildPhases = (
+				777B5A8054C887EE6A2C3FDA /* Check Pods Manifest.lock */,
 				DA85CEBC16C5346000DB28DE /* Sources */,
 				DA85CEBD16C5346000DB28DE /* Frameworks */,
 				DA85CEBE16C5346000DB28DE /* Resources */,
+				313D74ECF1A1FF03A41BF94D /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -185,6 +190,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		313D74ECF1A1FF03A41BF94D /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		777B5A8054C887EE6A2C3FDA /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		DA85CEBC16C5346000DB28DE /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -193,7 +231,6 @@
 				DA85CED016C5346000DB28DE /* main.m in Sources */,
 				DA85CED416C5346000DB28DE /* AppDelegate.m in Sources */,
 				DA85CEDD16C5346000DB28DE /* ViewController.m in Sources */,
-				DA85CEEC16C5347B00DB28DE /* PunchScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -287,6 +324,7 @@
 		};
 		DA85CEE716C5346000DB28DE /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 23F5361B166CEE135626BC9D /* Pods.debug.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ImageExample/ImageExample-Prefix.pch";
@@ -299,6 +337,7 @@
 		};
 		DA85CEE816C5346000DB28DE /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = B8FD561611E5F7BBEA712F4D /* Pods.release.xcconfig */;
 			buildSettings = {
 				GCC_PRECOMPILE_PREFIX_HEADER = YES;
 				GCC_PREFIX_HEADER = "ImageExample/ImageExample-Prefix.pch";

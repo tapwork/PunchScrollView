@@ -15,10 +15,10 @@
 		2899E5220DE3E06400AC0155 /* PunchUIScrollViewViewController.xib in Resources */ = {isa = PBXBuildFile; fileRef = 2899E5210DE3E06400AC0155 /* PunchUIScrollViewViewController.xib */; };
 		28AD733F0D9D9553002E5188 /* MainWindow.xib in Resources */ = {isa = PBXBuildFile; fileRef = 28AD733E0D9D9553002E5188 /* MainWindow.xib */; };
 		28D7ACF80DDB3853001CB0EB /* PunchUIScrollViewViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 28D7ACF70DDB3853001CB0EB /* PunchUIScrollViewViewController.m */; };
+		59E9F36E310A1C167FEB9E9F /* libPods.a in Frameworks */ = {isa = PBXBuildFile; fileRef = DC9E3B37AA9B258CF3216068 /* libPods.a */; };
 		DA7A89621965D3D80045E187 /* Default-568h@2x.png in Resources */ = {isa = PBXBuildFile; fileRef = DA7A89611965D3D80045E187 /* Default-568h@2x.png */; };
 		DABA7B3213C5A82700FBB0F5 /* MainWindow-iPad.xib in Resources */ = {isa = PBXBuildFile; fileRef = DABA7B3113C5A82700FBB0F5 /* MainWindow-iPad.xib */; };
 		DAEE6693129D8289005B06D6 /* ExamplePageView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAEE6692129D8289005B06D6 /* ExamplePageView.m */; };
-		DAEE669A129D82C6005B06D6 /* PunchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = DAEE6699129D82C6005B06D6 /* PunchScrollView.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -34,13 +34,14 @@
 		28D7ACF70DDB3853001CB0EB /* PunchUIScrollViewViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = PunchUIScrollViewViewController.m; sourceTree = "<group>"; };
 		29B97316FDCFA39411CA2CEA /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = main.m; sourceTree = "<group>"; };
 		32CA4F630368D1EE00C91783 /* PunchUIScrollView_Prefix.pch */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = PunchUIScrollView_Prefix.pch; sourceTree = "<group>"; };
+		7A64A3625EC14D7A703DF45F /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.debug.xcconfig; path = "Pods/Target Support Files/Pods/Pods.debug.xcconfig"; sourceTree = "<group>"; };
 		8D1107310486CEB800E47090 /* PunchUIScrollView-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "PunchUIScrollView-Info.plist"; plistStructureDefinitionIdentifier = "com.apple.xcode.plist.structure-definition.iphone.info-plist"; sourceTree = "<group>"; };
+		CFEF22FF8C07AE9383316128 /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = Pods.release.xcconfig; path = "Pods/Target Support Files/Pods/Pods.release.xcconfig"; sourceTree = "<group>"; };
 		DA7A89611965D3D80045E187 /* Default-568h@2x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "Default-568h@2x.png"; sourceTree = "<group>"; };
 		DABA7B3113C5A82700FBB0F5 /* MainWindow-iPad.xib */ = {isa = PBXFileReference; lastKnownFileType = file.xib; name = "MainWindow-iPad.xib"; path = "iPad/MainWindow-iPad.xib"; sourceTree = "<group>"; };
 		DAEE6691129D8289005B06D6 /* ExamplePageView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = ExamplePageView.h; sourceTree = "<group>"; };
 		DAEE6692129D8289005B06D6 /* ExamplePageView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = ExamplePageView.m; sourceTree = "<group>"; };
-		DAEE6698129D82C6005B06D6 /* PunchScrollView.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PunchScrollView.h; path = ../PunchScrollView.h; sourceTree = SOURCE_ROOT; };
-		DAEE6699129D82C6005B06D6 /* PunchScrollView.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PunchScrollView.m; path = ../PunchScrollView.m; sourceTree = SOURCE_ROOT; };
+		DC9E3B37AA9B258CF3216068 /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -51,6 +52,7 @@
 				1D60589F0D05DD5A006BFB54 /* Foundation.framework in Frameworks */,
 				1DF5F4E00D08C38300B7A737 /* UIKit.framework in Frameworks */,
 				288765A50DF7441C002DB57D /* CoreGraphics.framework in Frameworks */,
+				59E9F36E310A1C167FEB9E9F /* libPods.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -60,7 +62,6 @@
 		080E96DDFE201D6D7F000001 /* Classes */ = {
 			isa = PBXGroup;
 			children = (
-				DAEE6697129D82BC005B06D6 /* PunchUIScrollView */,
 				DAEE6691129D8289005B06D6 /* ExamplePageView.h */,
 				DAEE6692129D8289005B06D6 /* ExamplePageView.m */,
 				1D3623240D0F684500981E51 /* PunchUIScrollViewAppDelegate.h */,
@@ -89,6 +90,7 @@
 				DABA7B3013C5A82700FBB0F5 /* iPad */,
 				29B97323FDCFA39411CA2CEA /* Frameworks */,
 				19C28FACFE9D520D11CA2CBB /* Products */,
+				DBD870683831CE94A217A8EF /* Pods */,
 			);
 			name = CustomTemplate;
 			sourceTree = "<group>";
@@ -118,6 +120,7 @@
 				1DF5F4DF0D08C38300B7A737 /* UIKit.framework */,
 				1D30AB110D05D00D00671497 /* Foundation.framework */,
 				288765A40DF7441C002DB57D /* CoreGraphics.framework */,
+				DC9E3B37AA9B258CF3216068 /* libPods.a */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -130,13 +133,13 @@
 			name = iPad;
 			sourceTree = "<group>";
 		};
-		DAEE6697129D82BC005B06D6 /* PunchUIScrollView */ = {
+		DBD870683831CE94A217A8EF /* Pods */ = {
 			isa = PBXGroup;
 			children = (
-				DAEE6698129D82C6005B06D6 /* PunchScrollView.h */,
-				DAEE6699129D82C6005B06D6 /* PunchScrollView.m */,
+				7A64A3625EC14D7A703DF45F /* Pods.debug.xcconfig */,
+				CFEF22FF8C07AE9383316128 /* Pods.release.xcconfig */,
 			);
-			name = PunchUIScrollView;
+			name = Pods;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -146,9 +149,11 @@
 			isa = PBXNativeTarget;
 			buildConfigurationList = 1D6058960D05DD3E006BFB54 /* Build configuration list for PBXNativeTarget "PunchUIScrollView" */;
 			buildPhases = (
+				D9C567031444FF61C8F1C449 /* Check Pods Manifest.lock */,
 				1D60588D0D05DD3D006BFB54 /* Resources */,
 				1D60588E0D05DD3D006BFB54 /* Sources */,
 				1D60588F0D05DD3D006BFB54 /* Frameworks */,
+				9E2B32069910F729AA507805 /* Copy Pods Resources */,
 			);
 			buildRules = (
 			);
@@ -165,7 +170,7 @@
 		29B97313FDCFA39411CA2CEA /* Project object */ = {
 			isa = PBXProject;
 			attributes = {
-				LastUpgradeCheck = 0430;
+				LastUpgradeCheck = 0620;
 			};
 			buildConfigurationList = C01FCF4E08A954540054247B /* Build configuration list for PBXProject "PunchUIScrollView" */;
 			compatibilityVersion = "Xcode 3.2";
@@ -200,6 +205,39 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9E2B32069910F729AA507805 /* Copy Pods Resources */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Copy Pods Resources";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "\"${SRCROOT}/Pods/Target Support Files/Pods/Pods-resources.sh\"\n";
+			showEnvVarsInLog = 0;
+		};
+		D9C567031444FF61C8F1C449 /* Check Pods Manifest.lock */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputPaths = (
+			);
+			name = "Check Pods Manifest.lock";
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "diff \"${PODS_ROOT}/../Podfile.lock\" \"${PODS_ROOT}/Manifest.lock\" > /dev/null\nif [[ $? != 0 ]] ; then\n    cat << EOM\nerror: The sandbox is not in sync with the Podfile.lock. Run 'pod install' or update your CocoaPods installation.\nEOM\n    exit 1\nfi\n";
+			showEnvVarsInLog = 0;
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		1D60588E0D05DD3D006BFB54 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -209,7 +247,6 @@
 				1D3623260D0F684500981E51 /* PunchUIScrollViewAppDelegate.m in Sources */,
 				28D7ACF80DDB3853001CB0EB /* PunchUIScrollViewViewController.m in Sources */,
 				DAEE6693129D8289005B06D6 /* ExamplePageView.m in Sources */,
-				DAEE669A129D82C6005B06D6 /* PunchScrollView.m in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -218,6 +255,7 @@
 /* Begin XCBuildConfiguration section */
 		1D6058940D05DD3E006BFB54 /* Debug */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = 7A64A3625EC14D7A703DF45F /* Pods.debug.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -236,6 +274,7 @@
 		};
 		1D6058950D05DD3E006BFB54 /* Release */ = {
 			isa = XCBuildConfiguration;
+			baseConfigurationReference = CFEF22FF8C07AE9383316128 /* Pods.release.xcconfig */;
 			buildSettings = {
 				ALWAYS_SEARCH_USER_PATHS = NO;
 				CLANG_ENABLE_OBJC_ARC = YES;
@@ -254,7 +293,6 @@
 		C01FCF4F08A954540054247B /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;
@@ -262,6 +300,7 @@
 				GCC_WARN_ABOUT_RETURN_TYPE = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
 				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
 			};
 			name = Debug;
@@ -269,7 +308,6 @@
 		C01FCF5008A954540054247B /* Release */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
-				ARCHS = "$(ARCHS_STANDARD_32_BIT)";
 				CLANG_ENABLE_OBJC_ARC = YES;
 				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				GCC_C_LANGUAGE_STANDARD = c99;

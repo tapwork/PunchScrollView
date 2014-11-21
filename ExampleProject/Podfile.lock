@@ -1,0 +1,14 @@
+PODS:
+  - PunchScrollView (1.1.0)
+
+DEPENDENCIES:
+  - PunchScrollView (from `../PunchScrollView.podspec`)
+
+EXTERNAL SOURCES:
+  PunchScrollView:
+    :path: ../PunchScrollView.podspec
+
+SPEC CHECKSUMS:
+  PunchScrollView: ee3ec8fb52fa708b0a437c12e64f72e1dc292c8b
+
+COCOAPODS: 0.35.0

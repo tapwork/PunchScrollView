@@ -1,0 +1,472 @@
+// !$*UTF8*$!
+{
+	archiveVersion = 1;
+	classes = {
+	};
+	objectVersion = 46;
+	objects = {
+
+/* Begin PBXBuildFile section */
+		2317FC90A4F639BC09964CC5 /* Pods-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = A974380338D112EE27F23DDE /* Pods-dummy.m */; };
+		511CC0380B8A333D4CAF936B /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F3CE9EEFB6461142E39D0D /* Foundation.framework */; };
+		94D46AFD418A394DCF0CCE20 /* Pods-PunchScrollView-dummy.m in Sources */ = {isa = PBXBuildFile; fileRef = EEF345991F30718FE2EA7D95 /* Pods-PunchScrollView-dummy.m */; };
+		D7ADCF5658863BE3C3E56B30 /* Foundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 02F3CE9EEFB6461142E39D0D /* Foundation.framework */; };
+		EFB79DC2D26188087381795D /* PunchScrollView.m in Sources */ = {isa = PBXBuildFile; fileRef = C1E4A1B7D46CA9B86FD0B0F0 /* PunchScrollView.m */; settings = {COMPILER_FLAGS = "-DOS_OBJECT_USE_OBJC=0"; }; };
+		F678A9743762F3520D8FA765 /* PunchScrollView.h in Headers */ = {isa = PBXBuildFile; fileRef = 9E9B007F073FE6185DE82949 /* PunchScrollView.h */; };
+/* End PBXBuildFile section */
+
+/* Begin PBXContainerItemProxy section */
+		35BAFE5B06A1854EF2E9521D /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 2FB92D232A839B3A84AEBBDE /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 54B05DEFAC31690036AE6FA8;
+			remoteInfo = "Pods-PunchScrollView";
+		};
+/* End PBXContainerItemProxy section */
+
+/* Begin PBXFileReference section */
+		02F3CE9EEFB6461142E39D0D /* Foundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Foundation.framework; path = Platforms/iPhoneOS.platform/Developer/SDKs/iPhoneOS7.1.sdk/System/Library/Frameworks/Foundation.framework; sourceTree = DEVELOPER_DIR; };
+		08EF65056A92041FA8DD2DB5 /* Pods-PunchScrollView-prefix.pch */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-PunchScrollView-prefix.pch"; sourceTree = "<group>"; };
+		1CF86859B11BDAEB368A2778 /* Pods-PunchScrollView-Private.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PunchScrollView-Private.xcconfig"; sourceTree = "<group>"; };
+		3F009AECFDC23EE37E92BC44 /* Pods-resources.sh */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.script.sh; path = "Pods-resources.sh"; sourceTree = "<group>"; };
+		5F8637B0CC1CDE33706BC91A /* Pods.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.release.xcconfig; sourceTree = "<group>"; };
+		667C14674B5C5B83F69A51C9 /* Pods.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = Pods.debug.xcconfig; sourceTree = "<group>"; };
+		6911F78665B34C9CD50CDBD9 /* Pods-PunchScrollView.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; path = "Pods-PunchScrollView.xcconfig"; sourceTree = "<group>"; };
+		6E9BC075ED8EFE711AB71AFB /* Pods-acknowledgements.plist */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.plist.xml; path = "Pods-acknowledgements.plist"; sourceTree = "<group>"; };
+		94D393EE953E3E2F387D7584 /* Podfile */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; name = Podfile; path = ../Podfile; sourceTree = SOURCE_ROOT; xcLanguageSpecificationIdentifier = xcode.lang.ruby; };
+		9A31A00DCD83185DCB42FB5E /* Pods-environment.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = "Pods-environment.h"; sourceTree = "<group>"; };
+		9E9B007F073FE6185DE82949 /* PunchScrollView.h */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.h; path = PunchScrollView.h; sourceTree = "<group>"; };
+		A3A3133BB8FF75E890A7BAE8 /* Pods-acknowledgements.markdown */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text; path = "Pods-acknowledgements.markdown"; sourceTree = "<group>"; };
+		A974380338D112EE27F23DDE /* Pods-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-dummy.m"; sourceTree = "<group>"; };
+		BA626A80AE7F56E92FC76AEE /* libPods-PunchScrollView.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-PunchScrollView.a"; sourceTree = BUILT_PRODUCTS_DIR; };
+		C1E4A1B7D46CA9B86FD0B0F0 /* PunchScrollView.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = PunchScrollView.m; sourceTree = "<group>"; };
+		EEF345991F30718FE2EA7D95 /* Pods-PunchScrollView-dummy.m */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = sourcecode.c.objc; path = "Pods-PunchScrollView-dummy.m"; sourceTree = "<group>"; };
+		F77AEF24245D12CA12B3A0AF /* libPods.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = libPods.a; sourceTree = BUILT_PRODUCTS_DIR; };
+/* End PBXFileReference section */
+
+/* Begin PBXFrameworksBuildPhase section */
+		019FC780D0C18D7F08621B8D /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				D7ADCF5658863BE3C3E56B30 /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		241B937740D464F721365DFC /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				511CC0380B8A333D4CAF936B /* Foundation.framework in Frameworks */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXFrameworksBuildPhase section */
+
+/* Begin PBXGroup section */
+		177BCC6A6CBF228C83B8DDFD /* Products */ = {
+			isa = PBXGroup;
+			children = (
+				F77AEF24245D12CA12B3A0AF /* libPods.a */,
+				BA626A80AE7F56E92FC76AEE /* libPods-PunchScrollView.a */,
+			);
+			name = Products;
+			sourceTree = "<group>";
+		};
+		2CE3DCAEF3827D2F3BB37D3F /* Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				6911F78665B34C9CD50CDBD9 /* Pods-PunchScrollView.xcconfig */,
+				1CF86859B11BDAEB368A2778 /* Pods-PunchScrollView-Private.xcconfig */,
+				EEF345991F30718FE2EA7D95 /* Pods-PunchScrollView-dummy.m */,
+				08EF65056A92041FA8DD2DB5 /* Pods-PunchScrollView-prefix.pch */,
+			);
+			name = "Support Files";
+			path = "ExampleProject/Pods/Target Support Files/Pods-PunchScrollView";
+			sourceTree = "<group>";
+		};
+		B5EB34BB87B51FCCADCFFE63 /* PunchScrollView */ = {
+			isa = PBXGroup;
+			children = (
+				9E9B007F073FE6185DE82949 /* PunchScrollView.h */,
+				C1E4A1B7D46CA9B86FD0B0F0 /* PunchScrollView.m */,
+				2CE3DCAEF3827D2F3BB37D3F /* Support Files */,
+			);
+			name = PunchScrollView;
+			path = ../..;
+			sourceTree = "<group>";
+		};
+		B6A68AFC24CE246AB13D4859 = {
+			isa = PBXGroup;
+			children = (
+				94D393EE953E3E2F387D7584 /* Podfile */,
+				DAB9BD2E2521EB2E9413AA98 /* Development Pods */,
+				F8F4ED2B61045502F9337D94 /* Frameworks */,
+				177BCC6A6CBF228C83B8DDFD /* Products */,
+				F7E53912620AC4B43F5D3DF3 /* Targets Support Files */,
+			);
+			sourceTree = "<group>";
+		};
+		C600DE8CAA2542AAA9E45943 /* iOS */ = {
+			isa = PBXGroup;
+			children = (
+				02F3CE9EEFB6461142E39D0D /* Foundation.framework */,
+			);
+			name = iOS;
+			sourceTree = "<group>";
+		};
+		DAB9BD2E2521EB2E9413AA98 /* Development Pods */ = {
+			isa = PBXGroup;
+			children = (
+				B5EB34BB87B51FCCADCFFE63 /* PunchScrollView */,
+			);
+			name = "Development Pods";
+			sourceTree = "<group>";
+		};
+		EBDD50A239EBC0BB9A1E01DD /* Pods */ = {
+			isa = PBXGroup;
+			children = (
+				A3A3133BB8FF75E890A7BAE8 /* Pods-acknowledgements.markdown */,
+				6E9BC075ED8EFE711AB71AFB /* Pods-acknowledgements.plist */,
+				A974380338D112EE27F23DDE /* Pods-dummy.m */,
+				9A31A00DCD83185DCB42FB5E /* Pods-environment.h */,
+				3F009AECFDC23EE37E92BC44 /* Pods-resources.sh */,
+				667C14674B5C5B83F69A51C9 /* Pods.debug.xcconfig */,
+				5F8637B0CC1CDE33706BC91A /* Pods.release.xcconfig */,
+			);
+			name = Pods;
+			path = "Target Support Files/Pods";
+			sourceTree = "<group>";
+		};
+		F7E53912620AC4B43F5D3DF3 /* Targets Support Files */ = {
+			isa = PBXGroup;
+			children = (
+				EBDD50A239EBC0BB9A1E01DD /* Pods */,
+			);
+			name = "Targets Support Files";
+			sourceTree = "<group>";
+		};
+		F8F4ED2B61045502F9337D94 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				C600DE8CAA2542AAA9E45943 /* iOS */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
+/* End PBXGroup section */
+
+/* Begin PBXHeadersBuildPhase section */
+		01DC2827FD06C4DC144E0B5A /* Headers */ = {
+			isa = PBXHeadersBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				F678A9743762F3520D8FA765 /* PunchScrollView.h in Headers */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXHeadersBuildPhase section */
+
+/* Begin PBXNativeTarget section */
+		54B05DEFAC31690036AE6FA8 /* Pods-PunchScrollView */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = BB1E64B023952F8255964833 /* Build configuration list for PBXNativeTarget "Pods-PunchScrollView" */;
+			buildPhases = (
+				C363EAAAB5B5A009940A1D1C /* Sources */,
+				241B937740D464F721365DFC /* Frameworks */,
+				01DC2827FD06C4DC144E0B5A /* Headers */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+			);
+			name = "Pods-PunchScrollView";
+			productName = "Pods-PunchScrollView";
+			productReference = BA626A80AE7F56E92FC76AEE /* libPods-PunchScrollView.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+		FD79DEDFADECB74775D9439D /* Pods */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 2562A1C427C3D720A91373EF /* Build configuration list for PBXNativeTarget "Pods" */;
+			buildPhases = (
+				D45790F0207C1DC88922868D /* Sources */,
+				019FC780D0C18D7F08621B8D /* Frameworks */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				9E659B1C18FF7EE6ABF6BAA0 /* PBXTargetDependency */,
+			);
+			name = Pods;
+			productName = Pods;
+			productReference = F77AEF24245D12CA12B3A0AF /* libPods.a */;
+			productType = "com.apple.product-type.library.static";
+		};
+/* End PBXNativeTarget section */
+
+/* Begin PBXProject section */
+		2FB92D232A839B3A84AEBBDE /* Project object */ = {
+			isa = PBXProject;
+			attributes = {
+				LastUpgradeCheck = 0620;
+			};
+			buildConfigurationList = B45E33EC3D4F9BBB859954A1 /* Build configuration list for PBXProject "Pods" */;
+			compatibilityVersion = "Xcode 3.2";
+			developmentRegion = English;
+			hasScannedForEncodings = 0;
+			knownRegions = (
+				en,
+			);
+			mainGroup = B6A68AFC24CE246AB13D4859;
+			productRefGroup = 177BCC6A6CBF228C83B8DDFD /* Products */;
+			projectDirPath = "";
+			projectRoot = "";
+			targets = (
+				FD79DEDFADECB74775D9439D /* Pods */,
+				54B05DEFAC31690036AE6FA8 /* Pods-PunchScrollView */,
+			);
+		};
+/* End PBXProject section */
+
+/* Begin PBXSourcesBuildPhase section */
+		C363EAAAB5B5A009940A1D1C /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				94D46AFD418A394DCF0CCE20 /* Pods-PunchScrollView-dummy.m in Sources */,
+				EFB79DC2D26188087381795D /* PunchScrollView.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+		D45790F0207C1DC88922868D /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				2317FC90A4F639BC09964CC5 /* Pods-dummy.m in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXSourcesBuildPhase section */
+
+/* Begin PBXTargetDependency section */
+		9E659B1C18FF7EE6ABF6BAA0 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			name = "Pods-PunchScrollView";
+			target = 54B05DEFAC31690036AE6FA8 /* Pods-PunchScrollView */;
+			targetProxy = 35BAFE5B06A1854EF2E9521D /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
+/* Begin XCBuildConfiguration section */
+		285F5F32AB85B6AC8DDC8499 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CF86859B11BDAEB368A2778 /* Pods-PunchScrollView-Private.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-PunchScrollView/Pods-PunchScrollView-prefix.pch";
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		28B68C77E48EC0EE61BA87B3 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 667C14674B5C5B83F69A51C9 /* Pods.debug.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = NO;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+			};
+			name = Debug;
+		};
+		3A9CCFCC46CE59EDA9E269C1 /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				COPY_PHASE_STRIP = YES;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_DYNAMIC_NO_PIC = NO;
+				GCC_OPTIMIZATION_LEVEL = 0;
+				GCC_PREPROCESSOR_DEFINITIONS = (
+					"DEBUG=1",
+					"$(inherited)",
+				);
+				GCC_SYMBOLS_PRIVATE_EXTERN = NO;
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				ONLY_ACTIVE_ARCH = YES;
+				STRIP_INSTALLED_PRODUCT = NO;
+			};
+			name = Debug;
+		};
+		47B91C6561141E0F37414257 /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				CLANG_CXX_LANGUAGE_STANDARD = "gnu++0x";
+				CLANG_CXX_LIBRARY = "libc++";
+				CLANG_ENABLE_MODULES = YES;
+				CLANG_ENABLE_OBJC_ARC = YES;
+				CLANG_WARN_BOOL_CONVERSION = YES;
+				CLANG_WARN_CONSTANT_CONVERSION = YES;
+				CLANG_WARN_DIRECT_OBJC_ISA_USAGE = YES;
+				CLANG_WARN_EMPTY_BODY = YES;
+				CLANG_WARN_ENUM_CONVERSION = YES;
+				CLANG_WARN_INT_CONVERSION = YES;
+				CLANG_WARN_OBJC_ROOT_CLASS = YES;
+				COPY_PHASE_STRIP = NO;
+				ENABLE_NS_ASSERTIONS = NO;
+				GCC_C_LANGUAGE_STANDARD = gnu99;
+				GCC_PREPROCESSOR_DEFINITIONS = "RELEASE=1";
+				GCC_WARN_64_TO_32_BIT_CONVERSION = YES;
+				GCC_WARN_ABOUT_RETURN_TYPE = YES;
+				GCC_WARN_UNDECLARED_SELECTOR = YES;
+				GCC_WARN_UNINITIALIZED_AUTOS = YES;
+				GCC_WARN_UNUSED_FUNCTION = YES;
+				GCC_WARN_UNUSED_VARIABLE = YES;
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				STRIP_INSTALLED_PRODUCT = NO;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		9BA7267053247FB7197E6035 /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 1CF86859B11BDAEB368A2778 /* Pods-PunchScrollView-Private.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				GCC_PREFIX_HEADER = "Target Support Files/Pods-PunchScrollView/Pods-PunchScrollView-prefix.pch";
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+		F194260E311A22FA120AC43D /* Release */ = {
+			isa = XCBuildConfiguration;
+			baseConfigurationReference = 5F8637B0CC1CDE33706BC91A /* Pods.release.xcconfig */;
+			buildSettings = {
+				ALWAYS_SEARCH_USER_PATHS = NO;
+				COPY_PHASE_STRIP = YES;
+				DSTROOT = /tmp/xcodeproj.dst;
+				GCC_PRECOMPILE_PREFIX_HEADER = YES;
+				INSTALL_PATH = "$(BUILT_PRODUCTS_DIR)";
+				IPHONEOS_DEPLOYMENT_TARGET = 5.1;
+				OTHER_CFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_CPLUSPLUSFLAGS = (
+					"-DNS_BLOCK_ASSERTIONS=1",
+					"$(inherited)",
+				);
+				OTHER_LDFLAGS = "";
+				OTHER_LIBTOOLFLAGS = "";
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				PUBLIC_HEADERS_FOLDER_PATH = "$(TARGET_NAME)";
+				SDKROOT = iphoneos;
+				SKIP_INSTALL = YES;
+				VALIDATE_PRODUCT = YES;
+			};
+			name = Release;
+		};
+/* End XCBuildConfiguration section */
+
+/* Begin XCConfigurationList section */
+		2562A1C427C3D720A91373EF /* Build configuration list for PBXNativeTarget "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				28B68C77E48EC0EE61BA87B3 /* Debug */,
+				F194260E311A22FA120AC43D /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		B45E33EC3D4F9BBB859954A1 /* Build configuration list for PBXProject "Pods" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				3A9CCFCC46CE59EDA9E269C1 /* Debug */,
+				47B91C6561141E0F37414257 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+		BB1E64B023952F8255964833 /* Build configuration list for PBXNativeTarget "Pods-PunchScrollView" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				285F5F32AB85B6AC8DDC8499 /* Debug */,
+				9BA7267053247FB7197E6035 /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
+/* End XCConfigurationList section */
+	};
+	rootObject = 2FB92D232A839B3A84AEBBDE /* Project object */;
+}
