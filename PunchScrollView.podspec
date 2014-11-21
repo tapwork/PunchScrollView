@@ -12,7 +12,10 @@ Pod::Spec.new do |s|
   s.social_media_url   = "http://twitter.com/cmenschel"
   s.platform     = :ios
   s.platform     = :ios, "5.0"
-  s.source       = { :git => 'https://github.com/tapwork/PunchScrollView.git', :tag => 'v1.1.0' }
+  s.source = {
+    :git => 'https://github.com/tapwork/PunchScrollView.git',
+    :tag => s.version.to_s
+  }
   s.source_files = 'PunchScrollView.{h,m}'
   s.requires_arc = true
 end
