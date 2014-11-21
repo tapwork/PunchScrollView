@@ -1,7 +1,7 @@
 # PunchScrollView
 [![Build Status](http://img.shields.io/travis/tapwork/PunchScrollView/master.svg?style=flat)](https://travis-ci.org/tapwork/PunchScrollView)
 [![Cocoapods Version](http://img.shields.io/cocoapods/v/PunchScrollView.svg?style=flat)](https://github.com/tapwork/PunchScrollView/blob/master/PunchScrollView.podspec)
-[![](http://img.shields.io/cocoapods/l/PunchScrollView.svg?style=flat)](https://github.com/tapwork/PunchScrollView/blob/master/LICENSE.md)
+[![](http://img.shields.io/cocoapods/l/PunchScrollView.svg?style=flat)](https://github.com/tapwork/PunchScrollView/blob/master/LICENSE)
 [![CocoaPods Platform](http://img.shields.io/cocoapods/p/PunchScrollView.svg?style=flat)]()
 
 PunchScrollView is a little UIScrollView subclass for iOS which works like UICollectionView or UITableView Frameworks.
