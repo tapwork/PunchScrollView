@@ -7,14 +7,15 @@
 PunchScrollView is a little UIScrollView subclass for iOS which works like UICollectionView or UITableView Frameworks.
 <br>
 
-Easy and fast implementation: Delegate, DataSource methods and getter are similar to the UITableView's.
-Use the benefits of the NSIndexPath pattern like you already know from the UITableView.
+Easy and fast implementation: delegate, dataSource methods and getter are similar to the UITableView.
+Use the benefits of the NSIndexPath pattern like you already know it from UITableView or UICollectionView.
 This allows an easy setup in combination with Core Data.
 
 - Helpful methods, i.e. jump or scroll to a desired page
 - Avoid boilerplate code
-- Save lots of memory with the dequeuing
+- Save lots of memory with automatic dequeuing
 - Comes with an Example project to demonstrate the usage
+- Infinite scrolling
 
 Example setup in the ViewController
 
@@ -49,7 +50,7 @@ self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutor
         page.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 
-	page.titleLabel.text = [NSString stringWithFormat:@"Page %d in section %d", indexPath.row, indexPath.section];
+	page.titleLabel.text = [NSString stringWithFormat:@"Page %@ in section %@", @(indexPath.row), @(indexPath.section)];
 
 	return page;
 }
