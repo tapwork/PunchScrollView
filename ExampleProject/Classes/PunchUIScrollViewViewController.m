@@ -79,7 +79,9 @@
         page.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
 	
-	page.titleLabel.text = [NSString stringWithFormat:@"Page %d in section %d", indexPath.row, indexPath.section];
+	page.titleLabel.text = [NSString stringWithFormat:@"Page %@ in section %@",
+                            @(indexPath.row),
+                            @(indexPath.section)];
 	
 	return page;
 }
