@@ -1,0 +1,6 @@
+language: objective-c
+before:
+  - bundle
+  - cd ExampleProject && bundle exec pod install
+xcode_project: ExampleProject/PunchUIScrollView.xcworkspace
+xcode_scheme: PunchUIScrollView
