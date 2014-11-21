@@ -1,7 +1,11 @@
 # PunchScrollView
+[![Build Status](http://img.shields.io/travis/tapwork/PunchScrollView/master.svg?style=flat)](https://travis-ci.org/tapwork/PunchScrollView)
+[![Cocoapods Version](http://img.shields.io/cocoapods/v/PunchScrollView.svg?style=flat)](https://github.com/tapwork/PunchScrollView/blob/master/PunchScrollView.podspec)
+[![](http://img.shields.io/cocoapods/l/PunchScrollView.svg?style=flat)](https://github.com/tapwork/PunchScrollView/blob/master/LICENSE.md)
+[![CocoaPods Platform](http://img.shields.io/cocoapods/p/PunchScrollView.svg?style=flat)]()
 
 PunchScrollView is a little UIScrollView subclass for iOS which works like UICollectionView or UITableView Frameworks.
- 
+<br>
 
 Easy and fast implementation: Delegate, DataSource methods and getter are similar to the UITableView's.
 Use the benefits of the NSIndexPath pattern like you already know from the UITableView.
@@ -44,14 +48,11 @@ self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutor
 		page = [[ExamplePageView alloc] initWithFrame:self.view.bounds];
         page.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutoresizingFlexibleHeight;
 	}
-	
+
 	page.titleLabel.text = [NSString stringWithFormat:@"Page %d in section %d", indexPath.row, indexPath.section];
-	
+
 	return page;
 }
 
 
 ```
-
-
-
