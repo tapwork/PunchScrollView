@@ -1,6 +1,6 @@
 Pod::Spec.new do |s|
   s.name         = "PunchScrollView"
-  s.version      = "1.1.0"
+  s.version      = "1.1.1"
   s.summary      = "PunchScrollView is a little UIScrollView subclass."
   s.description  = <<-DESC
                    PunchScrollView is a little UIScrollView subclass which works like the UICollectionView but with more focus on pages and infinite scrolling. PunchScrollView can be run with iOS 5.
