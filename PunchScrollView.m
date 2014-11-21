@@ -466,7 +466,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     if ([self.dataSource respondsToSelector:@selector(numberOfLazyLoadingPages)])
     {
-        lazyOfLoadingPages = [self.dataSource numberOfLazyLoadingPages]-1;
+        lazyOfLoadingPages = [self.dataSource numberOfLazyLoadingPages] - 1;
     }
     
     // Calculate which pages are visible
@@ -679,16 +679,16 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     //
     // Check if the page really has changed
     //
-    int newPageIndex = NSNotFound;
+    NSUInteger newPageIndex = NSNotFound;
     if (_direction == PunchScrollViewDirectionHorizontal)
     {
-        int intWidth = (int)(self.pageSizeWithPadding.width);
-        newPageIndex = (int)(self.contentOffset.x) / ( (intWidth == 0) ? 1 : intWidth);
+        NSUInteger intWidth = (NSUInteger)(self.pageSizeWithPadding.width);
+        newPageIndex = (NSUInteger)(self.contentOffset.x) / ( (intWidth == 0) ? 1 : intWidth);
 	}
     else if (_direction == PunchScrollViewDirectionVertical)
     {
-        int intHeight = (int)(self.pageSizeWithPadding.height);
-        newPageIndex = (int)(self.contentOffset.y) / ( (intHeight == 0) ? 1 : intHeight);
+        NSUInteger intHeight = (NSUInteger)(self.pageSizeWithPadding.height);
+        newPageIndex = (NSUInteger)(self.contentOffset.y) / ( (intHeight == 0) ? 1 : intHeight);
     }
     
     if (newPageIndex != _currentInternalPageIndex &&
