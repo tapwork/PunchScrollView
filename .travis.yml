@@ -1,5 +1,3 @@
 language: objective-c
-before:
-  - bundle
-  - cd ExampleProject && bundle exec pod install
-script: xctool -workspace ExampleProject/PunchUIScrollView.xcworkspace -scheme PunchUIScrollView
+before_install: rake bootstrap
+script: rake spec
