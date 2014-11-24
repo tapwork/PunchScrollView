@@ -1,7 +1,9 @@
 PODS:
-  - PunchScrollView (1.1.0)
+  - FBSnapshotTestCase (1.4)
+  - PunchScrollView (1.1.1)
 
 DEPENDENCIES:
+  - FBSnapshotTestCase
   - PunchScrollView (from `../PunchScrollView.podspec`)
 
 EXTERNAL SOURCES:
@@ -9,6 +11,7 @@ EXTERNAL SOURCES:
     :path: ../PunchScrollView.podspec
 
 SPEC CHECKSUMS:
-  PunchScrollView: ee3ec8fb52fa708b0a437c12e64f72e1dc292c8b
+  FBSnapshotTestCase: f9f225b5ba11c8d8c09075590490df16314e4d62
+  PunchScrollView: 3f8e231a19d4f6a73b09bb5ad7649677b2aef43e
 
 COCOAPODS: 0.35.0

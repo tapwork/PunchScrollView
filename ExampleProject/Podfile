@@ -1,1 +1,7 @@
+source 'https://github.com/CocoaPods/Specs.git'
+
 pod "PunchScrollView", :path => "../PunchScrollView.podspec"
+target "PunchUIScrollViewTests" do
+  pod 'FBSnapshotTestCase'
+  pod 'PunchScrollView', :path => "../PunchScrollView.podspec"
+end

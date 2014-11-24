@@ -1,4 +1,4 @@
-#include "Pods-PunchScrollView.xcconfig"
+#include "Pods-PunchUIScrollViewTests-PunchScrollView.xcconfig"
 GCC_PREPROCESSOR_DEFINITIONS = $(inherited) COCOAPODS=1
 HEADER_SEARCH_PATHS = "${PODS_ROOT}/Headers/Build" "${PODS_ROOT}/Headers/Build/PunchScrollView" "${PODS_ROOT}/Headers/Public" "${PODS_ROOT}/Headers/Public/FBSnapshotTestCase" "${PODS_ROOT}/Headers/Public/PunchScrollView"
 OTHER_LDFLAGS = -ObjC
