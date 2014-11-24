@@ -24,8 +24,8 @@
         _titleLabel.autoresizingMask = UIViewAutoresizingFlexibleWidth |
                                         UIViewAutoresizingFlexibleTopMargin |
                                         UIViewAutoresizingFlexibleBottomMargin;
-        _titleLabel.lineBreakMode = UILineBreakModeTailTruncation;
-		_titleLabel.textAlignment = UITextAlignmentCenter;
+        _titleLabel.lineBreakMode = NSLineBreakByTruncatingTail;
+		_titleLabel.textAlignment = NSTextAlignmentCenter;
 		[self addSubview:_titleLabel];
     }
     return self;
