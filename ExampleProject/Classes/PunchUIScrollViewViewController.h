@@ -16,5 +16,7 @@
 	
 }
 
+@property (nonatomic, readonly) PunchScrollView *scrollView;
+
 @end
 
