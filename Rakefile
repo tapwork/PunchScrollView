@@ -6,5 +6,5 @@ end
 
 desc "Runs the specs"
 task :spec do
-  sh 'xcodebuild -workspace ExampleProject/PunchUIScrollView.xcworkspace -scheme \'PunchUIScrollView\' test -sdk iphonesimulator | xcpretty -tc'
+  sh 'xcodebuild -workspace ExampleProject/PunchUIScrollView.xcworkspace -scheme \'PunchUIScrollView\' name=\'iPhone 6\' test -sdk iphonesimulator | xcpretty -tc'
 end
