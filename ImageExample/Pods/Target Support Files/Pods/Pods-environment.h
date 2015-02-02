@@ -10,5 +10,5 @@
 #define COCOAPODS_POD_AVAILABLE_PunchScrollView
 #define COCOAPODS_VERSION_MAJOR_PunchScrollView 1
 #define COCOAPODS_VERSION_MINOR_PunchScrollView 1
-#define COCOAPODS_VERSION_PATCH_PunchScrollView 0
+#define COCOAPODS_VERSION_PATCH_PunchScrollView 1
 
