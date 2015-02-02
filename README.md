@@ -58,4 +58,4 @@ self.scrollView.autoresizingMask = UIViewAutoresizingFlexibleWidth | UIViewAutor
 
 ```
 ## Issues
-* Right now there is an issue when turning to landscape since iOS 8. Layouting is not right for the visible page. I will fix that or you can feel free for pull requests.
+* Right now there is an issue when turning to landscape since iOS 8 with infinite scrolling (only in rare cases). Layouting is not right for the visible page.
