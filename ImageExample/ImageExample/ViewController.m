@@ -18,6 +18,7 @@
     NSArray *_imageURLS;
     NSCache *_imageCache;
 }
+
 - (void)viewDidLoad
 {
     [super viewDidLoad];
@@ -38,7 +39,7 @@
     _scrollView.autoresizingMask = UIViewAutoresizingFlexibleHeight | UIViewAutoresizingFlexibleWidth;
     _scrollView.delegate = self;
     _scrollView.dataSource = self;
-    _scrollView.infiniteScrolling = NO;
+    _scrollView.infiniteScrolling = YES;
     
     [self.view addSubview:_scrollView];
     
