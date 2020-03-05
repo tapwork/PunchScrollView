@@ -1,0 +1,6 @@
+framework module PunchScrollView {
+  umbrella header "PunchScrollView-umbrella.h"
+
+  export *
+  module * { export * }
+}

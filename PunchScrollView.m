@@ -39,22 +39,19 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     id _privateDelegate;
     
-	NSMutableSet *_visiblePages;
+    NSMutableSet *_visiblePages;
     NSMutableSet *_recycledPages;
     NSMutableArray *_pageController;
-	NSInteger _currentInternalPageIndex;
-	NSMutableArray *_indexPaths;
-	CGFloat _currentWidth;
+    NSInteger _currentInternalPageIndex;
+    NSMutableArray *_indexPaths;
+    CGFloat _currentWidth;
     CGSize  _pageSizeWithPadding;
 }
 
 @property (nonatomic, readonly) CGSize pageSizeWithPadding;
-
-
 @end
 
 @implementation PunchScrollView
-
 
 #pragma mark - init, dealloc & setup
 
@@ -75,8 +72,8 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 - (instancetype)initWithFrame:(CGRect)aFrame
 {
     if ((self = [super initWithFrame:aFrame]))
-	{
-       	[self setup];
+    {
+        [self setup];
     }
     return self;
 }
@@ -108,16 +105,16 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)dealloc
 {
-	[NSObject cancelPreviousPerformRequestsWithTarget:self];
+    [NSObject cancelPreviousPerformRequestsWithTarget:self];
     
     self.delegate = nil;
     self.dataSource = nil;
     
     [self removePages];
     
-	_indexPaths = nil;
-	_recycledPages = nil;
-	_visiblePages = nil;
+    _indexPaths = nil;
+    _recycledPages = nil;
+    _visiblePages = nil;
     _pageController = nil;
 }
 
@@ -161,7 +158,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     {
         index += 1;
     }
-	
+
     return [self pageAtIndex:index];
 }
 
@@ -170,9 +167,9 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 // use scrollToIndex:animated: instead
 - (void)scrollToIndexPath:(NSIndexPath*)indexPath animated:(BOOL)animated
 {
-    void (^block)() = ^(){
+    void (^block)(void) = ^(){
         
-        NSInteger pageIndex = [_indexPaths indexOfObject:indexPath];
+        NSInteger pageIndex = [self->_indexPaths indexOfObject:indexPath];
         if (self.infiniteScrolling)
         {
             pageIndex += 1;
@@ -185,7 +182,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)scrollToNextPage:(BOOL)animated
 {
-    void (^block)() = ^(){
+    void (^block)(void) = ^(){
         
         NSInteger pageIndex = [self calculatedPageIndexOffset] + 1;
         if (pageIndex < [self pagesCount])
@@ -199,7 +196,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)scrollToPreviousPage:(BOOL)animated
 {
-    void(^block)() = ^(){
+    void(^block)(void) = ^(){
         
         NSInteger page = [self calculatedPageIndexOffset] - 1;
         if (page >= 0)
@@ -207,7 +204,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
             [self scrollToIndex:page animated:YES];
         }
     };
-	
+
     dispatch_async(dispatch_get_main_queue(), block);
 }
 
@@ -218,7 +215,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (NSIndexPath*)lastIndexPath
 {
-	return [_indexPaths lastObject];
+    return [_indexPaths lastObject];
 }
 
 - (NSUInteger)numPagesInDataSource
@@ -274,7 +271,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)setDataSource:(id <PunchScrollViewDataSource>)thedataSource
 {
-	if (_dataSource != thedataSource)
+    if (_dataSource != thedataSource)
     {
         _dataSource = thedataSource;
         if (_dataSource != nil)
@@ -354,7 +351,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 #pragma mark Private methods
 - (void)layoutSubviews
 {
-	[super layoutSubviews];
+    [super layoutSubviews];
     
     if (_currentInternalPageIndex == NSNotFound)
     {
@@ -377,16 +374,16 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     
     _needsUpdateContentOffset = NO;
-	if (_currentWidth != self.frame.size.width)
-	{
+    if (_currentWidth != self.frame.size.width)
+    {
         _needsUpdateContentOffset = YES;
         _pageSizeWithPadding = CGSizeZero;
-	}
-	
-	_currentWidth = self.frame.size.width;
-	
-	if (_needsUpdateContentOffset)
-	{
+    }
+
+    _currentWidth = self.frame.size.width;
+
+    if (_needsUpdateContentOffset)
+    {
         [self updateContentSize];
         
         _needsUpdateContentOffset = NO;
@@ -531,12 +528,12 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     for (NSInteger index = firstNeededPageIndex; index <= lastNeededPageIndex; index++)
     {
         if (![self isDisplayingPageForIndex:index])
-		{
-			UIView *page = [self askDataSourceForPageAtIndex:index addSubview:YES];
-			if (page == nil)
-			{
-				[_visiblePages addObject:[NSNull null]];
-			}
+        {
+            UIView *page = [self askDataSourceForPageAtIndex:index addSubview:YES];
+            if (page == nil)
+            {
+                [_visiblePages addObject:[NSNull null]];
+            }
         }
     }
 }
@@ -659,10 +656,10 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 - (UIView*)pageAtIndex:(NSInteger)index
 {
     for (UIView *thePage in self.visiblePages)
-	{
-		if ((NSNull*)thePage == [NSNull null]) break;
-		if (thePage.tag == index)
-		{
+    {
+        if ((NSNull*)thePage == [NSNull null]) break;
+        if (thePage.tag == index)
+        {
             return thePage;
         }
     }
@@ -684,7 +681,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     {
         NSUInteger intWidth = (NSUInteger)(self.pageSizeWithPadding.width);
         newPageIndex = (NSUInteger)(self.contentOffset.x) / ( (intWidth == 0) ? 1 : intWidth);
-	}
+    }
     else if (_direction == PunchScrollViewDirectionVertical)
     {
         NSUInteger intHeight = (NSUInteger)(self.pageSizeWithPadding.height);
@@ -784,7 +781,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
                                    pageChanged:indexPath];
             }
         }
-	}
+    }
 }
 
 - (NSInteger)calculatedPageIndexOffset
@@ -795,7 +792,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
         CGFloat pageWidth = floorf(self.pageSizeWithPadding.width);
         index = floorf(self.contentOffset.x /
                        ( (pageWidth == 0) ? 1 : pageWidth) );
-	}
+    }
     else if (_direction == PunchScrollViewDirectionVertical)
     {
         CGFloat pageHeight = floorf(self.pageSizeWithPadding.height);
@@ -814,7 +811,7 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     {
         self.contentSize = CGSizeMake(self.pageSizeWithPadding.width * pagesCount,
                                       self.pageSizeWithPadding.height);
-	}
+    }
     else if (_direction == PunchScrollViewDirectionVertical)
     {
         self.contentSize = CGSizeMake(self.pageSizeWithPadding.width,
@@ -824,13 +821,13 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)updateFrameForAvailablePages
 {
-	for (UIView *page in _visiblePages)
-	{
-		if ((NSNull*)page != [NSNull null])
+    for (UIView *page in _visiblePages)
+    {
+        if ((NSNull*)page != [NSNull null])
         {
             page.frame = [self frameForPage:page];
         }
-	}
+    }
 }
 
 - (CGRect)frameForPage:(UIView*)page
@@ -904,14 +901,13 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
             _pageSizeWithPadding = size;
         }
     }
-    
-    
+
     return _pageSizeWithPadding;
 }
 
 - (NSUInteger)sectionCount
 {
-	if ([self.dataSource respondsToSelector:@selector(numberOfSectionsInPunchScrollView:)])
+    if ([self.dataSource respondsToSelector:@selector(numberOfSectionsInPunchScrollView:)])
     {
         return [self.dataSource numberOfSectionsInPunchScrollView:self];
     }
@@ -929,22 +925,22 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
 
 - (void)setIndexPaths
 {
-	[_indexPaths removeAllObjects];
+    [_indexPaths removeAllObjects];
     
     for (int section = 0; section < [self sectionCount]; section++)
-	{
-		NSUInteger rowsInSection = 1;
-		if ([self.dataSource respondsToSelector:@selector(punchscrollView:numberOfPagesInSection:)])
-		{
-			rowsInSection = [self.dataSource punchscrollView:self numberOfPagesInSection:section];
-		}
-		
-		for (int row = 0; row < rowsInSection; row++)
-		{
-			NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
-			[_indexPaths addObject:indexPath];
-		}
-	}
+    {
+        NSUInteger rowsInSection = 1;
+        if ([self.dataSource respondsToSelector:@selector(punchscrollView:numberOfPagesInSection:)])
+        {
+            rowsInSection = [self.dataSource punchscrollView:self numberOfPagesInSection:section];
+        }
+
+        for (int row = 0; row < rowsInSection; row++)
+        {
+            NSIndexPath *indexPath = [NSIndexPath indexPathForRow:row inSection:section];
+            [_indexPaths addObject:indexPath];
+        }
+    }
 }
 
 //
@@ -979,7 +975,6 @@ NSString *const PunchScrollViewUserInfoTotalPagesNumberKey      = @"PunchScrollV
     
     return nil;
 }
-
 
 @end
 

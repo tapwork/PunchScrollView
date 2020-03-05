@@ -1,6 +1,10 @@
 source 'https://github.com/CocoaPods/Specs.git'
+use_frameworks!
 
-pod "PunchScrollView", :path => "../PunchScrollView.podspec"
+target "PunchUIScrollView" do
+  pod "PunchScrollView", :path => "../PunchScrollView.podspec"
+end
+
 target "PunchUIScrollViewTests" do
   pod 'FBSnapshotTestCase'
   pod 'PunchScrollView', :path => "../PunchScrollView.podspec"

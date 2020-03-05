@@ -8,12 +8,10 @@
 //  tapwork.de
 
 #import <UIKit/UIKit.h>
+#import "PunchUIScrollViewAppDelegate.h"
 #import "PunchScrollView.h"
 
-
 @interface PunchUIScrollViewViewController : UIViewController <UIScrollViewDelegate, PunchScrollViewDataSource, PunchScrollViewDelegate> {
-
-	
 }
 
 @property (nonatomic, readonly) PunchScrollView *scrollView;

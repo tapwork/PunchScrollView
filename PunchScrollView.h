@@ -164,7 +164,7 @@ typedef enum {
 
 
 /*
- * This Method returns an UIView (when visible, if not visible PunchScrollView will ask 
+ * This Method returns an UIView (when visible, if not visible PunchScrollView will ask
  *   the dataSource for the view) for a given indexPath
  *
  */

@@ -73,7 +73,7 @@
 
 #pragma mark - Helper
 
-- (void)runTest:(void (^)())block after:(NSTimeInterval)dispatchAfterTime {
+- (void)runTest:(void (^)(void))block after:(NSTimeInterval)dispatchAfterTime {
     XCTestExpectation *expectation = [self expectationWithDescription:@"XCTestCaseAsync"];
     dispatch_after(dispatch_time(DISPATCH_TIME_NOW, (int64_t)(dispatchAfterTime * NSEC_PER_SEC)), dispatch_get_main_queue(), ^{
         block();
