@@ -25,7 +25,7 @@
     [super setUp];
     self.controller = [[PunchUIScrollViewViewController alloc] init];
     self.controller.view.frame = CGRectMake(0, 0, 320, 568);
-   // self.recordMode = YES;
+//    self.recordMode = YES;
 }
 
 
